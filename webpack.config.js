@@ -9,8 +9,8 @@ module.exports = {
 		path: DIST_DIR,
 	},
 	module: {
-		loaders : {
-			{
+		loaders : [
+				{
 				test: /\.jsx?/,
 				include: SRC_DIR,
 				loader: 'babel-loader',
@@ -18,6 +18,6 @@ module.exports = {
 					presets: ['react', 'es2015'],
 				}
 			}
-		}
+		]
 	}
 };
