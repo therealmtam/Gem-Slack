@@ -1,26 +1,62 @@
+/* eslint-disable no-unused-vars */
 const express = require('express');
+const path = require('path');
 const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io').listen(server);
+const socketIO = require('socket.io');
+const server = app.listen(process.env.PORT || 4000, () => {
+  console.log('Listening to port 4000');
+});
 
-users = [];
-connection = [];
+app.use(express.static(path.join(__dirname, '../client/dist/')));
 
+const io = socketIO(server);
 
+io.on('connection', (socket) => {
+  console.log('made a socket connection', socket.id);
 
-server.listen(process.env.PORT || 3000);
+  socket.on('chat', (data) => {
+    console.log(data);
+    io.sockets.emit('chat', data);
+  });
 
-// console.log('Server running');
+  socket.on('typing', (data) => {
+    socket.broadcast.emit('typing', data);
+  });
+});
 
-// app.get('/', function(req, res) {
-// 	res.sendfile(__dirname + '/index.html');
-// });
+/*
+//  Make connection Front End
 
-// io.sockets.on('connection', function(socket){
-// 	connections.push(socket);
-// 	console.log('Connected: %s sockets connected', connections.length);
+const socket = io.connect('http://localhost:4000');
 
-// 	//Disconnect
-// 	connections.splice(connections.indexof(socket), 1);
-// 	console.log('Disconnected: %s sockets connected', connections.length);
-// });
+//  Query DOM
+
+const message = document.getElementById('message');
+const handle = document.getElementById('handle');
+const btn = document.getElementById('send');
+const output = document.getElementById('output');
+const feedback = document.getElementById('feedback');
+
+//  Emit events
+
+btn.addEventListener('click', () => {
+  socket.emit('chat', {
+    message: message.value,
+    handle: handle.value
+  });
+});
+
+message.addEventListener('keypress', () => {
+  socket.emit('typing', handle.value);
+});
+
+//  Listen for events
+socket.on('chat', (data) => {
+  feedback.innerHTML = '';
+  output.innerHTML += `<p><strong>${data.handle}:</strong> ${data.message}</p>`;
+});
+
+socket.on('typing', (data) => {
+  feedback.innerHTML = `<p><em>${data} is typing a message...</em></p>`;
+});
+*/
