@@ -1,7 +1,7 @@
 import React from 'react';
-import Messages from './Messages.jsx';
-import UserList from './UserList.jsx';
-import Input from './Input.jsx';
+import Messages from './messages.jsx';
+import UserList from './userlist.jsx';
+import Input from './input.jsx';
 
 class Chat extends React.Component {
     render() {
