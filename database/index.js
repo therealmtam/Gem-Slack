@@ -8,7 +8,7 @@ const sequelize = new Sequelize('database', 'root', '', {
     min: 0,
     acquire: 30000,
     idle: 10000
-  },
+  }
 });
 
 sequelize
