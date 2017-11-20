@@ -24,7 +24,9 @@ class App extends Component {
       )
 
     } else if (view === 'chat') {
-      <Chat />
+      return (
+        <Chat />
+      )
     }
   }
 
