@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SignIn from './signin.jsx';
-import Chat from './Chat.jsx';
+import Chat from './chat.jsx';
 
 class App extends Component {
   constructor(props) {
