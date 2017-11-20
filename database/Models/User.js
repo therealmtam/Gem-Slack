@@ -10,13 +10,23 @@ const User = db.define('user', {
   },
 });
 
-const addUser = (data) => {
+/**
+ * Adds a user to the database
+ * @param  {} newUser - User data saved to db.
+ */
+const addUser = (newUser) => {
   const formatted = {
-    username: data.username,
-    avatar: data.avatar,
+    username: newUser.username,
+    avatar: newUser.avatar,
   };
   User.sync({ force: false }).then(() => User.create(formatted));
 };
 
-module.exports.getUsers = () => User.findAll();
+/**
+ * Retrieves all Users from the database
+ * @returns A promise that will get all users.
+ */
+const getUsers = () => User.findAll();
+
+module.exports.getUsers = getUsers;
 module.exports.addUser = addUser;

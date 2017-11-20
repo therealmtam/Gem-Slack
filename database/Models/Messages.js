@@ -16,16 +16,25 @@ const Message = db.define('Message', {
   },
 });
 
-const addMessage = (data) => {
+/**
+ * Adds a message to the database
+ * @param  {} newMessage - Message saved to db.
+ */
+const addMessage = (newMessage) => {
   const formatted = {
-    message: data.message,
-    userId: data.userId,
-    roomId: data.roomId,
-    createdAt: data.createdAt,
+    message: newMessage.message,
+    userId: newMessage.userId,
+    roomId: newMessage.roomId,
+    createdAt: newMessage.createdAt,
   };
   Message.sync({ force: false }).then(() => Message.create(formatted));
 };
 
+/**
+ * Retrieves all Messages from the database sorted by date created
+ * @returns A promise that will get all Messages.
+ */
+const getMessages = () => Message.findAll().sort({ createdAt: -1 });
 
-module.exports.getMessages = () => Message.findAll();
+module.exports.getMessages = getMessages;
 module.exports.addMessage = addMessage;
