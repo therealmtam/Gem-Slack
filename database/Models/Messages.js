@@ -11,6 +11,9 @@ const Message = db.define('Message', {
   roomId: {
     type: Sequelize.INTEGER,
   },
+  createdAt: {
+    type: Sequelize.DATE,
+  },
 });
 
 const addMessage = (data) => {
@@ -18,6 +21,7 @@ const addMessage = (data) => {
     message: data.message,
     userId: data.userId,
     roomId: data.roomId,
+    createdAt: data.createdAt,
   };
   Message.sync({ force: false }).then(() => Message.create(formatted));
 };
