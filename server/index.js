@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
 const path = require('path');
-const app = express();
 const socketIO = require('socket.io');
+
+const app = express();
+
 const server = app.listen(process.env.PORT || 4000, () => {
   console.log('Listening to port 4000');
 });
