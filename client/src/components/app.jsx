@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SignIn from './signin.jsx';
+import Chat from './Chat.jsx';
 
 class App extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class App extends Component {
       )
 
     } else if (view === 'chat') {
-
+      <Chat />
     }
   }
 
