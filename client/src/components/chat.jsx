@@ -7,10 +7,15 @@ class Chat extends React.Component {
     render() {
         return (
             <div className="container-fluid">
-                <UserList className="col-md-3 position-fixed" />
-                <div className="col-md-9"> 
+                <div className="row">
+                <div className="col-sm-3">
+                    <UserList />
+                </div>
+                <div className="col-sm-9">
                     <Messages />
-                    <Input className="position-fixed" />
+                    <Input />
+                </div>
+                <div></div>
                 </div>
             </div>
         )
