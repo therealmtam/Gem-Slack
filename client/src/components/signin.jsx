@@ -18,6 +18,10 @@ class SignIn extends Component {
   submit(e) {
     if (e.charCode === 13 || e.charCode === undefined) {
       console.log('enter was pressed or onClick was pressed');
+      this.props.sendUserNameToServer(this.state.username);
+      this.setState({
+        username: ''
+      })
       //Send the char code back up to the App component so it can do an Ajax call to the server and send over the username.
     }
   }
