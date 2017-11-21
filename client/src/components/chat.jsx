@@ -1,19 +1,22 @@
 import React from 'react';
-import Messages from './messages.jsx';
-import UserList from './userlist.jsx';
-import Input from './input.jsx';
+import MessageList from './MessageList.jsx';
+import DirectMessageList from './DirectMessageList.jsx';
+import Input from './Input.jsx';
 
 class Chat extends React.Component {
+    constructor(props) {
+        super(props);
+    }
     render() {
         return (
             <div className="container-fluid">
                 <div className="row">
                 <div className="col-sm-3">
-                    <UserList />
+                    <DirectMessageList currentUsers={this.props.currentUsers}/>
                 </div>
                 <div className="col-sm-9">
-                    <Messages />
-                    <Input />
+                    <MessageList messages={this.props.messages}/>
+                    <Input addMessage={this.props.addMessage}/>
                 </div>
                 <div></div>
                 </div>
