@@ -13,6 +13,15 @@ const File = db.define('File', {
   },
 });
 
+File.sync({force: true}).then(() => {
+  console.log('File Created');
+  return File.create({
+    file: 'This is Slack Demo',
+    userId: 1,
+    roomId: 1,
+  });
+});
+
 /**
  * Adds a File to the database
  * @param  {} newFile - File saved to db.

@@ -14,6 +14,8 @@ const authConfig = require('../config/oauth.js');
 
 const app = express();
 
+const connections = [];
+
 const server = app.listen(process.env.PORT || 4000, () => {
   console.log('Listening to port 4000');
 });
@@ -25,21 +27,32 @@ const io = socketIO(server);
 io.on('connection', (socket) => {
   console.log('made a socket connection', socket.id);
 
+  // User Connects
+  socket.on('user login', (data) => {
+    connections.push(socket);
+    console.log('Connected: %s sockets connected', connections.length);
+
+    User.addUser(data);
+    io.sockets.emit('userInput', data);
+  });
+
+  //  Disconnect
+  socket.on('disconnect', (data) => {
+    connections.splice(connections.indexOf(socket), 1);
+    console.log('Disconnected: %s sockets connected', connections.length);
+  });
+
   socket.on('add message', (data) => {
     Messages.addMessage(data);
-    io.sockets.emit('add message', data);
+    io.sockets.emit('new message', data);
   });
 
   socket.on('typing', (data) => {
     socket.broadcast.emit('typing', data);
   });
 
-  socket.on('user login', (data) => {
-    User.addUser(data);
-    io.sockets.emit('userInput', data);
-  });
-
   socket.on('file send', (data) => {
+    console.log('add file');
     Files.addFile(data);
     //  Broadcast to only users available
   });
