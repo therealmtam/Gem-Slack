@@ -11,6 +11,7 @@ const passport = require('passport');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20');
 const authConfig = require('../config/oauth.js');
+const User = require('../database/Models/User.js');
 
 const app = express();
 
@@ -119,12 +120,10 @@ const ensureAuthenticated = (req, res, next) => {
 };
 
 passport.serializeUser((user, done) => {
-  // done(null, user.id);
   done(null, user);
 });
 
 passport.deserializeUser((obj, done) => {
-  // Users.findById(obj, done);
   done(null, obj);
 });
 
@@ -145,6 +144,28 @@ app.get(
     // go to correct page
   },
 );
+
+passport.use(new FacebookStrategy(
+  authConfig.facebook,
+  (accessToken, refreshToken, profile, cb) => {
+    User.findOrCreate({ facebookId: profile.id }, (err, user) => cb(err, user));
+  },
+));
+
+app.get(
+  '/auth/facebook',
+  passport.authenticate('facebook'),
+);
+
+app.get(
+  '/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  (req, res) => {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  },
+);
+
 
 app.get('/logout', (req, res) => {
   req.logout();
