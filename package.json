@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Gem-Guys/Gem-Slack#readme",
   "dependencies": {
     "express": "^4.16.2",
+    "passport": "^0.4.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "sequelize": "^4.22.6",
