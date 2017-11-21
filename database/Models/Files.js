@@ -13,15 +13,24 @@ const File = db.define('File', {
   },
 });
 
-const addFile = (data) => {
+/**
+ * Adds a File to the database
+ * @param  {} newFile - File saved to db.
+ */
+const addFile = (newFile) => {
   const formatted = {
-    file: data.file,
-    userId: data.userId,
-    roomId: data.roomId,
+    file: newFile.file,
+    userId: newFile.userId,
+    roomId: newFile.roomId,
   };
   File.sync({ force: false }).then(() => File.create(formatted));
 };
 
+/**
+ * Retrieves all Files from the database
+ * @returns A promise that will get all Files.
+ */
+const getFiles = () => File.findAll();
 
-module.exports.getFiles = () => File.findAll();
+module.exports.getFiles = getFiles;
 module.exports.addFile = addFile;
