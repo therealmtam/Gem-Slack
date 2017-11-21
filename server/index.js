@@ -10,6 +10,7 @@ const User = require('../database/Models/User');
 const passport = require('passport');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20');
+const FacebookStrategy = require('passport-facebook');
 const authConfig = require('../config/oauth.js');
 const User = require('../database/Models/User.js');
 
@@ -165,7 +166,6 @@ app.get(
     res.redirect('/');
   },
 );
-
 
 app.get('/logout', (req, res) => {
   req.logout();
