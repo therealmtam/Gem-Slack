@@ -1,10 +1,23 @@
 const Sequelize = require('sequelize');
+const DB = require('../config.js');
 
-const sequelize = new Sequelize('database', 'root', '', {
-  host: 'localhost',
+//  Parameters are database name, username ,password
+// const sequelize = new Sequelize(`${DB.DATABASE}`, `${DB.USERNAME}`, `${DB.PASSWORD}`, {
+//   host: `${DB.URI}`,
+//   dialect: 'postgres',
+//   pool: {
+//     max: 1000000,
+//     min: 0,
+//     acquire: 30000,
+//     idle: 10000,
+//   },
+// });
+
+const sequelize = new Sequelize(`gem`, `ericlau`, ``, {
+  host: `localhost`,
   dialect: 'postgres',
   pool: {
-    max: 5,
+    max: 1000000,
     min: 0,
     acquire: 30000,
     idle: 10000,
