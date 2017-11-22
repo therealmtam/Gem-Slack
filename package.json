@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test-jest": "jest",
+    "test-db": "mocha -- __tests__/db/*.js",
     "react": "webpack -d --watch",
     "server": "nodemon server/index.js"
   },
@@ -50,6 +51,7 @@
     "html-webpack-plugin": "^2.30.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^21.2.1",
+    "mocha": "^4.0.1",
     "react-test-renderer": "^16.1.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
@@ -58,6 +60,8 @@
     "moduleNameMapper": {
       "\\.css$": "identity-obj-proxy"
     },
-    "setupFiles": ["raf/polyfill"]
+    "setupFiles": [
+      "raf/polyfill"
+    ]
   }
 }
