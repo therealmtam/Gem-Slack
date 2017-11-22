@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const DB = require('../config.js');
+// const DB = require('../config.js');
 
 //  Parameters are database name, username ,password
 // const sequelize = new Sequelize(`${DB.DATABASE}`, `${DB.USERNAME}`, `${DB.PASSWORD}`, {
@@ -13,7 +13,7 @@ const DB = require('../config.js');
 //   },
 // });
 
-const sequelize = new Sequelize(`gem`, `ericlau`, ``, {
+const sequelize = new Sequelize(`slack`, `postgres`, `john123aj`, {
   host: `localhost`,
   dialect: 'postgres',
   pool: {
