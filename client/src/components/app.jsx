@@ -28,7 +28,6 @@ class App extends Component {
   }
 
   componentDidMount(){
-
     //PSEUDO CODE:
     //------------------
     // socket listens to messages from server and push and set state to RoomMsgs
