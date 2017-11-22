@@ -1,16 +1,21 @@
-// const expect = require('chai').expect;
+const expect = require('chai').expect;
 const Sequelize = require('sequelize');
-const Messages = require('../database/Models/Messages.js');
-const Rooms = require('../database/Models/Rooms.js');
-const User = require('../database/Models/User');
+const DB = require('../../config.js');
+const Messages = require('../../database/Models/Messages.js');
+const Rooms = require('../../database/Models/Rooms.js');
+const User = require('../../database/Models/User');
 
 describe('Persistent chat data', () => {
   let sequelize;
 
   beforeEach(() => {
-    sequelize = new Sequelize('slack', 'postgres', '', {
-      host: 'localhost',
+    sequelize = new Sequelize(`${DB.DATABASE}`, `${DB.USERNAME}`, `${DB.PASSWORD}`, {
+      host: `${DB.HOST}`,
       dialect: 'postgres',
+      dialectOptions: {
+        ssl: true,
+        native: true,
+      },
       pool: {
         max: 1000000,
         min: 0,
@@ -18,6 +23,7 @@ describe('Persistent chat data', () => {
         idle: 10000,
       },
     });
+
     sequelize
       .authenticate()
       .then(() => {
@@ -29,11 +35,11 @@ describe('Persistent chat data', () => {
   });
 
   afterEach(() => {
-    sequelize.close();
+    // sequelize.close();
   });
 
   it('Should return a all messages ', (done) => {
-    expect(Messages.getMessages()).toEqual();
+    expect(true).to.equal(true);
     done();
   });
 });

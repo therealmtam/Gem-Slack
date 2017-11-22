@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test-jest": "jest",
+    "test-db": "mocha -- __tests__/db/*.js",
     "react": "webpack -d --watch",
     "server": "nodemon server/index.js"
   },
