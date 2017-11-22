@@ -28,7 +28,6 @@ const Sequelize = require('sequelize');
 //   },
 // });
 
-
 sequelize
   .authenticate()
   .then(() => {

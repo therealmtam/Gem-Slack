@@ -1,9 +1,13 @@
 # Dependency directorys
 <<<<<<< HEAD
+<<<<<<< HEAD
 package-lock.json
 =======
 client/dist/bundle.js
 >>>>>>> resolved conflicts
+=======
+package-lock.json
+>>>>>>> updated dependencies and changed App.jsx
 node_modules/
 .DS_Store
 config.js
