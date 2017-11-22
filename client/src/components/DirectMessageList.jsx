@@ -14,4 +14,4 @@ render() {
 }
 }
 
-export default UserList;
+export default DirectMessageList;

@@ -18,6 +18,10 @@ const socket = openSocket('http://localhost:4000');
  *
  * @param - none.
  */
+<<<<<<< HEAD
+=======
+
+>>>>>>> Modify ignore files to ignore bundle and package-lock.json
 class App extends Component {
   constructor(props) {
     super(props);
