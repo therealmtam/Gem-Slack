@@ -169,8 +169,8 @@ class App extends Component {
     // })
     // this.changeView('chat');
 
-    this.ajaxRequest('post', '/sendUserNameToServer', {username: username})
-    .then(result => {
+    // this.ajaxRequest('post', '/sendUserNameToServer', {username: username})
+    // .then(result => {
 
       this.setState({
         username: result.data.username,
@@ -182,7 +182,6 @@ class App extends Component {
       }, () => {
         this.changeView('chat');
       });
-    });
   }
 
   /**

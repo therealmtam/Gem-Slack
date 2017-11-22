@@ -26,10 +26,10 @@ const io = socketIO(server);
 
 io.on('connection', (socket) => {
   console.log('im the socketid', socket.id);
-  Messages.getMessages()
-    .then((data) => {
-      socket.emit('old messages', data);
-    });
+  // Messages.getMessages()
+  //   .then((data) => {
+  //     socket.emit('old messages', data);
+  //   });
 
   // User Connects
   socket.on('user login', (data) => {
