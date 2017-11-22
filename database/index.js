@@ -2,29 +2,8 @@ const Sequelize = require('sequelize');
 const DB = require('../config.js');
 
 //  Parameters are database name, username ,password
-<<<<<<< 4ac01f016e7910e04633d60303b379d93d3aac8f
-<<<<<<< 9b8e0754753fa9954305631f5d89f25bb6ab7e75
 const sequelize = new Sequelize(`${DB.DATABASE}`, `${DB.USERNAME}`, `${DB.PASSWORD}`, {
   host: `${DB.HOST}`,
-=======
-// const sequelize = new Sequelize(`${DB.DATABASE}`, `${DB.USERNAME}`, `${DB.PASSWORD}`, {
-//   host: `${DB.URI}`,
-//   dialect: 'postgres',
-//   pool: {
-//     max: 1000000,
-//     min: 0,
-//     acquire: 30000,
-//     idle: 10000,
-//   },
-// });
-
-const sequelize = new Sequelize(`slack`, `postgres`, `john123aj`, {
-  host: `localhost`,
->>>>>>> rebase
-=======
-const sequelize = new Sequelize(`${DB.DATABASE}`, `${DB.USERNAME}`, `${DB.PASSWORD}`, {
-  host: `${DB.HOST}`,
->>>>>>> ignore bundle.js. DB connect to heroku.
   dialect: 'postgres',
   dialectOptions: {
     ssl: true,
