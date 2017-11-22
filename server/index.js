@@ -218,4 +218,8 @@ app.get('/getroomdata', (req, res) => {
 
   res.status(200).send(JSON.stringify(sampleData));
 });
+<<<<<<< HEAD
 //=========
+=======
+//=========
+>>>>>>> Partial implementation of Pseudo Code to App.jsx
