@@ -28,5 +28,16 @@ const addUser = (newUser) => {
  */
 const getUsers = () => User.findAll();
 
+/**
+ * Retrieves the user by ID
+ * @param {} name - name of user
+ * @returns A userId
+ */
+const getUserById = (name) => {
+  User.findOne({ where: { username: name } })
+    .then(result => result.id);
+};
+
 module.exports.getUsers = getUsers;
 module.exports.addUser = addUser;
+module.exports.getUserById = getUserById;
