@@ -403,6 +403,7 @@ eval("\n\n/**\n * Copyright (c) 2013-present, Facebook, Inc.\n *\n * This source
 /*! all exports used */
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -538,6 +539,8 @@ eval("\n\nvar utils = __webpack_require__(/*! ./utils */ 1);\nvar bind = __webpa
 >>>>>>> Partial implementation of Pseudo Code to App.jsx
 =======
 >>>>>>> Laid out App.jsx
+=======
+>>>>>>> f950f1466fdf1162e1f7fdee9b84243aafeda96d
 /***/ (function(module, exports) {
 
 "use strict";
