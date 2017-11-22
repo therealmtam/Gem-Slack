@@ -109,6 +109,12 @@ class App extends Component {
     });
   }
 
+  changeCurrentRoom(selectedRoom) {
+    this.setState({
+      currentRoom: selectedRoom
+    })
+  }
+
   /**
    * renderView:
    * Called by the React Component's render() to conditionally
@@ -140,22 +146,18 @@ class App extends Component {
    * @param {String} message - User entered message
    */
   sendMessage(message) {
-
     let newMsg = {
       username: this.state.username,
       message: message,
       createdAt: new Date(),
       roomname: this.state.currentRoom
     }
-
     //temporarily add to state until socket is working
     let currentRoomMsgs = this.state.roomMsgs;
     currentRoomMsgs[this.state.currentRoom].push(newMsg);
     this.setState({
       roomMsgs: currentRoomMsgs
     })
-
-
     /**
      * PLACEHOLDER FOR SOCKET FUNCTION
      */
@@ -245,7 +247,7 @@ class App extends Component {
 
     } else if (view === 'chat') {
       return (
-        <Chat data={this.state} sendMessage={this.sendMessage.bind(this)}/>
+        <Chat data={this.state} sendMessage={this.sendMessage.bind(this)} changeCurrentRoom={this.changeCurrentRoom.bind(this)}/>
       )
     } else if (view === 'newDirectMessage') {
 
