@@ -12,7 +12,7 @@ const Message = db.define('Message', {
     type: Sequelize.INTEGER,
   },
   createdAt: {
-    type: Sequelize.DATE,
+    type: Sequelize.STRING,
   },
 });
 
@@ -36,5 +36,9 @@ const addMessage = (newMessage) => {
  */
 const getMessages = () => Message.findAll().sort({ createdAt: -1 });
 
+const getRoomMessages = room => Message.findAll({ roomId: room }).sort({ createdAt: -1 });
+
+
 module.exports.getMessages = getMessages;
 module.exports.addMessage = addMessage;
+module.exports.getRoomMessages = getRoomMessages;
