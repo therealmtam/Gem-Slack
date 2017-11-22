@@ -13,6 +13,15 @@ import axios from 'axios';
  *
  * @param - none.
  */
+class App extends Component {/**
+ * Description:
+ * App component renders all views for the application.
+ * Its State holds all data and disseminates it to all
+ * React sub-components.
+ * It is the only component that communicates with the server.
+ *
+ * @param - none.
+ */
 class App extends Component {
   constructor(props) {
     super(props);
@@ -28,16 +37,7 @@ class App extends Component {
   }
 
   componentDidMount(){
-    currentRoom: roomname,
-        roomMsgs: result.data.roomMsgs,
-        usersInRoom: result.data.usersInRoom
 
-    let newMsg = {
-      username: this.state.username,
-      msg: message,
-      createdAt: new Data(),
-      roomname: this.state.currentRoom
-    }
     //PSEUDO CODE:
     //------------------
     // socket listens to messages from server and push and set state to RoomMsgs
@@ -187,7 +187,6 @@ class App extends Component {
 
     });
   }
-
 
 
   /**
