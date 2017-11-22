@@ -37,6 +37,7 @@ class App extends Component {
       msg: message,
       createdAt: new Data(),
       roomname: this.state.currentRoom
+    }
     //PSEUDO CODE:
     //------------------
     // socket listens to messages from server and push and set state to RoomMsgs
