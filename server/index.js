@@ -42,6 +42,7 @@ io.on('connection', (socket) => {
     if (!socket.userId) {
       socket.userId = 2;
     }
+
     socket.emit('sign in', {hello: 8});
     io.sockets.emit('userInput', data);
   });

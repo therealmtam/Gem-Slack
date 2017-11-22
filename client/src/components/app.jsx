@@ -4,6 +4,7 @@ import SignIn from './Signin.jsx';
 import Chat from './Chat.jsx';
 import axios from 'axios';
 import openSocket from 'socket.io-client';
+
 import Sockets from './Sockets.jsx';
 
 const socket = openSocket('http://localhost:4000');
@@ -130,20 +131,6 @@ class App extends Component {
     }
   }
 
-  /**
-   * addMessage:
-   *
-   * @param {String} message - View to render ('signin', 'chat', 'newdm')
-   */
-  //  Don't need this addMessage
-  addMessage(message) {
-    let newMessages = this.state.messages;
-    newMessages.push(message);
-    this.setState({
-      messages: newMessages
-    });
-    console.log('mss', this.state.messages)
-  }
 
   /**
    * sendMessage:
@@ -195,7 +182,6 @@ class App extends Component {
       }, () => {
         this.changeView('chat');
       });
-
     });
   }
 
