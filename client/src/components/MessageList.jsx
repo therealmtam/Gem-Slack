@@ -4,28 +4,17 @@ import Message from './Message.jsx';
 class MessageList extends React.Component {
     constructor(props) {
         super(props);
-        console.log('im in the message list', props.messages);
-        this.state ={
-            message: [],
-        }
-    }
-    componentDidMount() {
-        this.setState({
-            message: this.props.messages
-        })
     }
     render() {
-        return (
-            <ul>
-                {
-                  this.props.messages.map((message, index) => {
-                      return (
-                      <Message message= {message} key= {index}/>
-                      )
-                  })
-                }
-            </ul>
-        )
+      return (
+        <ul> 
+          { 
+            this.props.data.roomMsgs[this.props.data.currentRoom].map(msg => {
+              return <Message msg={msg} />
+            })
+          }
+        </ul>
+      )
     }
 }
 export default MessageList;

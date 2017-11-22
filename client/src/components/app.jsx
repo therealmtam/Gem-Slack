@@ -18,10 +18,6 @@ const socket = openSocket('http://localhost:4000');
  *
  * @param - none.
  */
-<<<<<<< HEAD
-=======
-
->>>>>>> Modify ignore files to ignore bundle and package-lock.json
 class App extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +40,7 @@ class App extends Component {
       username: this.props.sampleData.username,
       userImgUrl: this.props.sampleData.userImgUrl,
       myRooms: this.props.sampleData.myRooms,
-      roomMsgs: this.props.sampleData.oomMsgs,
+      roomMsgs: this.props.sampleData.roomMsgs,
       currentRoom: 'Lobby',
       usersInRoom: this.props.sampleData.usersInRoom
     }, () => {console.log(this.state);});
@@ -176,16 +172,40 @@ class App extends Component {
     // this.ajaxRequest('post', '/sendUserNameToServer', {username: username})
     // .then(result => {
 
-      this.setState({
-        username: result.data.username,
-        userImgUrl: result.data.userImgUrl,
-        myRooms: result.data.myRooms,
-        currentRoom: 'Lobby',
-        roomMsgs: result.data.roomMsgs,
-        usersInRoom: usersInRoom
-      }, () => {
-        this.changeView('chat');
-      });
+    //   this.setState({
+    //     username: result.data.username,
+    //     userImgUrl: result.data.userImgUrl,
+    //     myRooms: result.data.myRooms,
+    //     currentRoom: 'Lobby',
+    //     roomMsgs: result.data.roomMsgs,
+    //     usersInRoom: usersInRoom
+    //   }, () => {
+    //     this.changeView('chat');
+    //   });
+
+    // });
+    this.changeView('chat')
+  }
+
+  /**
+   * ajaxRequest:
+   * Function is a helper function that sends a GET or POST
+   * request to a specified server route along with specified data
+   * if applicable. It returns a Promise with the response
+   * from the server route.
+   *
+   * @param {String} reqType - Request type ('post', 'get')
+   * @param {String} route - endpoing to send the request to (ex. '/test')
+   * @param {Object} data - Data to send to the server specified as object ex. {name: max}
+   * @returns {Promise} Using the .then((results) => {}) method, the results from
+   * the Request can be retrieved by any function utilizing this helper function.
+   */
+  ajaxRequest(reqType, route, data) {
+    if (reqType === 'post') {
+      return axios.post(route, data)
+    } else if (reqType === 'get') {
+      return axios.get(route)
+    }
   }
 
   /**
@@ -216,7 +236,7 @@ class App extends Component {
 
     } else if (view === 'chat') {
       return (
-        <Chat messages={this.state.messages} addMessage={this.addMessage.bind(this)} currentUsers={this.state.currentUsers}/>
+        <Chat data={this.state}/>
       )
     } else if (view === 'newDirectMessage') {
 
