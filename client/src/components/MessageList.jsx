@@ -1,11 +1,12 @@
 import React from 'react';
 import Message from './Message.jsx';
 
-class Messages extends React.Component {
+class MessageList extends React.Component {
     constructor(props) {
         super(props);
+        console.log('im in the message list', props.messages);
         this.state ={
-            message: []
+            message: [],
         }
     }
     componentDidMount() {
@@ -15,11 +16,11 @@ class Messages extends React.Component {
     }
     render() {
         return (
-            <ul> 
+            <ul>
                 {
-                  this.props.messages.map(message => {
+                  this.props.messages.map((message, index) => {
                       return (
-                        <Message message={message}/>
+                      <Message message= {message} key= {index}/>
                       )
                   })
                 }
@@ -27,4 +28,4 @@ class Messages extends React.Component {
         )
     }
 }
-export default Messages;
+export default MessageList;

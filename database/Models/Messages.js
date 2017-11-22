@@ -11,9 +11,9 @@ const Message = db.define('Message', {
   roomId: {
     type: Sequelize.INTEGER,
   },
-  createdAt: {
-    type: Sequelize.STRING,
-  },
+  // createdAt: {
+  //   type: Sequelize.DATE,
+  // },
 });
 
 /**
@@ -25,7 +25,7 @@ const addMessage = (newMessage) => {
     message: newMessage.message,
     userId: newMessage.userId,
     roomId: newMessage.roomId,
-    createdAt: newMessage.createdAt,
+    // createdAt: newMessage.createdAt,
   };
   Message.sync({ force: false }).then(() => Message.create(formatted));
 };
@@ -34,7 +34,9 @@ const addMessage = (newMessage) => {
  * Retrieves all Messages from the database sorted by date created
  * @returns A promise that will get all Messages.
  */
-const getMessages = () => Message.findAll().sort({ createdAt: -1 });
+const getMessages = () => Message.findAll({
+  attributes: ['message'],
+});
 
 const getRoomMessages = room => Message.findAll({ roomId: room }).sort({ createdAt: -1 });
 
