@@ -6,15 +6,12 @@ class DirectMessageList extends React.Component {
     this.state = {
       currentUsers: this.props.currentUsers
     }
-  }
-
-  render() {
-    return (
-        <div>
-            <div>Direct Messages</div>
-        </div>
-    )
-  }
+}
+render() {
+  return(
+    <div></div>
+  ) 
+}
 }
 
-export default DirectMessageList;
+export default UserList;
