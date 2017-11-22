@@ -27,6 +27,45 @@ class App extends Component {
     }
   }
 
+  componentDidMount(){
+    currentRoom: roomname,
+        roomMsgs: result.data.roomMsgs,
+        usersInRoom: result.data.usersInRoom
+
+    let newMsg = {
+      username: this.state.username,
+      msg: message,
+      createdAt: new Data(),
+      roomname: this.state.currentRoom
+    //PSEUDO CODE:
+    //------------------
+    // socket listens to messages from server and push and set state to RoomMsgs
+    // Socket returns ==>
+    //   {
+    //     peopleInRoom: ['therealmtam', 'theericlau', 'theJohn', 'theJeff'],
+    //     typing: ['therealmtam', 'theericlau'],
+    //     msg: {
+    //       username: 'therealmtam',
+    //       msg: 'hello world',
+    //       roomname: 'therealmtam, theJeff, therriclau, theJohn',
+    //       createdAt: "2017-11-21T19:39:48.279Z"
+    //     }
+    //     userImgUrl: {
+    //       'therealmtam': 'http://localhost:4000/img1',
+    //       'theericLau': 'http://localhost:4000/img2',
+    //       'theJohn': 'http://localhost:4000/img3',
+    //       'theJeff': 'http://localhost:4000/img1'
+    //     }
+    //   }
+    //   Callback from Socket(){
+    //     this.setState({
+    //       peopleInRoom: SocketReturnedData[peopleInRoom],
+    //       typing: SocketReturnedData[typing],
+    //       RoomMsgs: this.state.RoomMsgs.push(SocketReturnedData[msg])
+    //     })
+    //   }
+  }
+
   /**
    * changeView:
    * Updates the State property 'view' to
@@ -118,7 +157,6 @@ class App extends Component {
         roomMsgs: result.data.roomMsgs,
         usersInRoom: result.data.usersInRoom
       }, () => {
-        console.log('POST ',this.state);
         //this.changeView('chat');
       });
 
@@ -143,7 +181,6 @@ class App extends Component {
         roomMsgs: result.data.roomMsgs,
         usersInRoom: result.data.usersInRoom
       }, () => {
-        console.log('GET ', this.state);
         //this.changeView('chat');
       });
 
