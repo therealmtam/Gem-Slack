@@ -1,5 +1,9 @@
 # Dependency directorys
+<<<<<<< HEAD
 package-lock.json
+=======
+client/dist/bundle.js
+>>>>>>> resolved conflicts
 node_modules/
 .DS_Store
 config.js
