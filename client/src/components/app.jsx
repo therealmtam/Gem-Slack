@@ -143,10 +143,19 @@ class App extends Component {
 
     let newMsg = {
       username: this.state.username,
-      msg: message,
-      createdAt: new Data(),
+      message: message,
+      createdAt: new Date(),
       roomname: this.state.currentRoom
     }
+
+    //temporarily add to state until socket is working
+    let currentRoomMsgs = this.state.roomMsgs;
+    currentRoomMsgs[this.state.currentRoom].push(newMsg);
+    this.setState({
+      roomMsgs: currentRoomMsgs
+    })
+
+
     /**
      * PLACEHOLDER FOR SOCKET FUNCTION
      */
@@ -236,7 +245,7 @@ class App extends Component {
 
     } else if (view === 'chat') {
       return (
-        <Chat data={this.state}/>
+        <Chat data={this.state} sendMessage={this.sendMessage.bind(this)}/>
       )
     } else if (view === 'newDirectMessage') {
 

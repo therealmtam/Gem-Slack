@@ -16,7 +16,7 @@ class Chat extends React.Component {
           </div>
           <div className="col-sm-9">
             <MessageList data={this.props.data}/>
-            <Input />
+            <Input sendMessage={this.props.sendMessage}/>
           </div>
         </div>
       </div>
