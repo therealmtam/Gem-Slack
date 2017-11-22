@@ -13,15 +13,6 @@ import axios from 'axios';
  *
  * @param - none.
  */
-class App extends Component {/**
- * Description:
- * App component renders all views for the application.
- * Its State holds all data and disseminates it to all
- * React sub-components.
- * It is the only component that communicates with the server.
- *
- * @param - none.
- */
 class App extends Component {
   constructor(props) {
     super(props);
@@ -30,13 +21,25 @@ class App extends Component {
       username: '',
       userImgUrl: '',
       myRooms: [],
-      roomMsgs: [],
+      roomMsgs: {},
       currentRoom: '',
-      usersInRoom: []
+      usersInRoom: {}
     }
   }
 
   componentDidMount(){
+
+    //Sets state with SAMPLE DATA
+    this.setState({
+      view: 'signin',
+      username: this.props.sampleData.username,
+      userImgUrl: this.props.sampleData.userImgUrl,
+      myRooms: this.props.sampleData.myRooms,
+      roomMsgs: this.props.sampleData.oomMsgs,
+      currentRoom: 'Lobby',
+      usersInRoom: this.props.sampleData.usersInRoom
+    }, () => {console.log(this.state);});
+
     //PSEUDO CODE:
     //------------------
     // socket listens to messages from server and push and set state to RoomMsgs
@@ -64,55 +67,6 @@ class App extends Component {
     //       RoomMsgs: this.state.RoomMsgs.push(SocketReturnedData[msg])
     //     })
     //   }
-  }
-
-  /**
-   * changeView:
-   * Updates the State property 'view' to
-   * a new passed in view.
-   *
-   * @param {String} view - View to update State with ('signin', 'chat', 'newdm')
-   */
-  changeView(view) {
-    this.setState({
-      view: view
-    });
-  }
-
-  /**
-   * renderView:
-   * Called by the React Component's render() to conditionally
-   * render a view based on the view value passed in.
-   *
-   * @param {String} view - View to render ('signin', 'chat', 'newdm')
-   */
-  renderView(view) {
-    if (view === 'signin') {
-      return (
-        <SignIn sendUserNameToServer={this.sendUserNameToServer.bind(this)}/>
-      )
-
-    } else if (view === 'chat') {
-      return (
-        <Chat messages={this.state.messages} addMessage={this.addMessage.bind(this)} currentUsers={this.state.currentUsers}/>
-      )
-    } else if (view === 'newdm') {
-
-    }
-  }
-
-  /**
-   * addMessage:
-   *
-   * @param {String} message - View to render ('signin', 'chat', 'newdm')
-   */
-  addMessage(message) {
-    let newMessages = this.state.messages;
-    newMessages.push(message);
-    this.setState({
-      messages: newMessages
-    });
-    console.log('mss', this.state.messages)
   }
 
   /**
@@ -155,38 +109,13 @@ class App extends Component {
         myRooms: result.data.myRooms,
         currentRoom: 'Lobby',
         roomMsgs: result.data.roomMsgs,
-        usersInRoom: result.data.usersInRoom
+        usersInRoom: usersInRoom
       }, () => {
-        //this.changeView('chat');
+        this.changeView('chat');
       });
 
     });
   }
-
-  /**
-   * getRoomData:
-   * Function sends the roomname it wants data for to the Server.
-   * The Server will return all the data necessary
-   * to render the room's Chat view.
-   *
-   * @param {String} roomname - Name of room requesting data for
-   */
-  getRoomData(roomname) {
-
-    this.ajaxRequest('get', '/getroomdata', {roomname: roomname})
-    .then(result => {
-
-      this.setState({
-        currentRoom: roomname,
-        roomMsgs: result.data.roomMsgs,
-        usersInRoom: result.data.usersInRoom
-      }, () => {
-        //this.changeView('chat');
-      });
-
-    });
-  }
-
 
   /**
    * ajaxRequest:
@@ -206,6 +135,41 @@ class App extends Component {
       return axios.post(route, data)
     } else if (reqType === 'get') {
       return axios.get(route)
+    }
+  }
+
+  /**
+   * changeView:
+   * Updates the State property 'view' to
+   * a new passed in view.
+   *
+   * @param {String} view - View to update State with ('signin', 'chat', 'newdm')
+   */
+  changeView(view) {
+    this.setState({
+      view: view
+    });
+  }
+
+  /**
+   * renderView:
+   * Called by the React Component's render() to conditionally
+   * render a view based on the view value passed in.
+   *
+   * @param {String} view - View to render ('signin', 'chat', 'newDirectMessage')
+   */
+  renderView(view) {
+    if (view === 'signin') {
+      return (
+        <SignIn sendUserNameToServer={this.sendUserNameToServer.bind(this)}/>
+      )
+
+    } else if (view === 'chat') {
+      return (
+        <Chat messages={this.state.messages} addMessage={this.addMessage.bind(this)} currentUsers={this.state.currentUsers}/>
+      )
+    } else if (view === 'newDirectMessage') {
+
     }
   }
 
