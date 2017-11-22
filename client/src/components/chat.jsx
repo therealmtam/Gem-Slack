@@ -12,7 +12,7 @@ class Chat extends React.Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-3">
-            <DirectMessageList data={this.props.data} changeCurrentRoom={this.props.changeCurrentRoom}/>
+            <DirectMessageList data={this.props.data} changeCurrentRoom={this.props.changeCurrentRoom} changeView={this.props.changeView}/>
           </div>
           <div className="col-sm-9">
             <MessageList data={this.props.data}/>

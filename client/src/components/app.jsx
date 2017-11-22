@@ -113,6 +113,7 @@ class App extends Component {
     this.setState({
       currentRoom: selectedRoom
     })
+
   }
 
   /**
@@ -247,7 +248,7 @@ class App extends Component {
 
     } else if (view === 'chat') {
       return (
-        <Chat data={this.state} sendMessage={this.sendMessage.bind(this)} changeCurrentRoom={this.changeCurrentRoom.bind(this)}/>
+        <Chat data={this.state} sendMessage={this.sendMessage.bind(this)} changeCurrentRoom={this.changeCurrentRoom.bind(this)} changeView={this.changeView.bind(this)}/>
       )
     } else if (view === 'newDirectMessage') {
 
