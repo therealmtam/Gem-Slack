@@ -5,8 +5,6 @@ const socketIO = require('socket.io');
 const Files = require('../database/Models/Files.js');
 const Messages = require('../database/Models/Messages.js');
 const Rooms = require('../database/Models/Rooms.js');
-const User = require('../database/Models/User');
-
 const passport = require('passport');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20');
@@ -27,16 +25,27 @@ app.use(express.static(path.join(__dirname, '../client/dist/')));
 const io = socketIO(server);
 
 io.on('connection', (socket) => {
-  console.log('made a socket connection', socket.id);
+  console.log('im the socketid', socket.id);
+  Messages.getMessages()
+    .then((data) => {
+      socket.emit('old messages', data);
+    });
 
   // User Connects
   socket.on('user login', (data) => {
+    console.log('im getting into userlogin');
     connections.push(socket);
     console.log('Connected: %s sockets connected', connections.length);
 
     User.addUser(data);
+    //  assign userId to user
+    if (!socket.userId) {
+      socket.userId = 2;
+    }
+    socket.emit('sign in', {hello: 8});
     io.sockets.emit('userInput', data);
   });
+
 
   //  Disconnect
   socket.on('disconnect', (data) => {
@@ -44,9 +53,15 @@ io.on('connection', (socket) => {
     console.log('Disconnected: %s sockets connected', connections.length);
   });
 
-  socket.on('add message', (data) => {
-    Messages.addMessage(data);
-    io.sockets.emit('new message', data);
+  socket.on('add message', (message) => {
+    const newMessage = {
+      message,
+      userId: 1,
+      roomId: 1,
+      // createdAt: socket.handshake.time,
+    };
+    Messages.addMessage(newMessage);
+    io.sockets.emit('new message', { message });
   });
 
   socket.on('typing', (data) => {
