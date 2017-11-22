@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Sockets from './Sockets.jsx';
 
 class SignIn extends Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class SignIn extends Component {
       username: ''
     }
   }
-  
+
   recordUserName(e) {
     this.setState({
       username: e.target.value
@@ -18,6 +19,7 @@ class SignIn extends Component {
   submit(e) {
     if (e.charCode === 13 || e.charCode === undefined) {
       console.log('enter was pressed or onClick was pressed');
+      Sockets.signInUser(this.state.username);
       this.props.sendUserNameToServer(this.state.username);
       this.setState({
         username: ''
@@ -26,15 +28,15 @@ class SignIn extends Component {
     }
   }
 
-  
+
 
   render() {
     return (
       <div>
-        <input 
-          type='text' 
+        <input
+          type='text'
           onChange={this.recordUserName.bind(this)}
-          placeholder="Username" 
+          placeholder="Username"
           onKeyPress={this.submit.bind(this)}/>
         <button type="submit" onClick={this.submit.bind(this)}>Submit</button>
       </div>

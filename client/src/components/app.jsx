@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import SignIn from './Signin.jsx';
 import Chat from './Chat.jsx';
 import axios from 'axios';
+import openSocket from 'socket.io-client';
+
+import Sockets from './Sockets.jsx';
+
+const socket = openSocket('http://localhost:4000');
 
 /**
  * Description:
@@ -67,7 +72,65 @@ class App extends Component {
     //       RoomMsgs: this.state.RoomMsgs.push(SocketReturnedData[msg])
     //     })
     //   }
+    // socket.on('new message', (message) => {
+    //   this.setState({ messages: this.state.messages.concat([message]) });
+    // });
+
+    // socket.on('old messages', (message) => {
+    //   this.setState({ messages: message });
+    // });
+
+    socket.on('sign in', (data) => {
+      // this.setState({
+      //   username: result.data.username,
+      //   userImgUrl: result.data.userImgUrl,
+      //   myRooms: result.data.myRooms,
+      //   currentRoom: 'Lobby',
+      //   roomMsgs: result.data.roomMsgs,
+      //   usersInRoom: result.data.usersInRoom
+      // }, () => {
+      //   this.changeView('chat');
+      // });
+      console.log('im in the sign in data', data);
+    });
   }
+
+  /**
+   * changeView:
+   * Updates the State property 'view' to
+   * a new passed in view.
+   *
+   * @param {String} view - View to update State with ('signin', 'chat', 'newdm')
+   */
+
+  changeView(view) {
+    this.setState({
+      view: view
+    });
+  }
+
+  /**
+   * renderView:
+   * Called by the React Component's render() to conditionally
+   * render a view based on the view value passed in.
+   *
+   * @param {String} view - View to render ('signin', 'chat', 'newdm')
+   */
+  renderView(view) {
+    if (view === 'signin') {
+      return (
+        <SignIn sendUserNameToServer={this.sendUserNameToServer.bind(this)}/>
+      )
+
+    } else if (view === 'chat') {
+      return (
+        <Chat messages={this.state.messages} addMessage={this.addMessage.bind(this)} currentUsers={this.state.currentUsers}/>
+      )
+    } else if (view === 'newdm') {
+
+    }
+  }
+
 
   /**
    * sendMessage:
@@ -99,9 +162,15 @@ class App extends Component {
    * @param {String} username - Username typed in by the user
    */
   sendUserNameToServer(username) {
+    // this.setState({
+    //   name: username
+    //   //messages: array of message objects from socket
+    //   //currentUsers: array of all connected users from socket
+    // })
+    // this.changeView('chat');
 
-    this.ajaxRequest('post', '/sendUserNameToServer', {username: username})
-    .then(result => {
+    // this.ajaxRequest('post', '/sendUserNameToServer', {username: username})
+    // .then(result => {
 
       this.setState({
         username: result.data.username,
@@ -113,29 +182,6 @@ class App extends Component {
       }, () => {
         this.changeView('chat');
       });
-
-    });
-  }
-
-  /**
-   * ajaxRequest:
-   * Function is a helper function that sends a GET or POST
-   * request to a specified server route along with specified data
-   * if applicable. It returns a Promise with the response
-   * from the server route.
-   *
-   * @param {String} reqType - Request type ('post', 'get')
-   * @param {String} route - endpoing to send the request to (ex. '/test')
-   * @param {Object} data - Data to send to the server specified as object ex. {name: max}
-   * @returns {Promise} Using the .then((results) => {}) method, the results from
-   * the Request can be retrieved by any function utilizing this helper function.
-   */
-  ajaxRequest(reqType, route, data) {
-    if (reqType === 'post') {
-      return axios.post(route, data)
-    } else if (reqType === 'get') {
-      return axios.get(route)
-    }
   }
 
   /**

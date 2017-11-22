@@ -8,7 +8,7 @@ class Message extends React.Component {
   render() {
     return (
       <li> {
-        this.props.message
+        this.props.message.message
         }
       </li>
     )
