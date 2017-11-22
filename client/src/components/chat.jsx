@@ -8,6 +8,7 @@ class Chat extends React.Component {
         super(props);
     }
     render() {
+        console.log('im in the chat', this.props.messages);
         return (
             <div className="container-fluid">
                 <div className="row">
