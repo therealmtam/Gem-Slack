@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const DB = require('../config.js');
+// const DB = require('../config.js');
 
 //  Parameters are database name, username ,password
 // const sequelize = new Sequelize(`${DB.DATABASE}`, `${DB.USERNAME}`, `${DB.PASSWORD}`, {
