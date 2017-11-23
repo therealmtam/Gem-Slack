@@ -1,18 +1,23 @@
 import React from 'react';
+import DirectMessage from './DirectMessage.jsx';
 
 class DirectMessageList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      currentUsers: this.props.currentUsers
-    }
   }
 
   render() {
     return (
-        <div>
-            <div>Direct Messages</div>
-        </div>
+      <div>
+       <div onClick={() => this.props.changeView('newDirectMessage')}>Direct Messages</div>
+       <ul>
+         {
+           this.props.data.myRooms.map(room => {
+             return <DirectMessage room={room} changeCurrentRoom={this.props.changeCurrentRoom}/>
+           })
+         }
+       </ul>
+      </div>
     )
   }
 }
