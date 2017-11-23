@@ -40,7 +40,7 @@ class App extends Component {
       username: this.props.sampleData.username,
       userImgUrl: this.props.sampleData.userImgUrl,
       myRooms: this.props.sampleData.myRooms,
-      roomMsgs: this.props.sampleData.oomMsgs,
+      roomMsgs: this.props.sampleData.roomMsgs,
       currentRoom: 'Lobby',
       usersInRoom: this.props.sampleData.usersInRoom
     }, () => {console.log(this.state);});

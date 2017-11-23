@@ -14,6 +14,7 @@ const sendMessage = (message) => {
   socket.emit('add message', message);
 };
 
+
 module.exports = {
   signInUser: signInUser,
   sendMessage: sendMessage,
