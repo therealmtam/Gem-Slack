@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../index');
 
-const Room = db.define('Message', {
+const Room = db.define('Room', {
   roomname: {
     type: Sequelize.STRING,
   },
@@ -24,5 +24,11 @@ const addRoom = (newRoom) => {
  */
 const getRooms = () => Room.findAll();
 
+const getRoomById = (id) => {
+  console.log('im being used');
+  return Room.findOne({ where: { id: id } });
+};
+
 module.exports.getRooms = getRooms;
 module.exports.addRoom = addRoom;
+module.exports.getRoomById = getRoomById;

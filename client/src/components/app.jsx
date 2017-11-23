@@ -5,7 +5,7 @@ import Chat from './Chat.jsx';
 import axios from 'axios';
 import openSocket from 'socket.io-client';
 
-import Sockets from './Sockets.jsx';
+// import Sockets from './Sockets.jsx';
 
 const socket = openSocket('http://localhost:4000');
 
@@ -32,9 +32,9 @@ class App extends Component {
     }
   }
 
-  componentDidMount(){
+  componentWillMount() {
 
-    //Sets state with SAMPLE DATA
+    //  Sets state with SAMPLE DATA
     this.setState({
       view: 'signin',
       username: this.props.sampleData.username,
@@ -43,42 +43,15 @@ class App extends Component {
       roomMsgs: this.props.sampleData.roomMsgs,
       currentRoom: 'Lobby',
       usersInRoom: this.props.sampleData.usersInRoom
-    }, () => {console.log(this.state);});
+    }, () => { console.log(this.state); });
 
-    //PSEUDO CODE:
-    //------------------
-    // socket listens to messages from server and push and set state to RoomMsgs
-    // Socket returns ==>
-    //   {
-    //     peopleInRoom: ['therealmtam', 'theericlau', 'theJohn', 'theJeff'],
-    //     typing: ['therealmtam', 'theericlau'],
-    //     msg: {
-    //       username: 'therealmtam',
-    //       msg: 'hello world',
-    //       roomname: 'therealmtam, theJeff, therriclau, theJohn',
-    //       createdAt: "2017-11-21T19:39:48.279Z"
-    //     }
-    //     userImgUrl: {
-    //       'therealmtam': 'http://localhost:4000/img1',
-    //       'theericLau': 'http://localhost:4000/img2',
-    //       'theJohn': 'http://localhost:4000/img3',
-    //       'theJeff': 'http://localhost:4000/img1'
-    //     }
-    //   }
-    //   Callback from Socket(){
-    //     this.setState({
-    //       peopleInRoom: SocketReturnedData[peopleInRoom],
-    //       typing: SocketReturnedData[typing],
-    //       RoomMsgs: this.state.RoomMsgs.push(SocketReturnedData[msg])
-    //     })
-    //   }
-    // socket.on('new message', (message) => {
-    //   this.setState({ messages: this.state.messages.concat([message]) });
-    // });
+    socket.on('new message', (message) => {
+      this.setState({ messages: this.state.messages.concat([message]) });
+    });
 
-    // socket.on('old messages', (message) => {
-    //   this.setState({ messages: message });
-    // });
+    socket.on('old messages', (message) => {
+      this.setState({ messages: message });
+    });
 
     socket.on('sign in', (data) => {
       // this.setState({
@@ -95,49 +68,25 @@ class App extends Component {
     });
   }
 
-  /**
-   * changeView:
-   * Updates the State property 'view' to
-   * a new passed in view.
-   *
-   * @param {String} view - View to update State with ('signin', 'chat', 'newdm')
-   */
-
-  changeView(view) {
-    this.setState({
-      view: view
+  // Sockets Helper Functions
+  signInUser(user) {
+    socket.emit('user login', {
+      username: user,
+      avatar: 'hello',
+      rooms: [1],
     });
   }
 
+  sendMessage(message) {
+    socket.emit('add message', message);
+  }
+
+  // Front End Helper Functions
   changeCurrentRoom(selectedRoom) {
     this.setState({
-      currentRoom: selectedRoom
-    })
-
+      currentRoom: selectedRoom,
+    });
   }
-
-  /**
-   * renderView:
-   * Called by the React Component's render() to conditionally
-   * render a view based on the view value passed in.
-   *
-   * @param {String} view - View to render ('signin', 'chat', 'newdm')
-   */
-  renderView(view) {
-    if (view === 'signin') {
-      return (
-        <SignIn sendUserNameToServer={this.sendUserNameToServer.bind(this)}/>
-      )
-
-    } else if (view === 'chat') {
-      return (
-        <Chat messages={this.state.messages} addMessage={this.addMessage.bind(this)} currentUsers={this.state.currentUsers}/>
-      )
-    } else if (view === 'newdm') {
-
-    }
-  }
-
 
   /**
    * sendMessage:
@@ -147,18 +96,20 @@ class App extends Component {
    * @param {String} message - User entered message
    */
   sendMessage(message) {
-    let newMsg = {
+    const newMsg = {
       username: this.state.username,
       message: message,
       createdAt: new Date(),
-      roomname: this.state.currentRoom
+      roomname: this.state.currentRoom,
     }
-    //temporarily add to state until socket is working
-    let currentRoomMsgs = this.state.roomMsgs;
+    socket.emit('add message', newMsg);
+    //  temporarily add to state until socket is working
+    const currentRoomMsgs = this.state.roomMsgs;
     currentRoomMsgs[this.state.currentRoom].push(newMsg);
     this.setState({
-      roomMsgs: currentRoomMsgs
+      roomMsgs: currentRoomMsgs,
     })
+
     /**
      * PLACEHOLDER FOR SOCKET FUNCTION
      */
@@ -174,29 +125,8 @@ class App extends Component {
    * @param {String} username - Username typed in by the user
    */
   sendUserNameToServer(username) {
-    // this.setState({
-    //   name: username
-    //   //messages: array of message objects from socket
-    //   //currentUsers: array of all connected users from socket
-    // })
-    // this.changeView('chat');
-
-    // this.ajaxRequest('post', '/sendUserNameToServer', {username: username})
-    // .then(result => {
-
-    //   this.setState({
-    //     username: result.data.username,
-    //     userImgUrl: result.data.userImgUrl,
-    //     myRooms: result.data.myRooms,
-    //     currentRoom: 'Lobby',
-    //     roomMsgs: result.data.roomMsgs,
-    //     usersInRoom: usersInRoom
-    //   }, () => {
-    //     this.changeView('chat');
-    //   });
-
-    // });
-    this.changeView('chat')
+    this.signInUser(username);
+    this.changeView('chat');
   }
 
   /**

@@ -5,8 +5,8 @@ const Message = db.define('Message', {
   message: {
     type: Sequelize.STRING,
   },
-  userId: {
-    type: Sequelize.INTEGER,
+  username: {
+    type: Sequelize.STRING,
   },
   roomId: {
     type: Sequelize.INTEGER,
@@ -36,9 +36,10 @@ const addMessage = (newMessage) => {
  */
 const getMessages = () => Message.findAll({
   attributes: ['message'],
+  order: [['createdAt', 'DESC']],
 });
 
-const getRoomMessages = room => Message.findAll({ roomId: room }).sort({ createdAt: -1 });
+const getRoomMessages = room => Message.findAll({ roomId: room });
 
 
 module.exports.getMessages = getMessages;

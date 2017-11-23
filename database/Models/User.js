@@ -8,6 +8,9 @@ const User = db.define('user', {
   avatar: {
     type: Sequelize.STRING,
   },
+  rooms: {
+    type: Sequelize.ARRAY(Sequelize.INTEGER),
+  },
 });
 
 /**
@@ -18,6 +21,7 @@ const addUser = (newUser) => {
   const formatted = {
     username: newUser.username,
     avatar: newUser.avatar,
+    rooms: newUser.rooms,
   };
   User.sync({ force: false }).then(() => User.create(formatted));
 };
@@ -34,8 +38,7 @@ const getUsers = () => User.findAll();
  * @returns A userId
  */
 const getUserById = (name) => {
-  User.findOne({ where: { username: name } })
-    .then(result => result.id);
+  return User.findOne({ where: { username: name } })
 };
 
 module.exports.getUsers = getUsers;

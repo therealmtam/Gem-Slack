@@ -4,7 +4,7 @@ const path = require('path');
 const socketIO = require('socket.io');
 const Files = require('../database/Models/Files.js');
 const Messages = require('../database/Models/Messages.js');
-const Rooms = require('../database/Models/Rooms.js');
+const Room = require('../database/Models/Rooms.js');
 const passport = require('passport');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20');
@@ -30,18 +30,32 @@ io.on('connection', (socket) => {
   //   .then((data) => {
   //     socket.emit('old messages', data);
   //   });
+  // Room.getRoomById(1).then(data=> {
+  //   console.log('im the roomby id data', data);
+  // })
+  //Uncomment to start the Room Table
+  // Room.addRoom({roomname: 'lobby'});
 
   // User Connects
   socket.on('user login', (data) => {
-    console.log('im getting into userlogin');
+
+    //  Add each connection to the server
     connections.push(socket);
     console.log('Connected: %s sockets connected', connections.length);
+    // Search if User already exists in server
+    //Uncomment to start the User Table
+    // User.addUser(data);
 
-    User.addUser(data);
+    User.getUserById(data.username).then((result) => {
+      if (!result) {
+        User.addUser(data);
+      }
+    });
+
     //  assign userId to user
-    if (!socket.userId) {
-      socket.userId = 2;
-    }
+    // if (!socket.userId) {
+    //   socket.userId = 2;
+    // }
 
     socket.emit('sign in', {hello: 8});
     io.sockets.emit('userInput', data);
@@ -55,13 +69,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('add message', (message) => {
-    const newMessage = {
-      message,
-      userId: 1,
-      roomId: 1,
-      // createdAt: socket.handshake.time,
-    };
-    Messages.addMessage(newMessage);
+    console.log('im the message', message);
+    // Messages.addMessage(newMessage);
     io.sockets.emit('new message', { message });
   });
 
