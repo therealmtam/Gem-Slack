@@ -1,7 +1,10 @@
+/*eslint-disable */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SignIn from './Signin.jsx';
 import Chat from './Chat.jsx';
+import NewDirectMsg from './NewDirectMsg.jsx';
 import axios from 'axios';
 import openSocket from 'socket.io-client';
 
@@ -36,7 +39,7 @@ class App extends Component {
 
     //Sets state with SAMPLE DATA
     this.setState({
-      view: 'signin',
+      view: 'newDirectMessage',
       username: this.props.sampleData.username,
       userImgUrl: this.props.sampleData.userImgUrl,
       myRooms: this.props.sampleData.myRooms,
@@ -181,6 +184,9 @@ class App extends Component {
     // })
     // this.changeView('chat');
 
+    console.log(username);
+    //this.changeView('chat');
+
     // this.ajaxRequest('post', '/sendUserNameToServer', {username: username})
     // .then(result => {
 
@@ -196,7 +202,6 @@ class App extends Component {
     //   });
 
     // });
-    this.changeView('chat')
   }
 
   /**
@@ -218,6 +223,33 @@ class App extends Component {
     } else if (reqType === 'get') {
       return axios.get(route)
     }
+  }
+
+  /**
+   * createNewRoom:
+   * Function adds information to the State for the creation of a new room.
+   * Function also changes the 'view' State to 'chat'.
+   * Function is used by the NewDirectMsg component.
+   *
+   * @param {Object} newRoomData - Data used to create a new room view under the chat view
+   */
+  createNewRoom(newRoomData) {
+
+    let myRooms = this.state.myRooms;
+    myRooms.push(newRoomData.roomname);
+
+    let roomMsgs = this.state.roomMsgs;
+    roomMsgs[newRoomData.roomname] = [];
+
+    let usersInRoom = this.state.usersInRoom;
+    usersInRoom[newRoomData.roomname] = newRoomData.usersInRoom;
+
+    this.setState({
+      // view: 'chat',
+      myRooms: myRooms,
+      roomMsgs: roomMsgs,
+      usersInRoom: usersInRoom
+    });
   }
 
   /**
@@ -251,7 +283,12 @@ class App extends Component {
         <Chat data={this.state} sendMessage={this.sendMessage.bind(this)} changeCurrentRoom={this.changeCurrentRoom.bind(this)} changeView={this.changeView.bind(this)}/>
       )
     } else if (view === 'newDirectMessage') {
-
+      return (
+        <NewDirectMsg
+          createNewRoom={this.createNewRoom.bind(this)}
+          allSelectableUsers={this.state.usersInRoom.Lobby}
+        />
+      )
     }
   }
 

@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Sockets from './Sockets.jsx';
 
+/**
+ * Description:
+ * SignIn component renders all components of the
+ * SignIn view which is shown when the User goes to
+ * our URL. It sends the User input username back to
+ * the App component.
+ *
+ * @param {Function} sendUserNameToServer - Function passed in by App component.
+ */
 class SignIn extends Component {
   constructor(props) {
     super(props);
@@ -10,25 +19,29 @@ class SignIn extends Component {
     }
   }
 
-  recordUserName(e) {
+  /**
+   * recordUserName:
+   * Function stores the User entered username into State.
+   * @param {Object} event - Event object
+   */
+  recordUserName(event) {
     this.setState({
-      username: e.target.value
+      username: event.target.value
     });
   }
 
-  submit(e) {
-    if (e.charCode === 13 || e.charCode === undefined) {
-      console.log('enter was pressed or onClick was pressed');
-      Sockets.signInUser(this.state.username);
+  /**
+   * submitUserName:
+   * Function calls the App component's passed in function
+   * that sends the username to the server, only if the
+   * User pressed enter while in the input field or clicked the Submit button.
+   * @param {Object} event - Event object
+   */
+  submitUserName(event) {
+    if (event.charCode === 13 || event.charCode === undefined) {
       this.props.sendUserNameToServer(this.state.username);
-      this.setState({
-        username: ''
-      })
-      //Send the char code back up to the App component so it can do an Ajax call to the server and send over the username.
     }
   }
-
-
 
   render() {
     return (
@@ -37,8 +50,9 @@ class SignIn extends Component {
           type='text'
           onChange={this.recordUserName.bind(this)}
           placeholder="Username"
-          onKeyPress={this.submit.bind(this)}/>
-        <button type="submit" onClick={this.submit.bind(this)}>Submit</button>
+          onKeyPress={this.submitUserName.bind(this)}
+        />
+        <button type="submit" onClick={this.submitUserName.bind(this)}>Submit</button>
       </div>
     );
   }
