@@ -1,7 +1,10 @@
+/*eslint-disable */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SignIn from './Signin.jsx';
 import Chat from './Chat.jsx';
+import NewDirectMsg from './NewDirectMsg.jsx';
 import axios from 'axios';
 import openSocket from 'socket.io-client';
 
@@ -45,41 +48,6 @@ class App extends Component {
       usersInRoom: this.props.sampleData.usersInRoom
     }, () => {console.log(this.state);});
 
-    //PSEUDO CODE:
-    //------------------
-    // socket listens to messages from server and push and set state to RoomMsgs
-    // Socket returns ==>
-    //   {
-    //     peopleInRoom: ['therealmtam', 'theericlau', 'theJohn', 'theJeff'],
-    //     typing: ['therealmtam', 'theericlau'],
-    //     msg: {
-    //       username: 'therealmtam',
-    //       msg: 'hello world',
-    //       roomname: 'therealmtam, theJeff, therriclau, theJohn',
-    //       createdAt: "2017-11-21T19:39:48.279Z"
-    //     }
-    //     userImgUrl: {
-    //       'therealmtam': 'http://localhost:4000/img1',
-    //       'theericLau': 'http://localhost:4000/img2',
-    //       'theJohn': 'http://localhost:4000/img3',
-    //       'theJeff': 'http://localhost:4000/img1'
-    //     }
-    //   }
-    //   Callback from Socket(){
-    //     this.setState({
-    //       peopleInRoom: SocketReturnedData[peopleInRoom],
-    //       typing: SocketReturnedData[typing],
-    //       RoomMsgs: this.state.RoomMsgs.push(SocketReturnedData[msg])
-    //     })
-    //   }
-    // socket.on('new message', (message) => {
-    //   this.setState({ messages: this.state.messages.concat([message]) });
-    // });
-
-    // socket.on('old messages', (message) => {
-    //   this.setState({ messages: message });
-    // });
-
     socket.on('sign in', (data) => {
       // this.setState({
       //   username: result.data.username,
@@ -95,49 +63,12 @@ class App extends Component {
     });
   }
 
-  /**
-   * changeView:
-   * Updates the State property 'view' to
-   * a new passed in view.
-   *
-   * @param {String} view - View to update State with ('signin', 'chat', 'newdm')
-   */
-
-  changeView(view) {
-    this.setState({
-      view: view
-    });
-  }
-
   changeCurrentRoom(selectedRoom) {
     this.setState({
       currentRoom: selectedRoom
     })
 
   }
-
-  /**
-   * renderView:
-   * Called by the React Component's render() to conditionally
-   * render a view based on the view value passed in.
-   *
-   * @param {String} view - View to render ('signin', 'chat', 'newdm')
-   */
-  renderView(view) {
-    if (view === 'signin') {
-      return (
-        <SignIn sendUserNameToServer={this.sendUserNameToServer.bind(this)}/>
-      )
-
-    } else if (view === 'chat') {
-      return (
-        <Chat messages={this.state.messages} addMessage={this.addMessage.bind(this)} currentUsers={this.state.currentUsers}/>
-      )
-    } else if (view === 'newdm') {
-
-    }
-  }
-
 
   /**
    * sendMessage:
@@ -181,6 +112,9 @@ class App extends Component {
     // })
     // this.changeView('chat');
 
+    console.log(username);
+    //this.changeView('chat');
+
     // this.ajaxRequest('post', '/sendUserNameToServer', {username: username})
     // .then(result => {
 
@@ -196,7 +130,6 @@ class App extends Component {
     //   });
 
     // });
-    this.changeView('chat')
   }
 
   /**
@@ -218,6 +151,33 @@ class App extends Component {
     } else if (reqType === 'get') {
       return axios.get(route)
     }
+  }
+
+  /**
+   * createNewRoom:
+   * Function adds information to the State for the creation of a new room.
+   * Function also changes the 'view' State to 'chat'.
+   * Function is used by the NewDirectMsg component.
+   *
+   * @param {Object} newRoomData - Data used to create a new room view under the chat view
+   */
+  createNewRoom(newRoomData) {
+
+    let myRooms = this.state.myRooms;
+    myRooms.push(newRoomData.roomname);
+
+    let roomMsgs = this.state.roomMsgs;
+    roomMsgs[newRoomData.roomname] = [];
+
+    let usersInRoom = this.state.usersInRoom;
+    usersInRoom[newRoomData.roomname] = newRoomData.usersInRoom;
+
+    this.setState({
+      // view: 'chat',
+      myRooms: myRooms,
+      roomMsgs: roomMsgs,
+      usersInRoom: usersInRoom
+    });
   }
 
   /**
@@ -251,7 +211,12 @@ class App extends Component {
         <Chat data={this.state} sendMessage={this.sendMessage.bind(this)} changeCurrentRoom={this.changeCurrentRoom.bind(this)} changeView={this.changeView.bind(this)}/>
       )
     } else if (view === 'newDirectMessage') {
-
+      return (
+        <NewDirectMsg
+          createNewRoom={this.createNewRoom.bind(this)}
+          allSelectableUsers={this.state.usersInRoom.Lobby}
+        />
+      )
     }
   }
 
