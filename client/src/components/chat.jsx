@@ -3,13 +3,18 @@ import MessageList from './MessageList.jsx';
 import DirectMessageList from './DirectMessageList.jsx';
 import Input from './Input.jsx';
 
+
+
+
+
 class Chat extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
     return (
-      <div className="container-fluid">
+      <div>
+       <buttonsInstance/>
         <div className="row">
           <div className="col-sm-3">
             <DirectMessageList data={this.props.data} changeCurrentRoom={this.props.changeCurrentRoom} changeView={this.props.changeView}/>
