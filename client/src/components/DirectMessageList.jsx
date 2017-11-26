@@ -5,12 +5,13 @@ class DirectMessageList extends React.Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     return (
-      <div>
-       <div onClick={() => this.props.changeView('newDirectMessage')}>Direct Messages</div>
-       <ul>
+      <div  className="dm-div">
+        <div className="gem-slack">GEM SLACK</div>
+        <div>{this.props.data.username}</div>
+       <div onClick={() => this.props.changeView('newDirectMessage')} className="direct-message-title">Direct Messages</div>
+       <ul className="list-unstyled">
          {
            this.props.data.myRooms.map((room, index) => {
              return <DirectMessage room={room} key={index} changeCurrentRoom={this.props.changeCurrentRoom}/>

@@ -15,9 +15,16 @@ class DirectMessage extends React.Component {
   changeRoom() {
     this.props.changeCurrentRoom(this.state.roomName)
   }
+  formatRoomName() {
+    let roomName = this.props.room;
+    if (roomName.length > 21) {
+      roomName = roomName.slice(0, 22) + '...';
+    }
+    return roomName;
+  }
   render() {
     return (
-      <li onClick={this.changeRoom.bind(this)}>{this.props.room}</li>
+      <li className="direct-message" onClick={this.changeRoom.bind(this)}>{this.formatRoomName()}</li>
     )
   }
 }

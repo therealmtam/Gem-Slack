@@ -7,7 +7,7 @@ class MessageList extends React.Component {
     }
     render() {
       return (
-        <ul> 
+        <ul className="message-list"> 
           { 
             this.props.data.roomMsgs[this.props.data.currentRoom].map((msg, index) => {
               return <Message msg={msg} key={index}/>
