@@ -120,7 +120,6 @@ class App extends Component {
       userImgUrl: image,
       rooms: ['Lobby'],
     });
-
     //WE WANT TO BE ABLE TO RENDER CHAT VIEW WITHOUT BREAKING IF THE SERVER DOES NOT RESPOND WITH DATA
     //TO SET STATE TO DEFAULT VALUES. RIGHT NOW CHAT VIEW REQUIRES THERE TO BE DATA OR ELSE IT BREAKS.
     this.changeView('chat');
