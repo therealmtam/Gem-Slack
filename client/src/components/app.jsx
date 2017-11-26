@@ -26,7 +26,7 @@ class App extends Component {
       username: '',
       userImgUrl: '',
       myRooms: [],
-      roomMsgs: this.props.sampleData.roomMsgs,
+      roomMsgs: {},
       currentRoom: 'Lobby',
       onlineUsers: {},
       allUsersInLobby: {}
