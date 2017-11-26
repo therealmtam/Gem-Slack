@@ -84,6 +84,7 @@ io.on('connection', (socket) => {
             socket.emit('sign in', bigObj);
           });
       });
+
     });
   });
 
@@ -98,6 +99,9 @@ io.on('connection', (socket) => {
     io.sockets.emit('disconnects', onlineUsers);
   });
 
+  /**
+   * NEED TO CREATE NEW ROOM IF INCOMING MESSAGE IS FROM ROOM THAT DOESN'T EXIST:
+   */
   socket.on('add message', (message) => {
     console.log('im the message', message);
     let room = message.roomname;
