@@ -117,7 +117,6 @@ class NewDirectMsg extends Component {
     let remainingSelectableUsers = this.state.remainingSelectableUsers.filter((user) => {
       return (user !== selectedUser);
     });
-<<<<<<< HEAD
 
     this.setState({
       selectedUsers: selectedUsers,
@@ -202,8 +201,6 @@ class NewDirectMsg extends Component {
     }, () => {
       this.narrowSearchList(this.state.userInput);
     });
-=======
->>>>>>> Added allUsersInLobby dataset, Updated dbtables to not crash if not exist,handled userImgUrls on newDMview
 
     this.setState({
       selectedUsers: selectedUsers,
