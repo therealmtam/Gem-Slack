@@ -209,6 +209,12 @@ class NewDirectMsg extends Component {
       this.narrowSearchList(this.state.userInput);
     });
 
+    this.setState({
+      selectedUsers: selectedUsers,
+      remainingSelectableUsers: remainingSelectableUsers,
+    }, () => {
+      this.narrowSearchList(this.state.userInput);
+    });
   }
 
   /**
@@ -219,9 +225,7 @@ class NewDirectMsg extends Component {
    * @param {Object} event - Event object
    */
   removeUser(event) {
-
     let removedUser = event.target.getAttribute('value');
-
     let selectedUsers = this.state.selectedUsers.filter((user) => {
       return (user !== removedUser)
     });
@@ -235,7 +239,6 @@ class NewDirectMsg extends Component {
     }, () => {
       this.narrowSearchList(this.state.userInput);
     });
-
   }
 
   /**
@@ -305,6 +308,7 @@ class NewDirectMsg extends Component {
               <div className="col"></div>
           </div>
         </div>
+
         <div style={{"height":"20px"}}></div>
 
         <div className="container" >
