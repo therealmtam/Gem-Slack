@@ -39,7 +39,7 @@ class App extends Component {
 
     //Sets state with SAMPLE DATA
     this.setState({
-      view: 'signin',
+      view: 'chat',
       username: this.props.sampleData.username,
       userImgUrl: this.props.sampleData.userImgUrl,
       myRooms: this.props.sampleData.myRooms,
@@ -84,6 +84,7 @@ class App extends Component {
       createdAt: new Date(),
       roomname: this.state.currentRoom
     }
+    newMsg.createdAt = newMsg.createdAt.toString();
     //temporarily add to state until socket is working
     let currentRoomMsgs = this.state.roomMsgs;
     currentRoomMsgs[this.state.currentRoom].push(newMsg);

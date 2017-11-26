@@ -7,11 +7,11 @@ class MessageList extends React.Component {
     }
     render() {
       return (
-        <ul> 
+        <ul className="message-list"> 
           { 
-            this.props.data.roomMsgs[this.props.data.currentRoom].map(msg => {
-              return <Message msg={msg} />
-            })
+              this.props.data.roomMsgs[this.props.data.currentRoom].map(msg => {
+                return <Message msg={msg} />
+              })
           }
         </ul>
       )

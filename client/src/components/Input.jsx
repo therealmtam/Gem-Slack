@@ -23,9 +23,8 @@ class Input extends React.Component {
     }
     render() {
       return(
-        <div>
-          <input placeholder='add message' value={this.state.message} onChange={this.handleChange.bind(this)} onKeyPress={this.submitMessage.bind(this)}/>
-          <button onClick={this.submitMessage.bind(this)}>Add</button> 
+        <div className="input-bar">
+          <input className="input-message container-fluid"  placeholder="Message" value={this.state.message} onChange={this.handleChange.bind(this)} onKeyPress={this.submitMessage.bind(this)}/>
         </div>  
         ) 
 
