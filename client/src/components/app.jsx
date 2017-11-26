@@ -1,5 +1,4 @@
 /*eslint-disable */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SignIn from './Signin.jsx';
@@ -27,7 +26,7 @@ class App extends Component {
       username: '',
       userImgUrl: '',
       myRooms: [],
-      roomMsgs: this.props.sampleData.roomMsgs,
+      roomMsgs: {},
       currentRoom: 'Lobby',
       onlineUsers: {},
       allUsersInLobby: {}
@@ -101,6 +100,7 @@ class App extends Component {
       message: message,
       createdAt: new Date(),
       roomname: this.state.currentRoom,
+      userImgUrl: this.state.userImgUrl
     };
     newMsg.createdAt = newMsg.createdAt.toString();
     socket.emit('add message', newMsg);
@@ -112,10 +112,12 @@ class App extends Component {
    *
    * @param {String} username - Username typed in by the user
    */
-  sendUserNameToServer(username) {
+  sendUserNameToServer(username, imageUrl) {
+    const image = imageUrl ? imageUrl : 
+    'https://typeset-beta.imgix.net/rehost%2F2016%2F9%2F13%2F3538f891-a083-4310-a419-84e8c709a635.jpg'
     socket.emit('user login', {
       username: username,
-      userImgUrl: 'http://www.thumbshots.com/portals/0/Images/StayLonger.png',
+      userImgUrl: image,
       rooms: ['Lobby'],
     });
 

@@ -14,6 +14,9 @@ const Message = db.define('Message', {
   createdAt: {
     type: Sequelize.DATE,
   },
+  userImgUrl: {
+    type: Sequelize.STRING,
+  },
 });
 
 const initMessage = () => { Message.sync(); };
@@ -28,6 +31,7 @@ const addMessage = (newMessage) => {
     username: newMessage.username,
     roomname: newMessage.roomname,
     createdAt: newMessage.createdAt,
+    userImgUrl: newMessage.userImgUrl,
   };
   Message.sync({ force: false }).then(() => Message.create(formatted));
 };

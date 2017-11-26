@@ -4,6 +4,10 @@
   margin-right: 15px;
   border-radius: 5px;
 }
+.signin-box {
+  width: 30%;
+  margin: 15% auto 15% auto
+}
 .chat {
   font-family: 'Lato', 'sans-serif';
   font-size: 12px
@@ -50,7 +54,10 @@
 }
 .message-list {
   overflow: scroll;
-  padding-left: 0
+  padding-left: 0;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+
 }
 .input-bar {
   position: fixed;
