@@ -14,7 +14,8 @@ const User = db.define('user', {
   },
 });
 
-// User.sync();
+const initUser = () => { User.sync(); };
+
 /**
  * Adds a user to the database
  * @param  {} newUser - User data saved to db.
@@ -26,6 +27,10 @@ const addUser = (newUser) => {
     rooms: newUser.rooms,
   };
   User.sync({ force: false }).then(() => User.create(formatted));
+};
+
+const updateUser = (room) => {
+  return User.update({ rooms: room });
 };
 
 /**
@@ -46,3 +51,5 @@ const getUserById = (name) => {
 module.exports.getUsers = getUsers;
 module.exports.addUser = addUser;
 module.exports.getUserById = getUserById;
+module.exports.updateUser = updateUser;
+module.exports.initUser = initUser;

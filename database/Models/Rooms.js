@@ -7,7 +7,7 @@ const Room = db.define('Room', {
     unique: true,
   },
 });
-// Room.sync();
+
 
 /**
  * Adds a room to the database
@@ -31,6 +31,9 @@ const getRoomById = (id) => {
   return Room.findOne({ where: { id: id } });
 };
 
+const initRoom = () => { addRoom({ roomname: 'Lobby' }); };
+
 module.exports.getRooms = getRooms;
 module.exports.addRoom = addRoom;
 module.exports.getRoomById = getRoomById;
+module.exports.initRoom = initRoom;
