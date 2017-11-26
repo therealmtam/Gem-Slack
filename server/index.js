@@ -31,11 +31,6 @@ Room.initRoom();
 Messages.initMessage();
 
 io.on('connection', (socket) => {
-  //  Uncomment to start the Room Table
-  //  Room.addRoom({roomname: 'Lobby'});
-  //  Room.addRoom({roomname: 'therealmtam, theJeff'});
-  //  Room.addRoom({roomname: 'therealmtam, theericlau, theJohn, theJeff'});
-
   // User Connects
   socket.on('user login', (data) => {
     //  Add each connection to the server
@@ -43,9 +38,6 @@ io.on('connection', (socket) => {
     console.log('Connected: %s sockets connected', connections.length);
 
     // Search if User already exists in server
-    //  Uncomment to start the User Table
-    // User.addUser(data);
-
     const bigObj = {};
     const roomMessages = [];
     const onlineUsers = connections.map((obj) => {
