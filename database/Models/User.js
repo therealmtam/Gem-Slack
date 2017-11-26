@@ -30,7 +30,6 @@ const addUser = (newUser) => {
 };
 
 const updateUser = (name, room) => {
-  console.log('im the freaking room', room);
   return User.update({ rooms: room }, { where: { username: name } });
 };
 

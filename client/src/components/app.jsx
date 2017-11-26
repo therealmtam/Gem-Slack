@@ -73,7 +73,6 @@ class App extends Component {
       } else if (!this.state.myRooms.includes(roomname) && roomname.includes(this.state.username)) {
         this.state.myRooms.push(roomname);
         this.state.roomMsgs[roomname] = [message];
-        console.log('this is the updated state or rooms now', this.state.myRooms);
         socket.emit('new room for user', {username: this.state.username, room: this.state.myRooms});
         this.setState({ myRooms: this.state.myRooms, roomMsgs: this.state.roomMsgs }, ()=>{console.log('New Message ',this.state);});
       }
