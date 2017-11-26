@@ -14,7 +14,9 @@ class Input extends React.Component {
     }
     submitMessage(e) {
       if (e.charCode === 13 || e.charCode === undefined) {
-        this.props.sendMessage(this.state.message);
+        if (this.state.message.length > 0) {
+          this.props.sendMessage(this.state.message);
+        }
         this.setState({
           message: ''
         })

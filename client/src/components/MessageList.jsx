@@ -21,7 +21,6 @@ class MessageList extends React.Component {
       this.scrollToBottom();
     }
     render() {
-      console.log(this.props.data.roomMsgs)
       if (Object.keys(this.props.data.roomMsgs).length) {
         return (
           <ul className="message-list"> 
