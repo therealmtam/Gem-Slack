@@ -5,11 +5,11 @@ const User = db.define('user', {
   username: {
     type: Sequelize.STRING,
   },
-  avatar: {
+  userImgUrl: {
     type: Sequelize.STRING,
   },
   rooms: {
-    type: Sequelize.ARRAY(Sequelize.INTEGER),
+    type: Sequelize.ARRAY(Sequelize.STRING),
   },
 });
 
@@ -20,7 +20,7 @@ const User = db.define('user', {
 const addUser = (newUser) => {
   const formatted = {
     username: newUser.username,
-    avatar: newUser.avatar,
+    userImgUrl: newUser.userImgUrl,
     rooms: newUser.rooms,
   };
   User.sync({ force: false }).then(() => User.create(formatted));

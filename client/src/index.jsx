@@ -11,14 +11,14 @@ const sampleData = {
       username: 'therealmtam',
       message: "Hello world1!",
       createdAt: "2017-11-21T19:39:48.279Z",
-      roomname: "Lobby",
+      roomname: "therealmtam, theericlau, theJohn, theJeff",
       userImgUrl: "http://localhost:3000/uploads/userimgs/img3"
     }],
     "therealmtam, theJeff": [{
       username: 'therealmtam',
       message: "Hello world2!",
       createdAt: "2017-11-21T19:39:48.279Z",
-      roomname: "Lobby",
+      roomname: "therealmtam, theJeff",
       userImgUrl: "http://localhost:3000/uploads/userimgs/img3"
     }],
     "Lobby": [{

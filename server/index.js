@@ -11,6 +11,7 @@ const GoogleStrategy = require('passport-google-oauth20');
 const FacebookStrategy = require('passport-facebook');
 const authConfig = require('../config/oauth.js');
 const User = require('../database/Models/User.js');
+const Promise = require('bluebird');
 
 const app = express();
 
@@ -23,33 +24,68 @@ const server = app.listen(process.env.PORT || 4000, () => {
 app.use(express.static(path.join(__dirname, '../client/dist/')));
 
 const io = socketIO(server);
+const currentMsgs = {};
 
 io.on('connection', (socket) => {
-  console.log('im the socketid', socket.id);
-  // Messages.getMessages()
+  //  console.log('im the socketid', socket);
+  //  Messages.getMessages()
   //   .then((data) => {
   //     socket.emit('old messages', data);
   //   });
-  // Room.getRoomById(1).then(data=> {
+  //  Room.getRoomById(1).then(data=> {
   //   console.log('im the roomby id data', data);
   // })
-  //Uncomment to start the Room Table
-  // Room.addRoom({roomname: 'lobby'});
+  //  Uncomment to start the Room Table
+  //  Room.addRoom({roomname: 'lobby'});
+  //  Room.addRoom({roomname: 'therealmtam, theJeff'});
+  //  Room.addRoom({roomname: 'therealmtam, theericlau, theJohn, theJeff'});
 
   // User Connects
   socket.on('user login', (data) => {
-
+    console.log('im the connection', socket.id);
     //  Add each connection to the server
-    connections.push(socket);
+    connections.push(socket.id);
     console.log('Connected: %s sockets connected', connections.length);
+
     // Search if User already exists in server
-    //Uncomment to start the User Table
+    //  Uncomment to start the User Table
     // User.addUser(data);
+
+    const bigObj = {};
+    const roomMessages = [];
 
     User.getUserById(data.username).then((result) => {
       if (!result) {
         User.addUser(data);
       }
+      bigObj.username = result.dataValues.username;
+      bigObj.userImgUrl = result.dataValues.userImgUrl;
+      bigObj.myRooms = result.dataValues.rooms;
+      bigObj.myRooms.forEach((room) => {
+        // console.log('im the different', room);
+        roomMessages.push(Messages.getRoomMessages(room).then((data) => {
+          // console.log('i get in here', data);
+          const currentMessage = {};
+          currentMessage[room] = data;
+          return currentMessage;
+        }));
+      });
+      Promise.all(roomMessages)
+        .then(function () {
+          // console.log('DONE', roomMessages);
+          const sentMessages = {};
+          roomMessages.map(obj => {
+            console.log('im the obj', obj._rejectionHandler0);
+            const key = Object.keys(obj._rejectionHandler0)[0];
+            sentMessages[key] = obj._rejectionHandler0[key];
+          });
+          bigObj.roomMsgs = sentMessages;
+          socket.emit('sign in', bigObj);
+      });
+
+      // bigObj.roomMsgs= roomMessages;
+      bigObj.usersInRoom = connections;
+      console.log('im the end big obj', bigObj);
     });
 
     //  assign userId to user
@@ -57,21 +93,28 @@ io.on('connection', (socket) => {
     //   socket.userId = 2;
     // }
 
-    socket.emit('sign in', {hello: 8});
-    io.sockets.emit('userInput', data);
+    console.log('im in therserver sign in,', data);
   });
 
 
   //  Disconnect
   socket.on('disconnect', (data) => {
+    console.log('im the disconnect data', socket.id);
     connections.splice(connections.indexOf(socket), 1);
     console.log('Disconnected: %s sockets connected', connections.length);
   });
 
   socket.on('add message', (message) => {
     console.log('im the message', message);
-    // Messages.addMessage(newMessage);
-    io.sockets.emit('new message', { message });
+    let room = message.roomname;
+    Messages.addMessage(message);
+    // io.sockets.emit('new message', message);
+    // if (!currentMsgs[room]) {
+    //   currentMsgs[room] = [];
+    // }
+    // currentMsgs[room] = currentMsgs[room].concat([message]);
+    // console.log('do i get to the room name', typeof room);
+    io.sockets.emit('new message', message);
   });
 
   socket.on('typing', (data) => {
