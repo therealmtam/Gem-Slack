@@ -3,7 +3,17 @@
 import React, { Component } from 'react';
 
 
-const SelectedUsersFeed = ({ listToDisplay, removeUser, allUsersInLobby }) => (
+const SelectedUsersFeed = ({ listToDisplay, removeUser, allUsersInLobby }) => {
+
+
+
+  //in your component
+  const addDefaultSrc = (ev) => {
+    console.log('HELLO');
+    //ev.target.src = 'some default image url'
+  };
+
+  return (
     <table className="table table-hover table-bordered">
       <thead>
         <tr>
@@ -16,10 +26,11 @@ const SelectedUsersFeed = ({ listToDisplay, removeUser, allUsersInLobby }) => (
             return (
               <tr key={index}>
                 <td onClick={removeUser} value={user}>
-                  <img src={allUsersInLobby[user]}
+                  <img onError={addDefaultSrc}
                     className="img-rounded"
                     style={{ "width": "70px" }}
                     value={user}
+                    src="hello"
                   />
                   <span value={user}>{user}</span>
                 </td>
@@ -29,9 +40,8 @@ const SelectedUsersFeed = ({ listToDisplay, removeUser, allUsersInLobby }) => (
         }
       </tbody>
     </table>
-);
-
-
+  )
+};
 
 export default SelectedUsersFeed;
 

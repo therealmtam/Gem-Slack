@@ -44,7 +44,9 @@ io.on('connection', (socket) => {
       return obj.username;
     });
 
-    User.getUsers().then((result) => {
+    io.sockets.emit('connects', onlineUsers);
+
+    User.getUsers().then(result => {
       bigObj.allUsersInLobby = result.reduce((acc, userEntry) => {
         acc[userEntry.username] = userEntry.userImgUrl;
         return acc;
@@ -86,9 +88,6 @@ io.on('connection', (socket) => {
     });
   });
 
-  /**
-   * DISCONNECT IS NOT FIRING:
-   */
   //  Disconnect
   socket.on('disconnect', (data) => {
     connections.splice(connections.findIndex(x => x.socket === socket.id), 1);
@@ -100,9 +99,6 @@ io.on('connection', (socket) => {
     io.sockets.emit('disconnects', onlineUsers);
   });
 
-  /**
-   * NEED TO CREATE NEW ROOM IF INCOMING MESSAGE IS FROM ROOM THAT DOESN'T EXIST:
-   */
   socket.on('add message', (message) => {
     console.log('im the message', message);
     let room = message.roomname;
