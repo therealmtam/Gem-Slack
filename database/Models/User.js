@@ -14,6 +14,7 @@ const User = db.define('user', {
   },
 });
 
+// User.sync();
 /**
  * Adds a user to the database
  * @param  {} newUser - User data saved to db.

@@ -100,6 +100,7 @@ io.on('connection', (socket) => {
     const onlineUsers = connections.map((obj) => {
       return obj.username;
     });
+    console.log('disconnected online users', onlineUsers);
     console.log('Disconnected: %s sockets connected', connections.length);
     socket.emit('disconnects', onlineUsers);
   });
@@ -111,6 +112,7 @@ io.on('connection', (socket) => {
     console.log('im the message', message);
     let room = message.roomname;
     Messages.addMessage(message);
+    console.log(message);
     // io.sockets.emit('new message', message);
     // if (!currentMsgs[room]) {
     //   currentMsgs[room] = [];
