@@ -50,13 +50,14 @@
 }
 .message-list {
   overflow: scroll;
-  padding-left: 0
+  padding-left: 0;
 }
 .input-bar {
   position: fixed;
   width: 95%;
   margin-bottom: 0;
   bottom: 2%;
+  overflow: hidden
 }
 
 .input-message {
