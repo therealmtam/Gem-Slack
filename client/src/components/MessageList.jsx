@@ -9,8 +9,8 @@ class MessageList extends React.Component {
       return (
         <ul> 
           { 
-            this.props.data.roomMsgs[this.props.data.currentRoom].map(msg => {
-              return <Message msg={msg} />
+            this.props.data.roomMsgs[this.props.data.currentRoom].map((msg, index) => {
+              return <Message msg={msg} key={index}/>
             })
           }
         </ul>

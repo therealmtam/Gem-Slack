@@ -8,7 +8,7 @@ import NewDirectMsg from './NewDirectMsg.jsx';
 import axios from 'axios';
 import openSocket from 'socket.io-client';
 
-import Sockets from './Sockets.jsx';
+// import Sockets from './Sockets.jsx';
 
 const socket = openSocket('http://localhost:4000');
 
@@ -35,9 +35,9 @@ class App extends Component {
     }
   }
 
-  componentDidMount(){
+  componentWillMount() {
 
-    //Sets state with SAMPLE DATA
+    //  Sets state with SAMPLE DATA
     this.setState({
       view: 'signin',
       username: this.props.sampleData.username,
@@ -46,7 +46,15 @@ class App extends Component {
       roomMsgs: this.props.sampleData.roomMsgs,
       currentRoom: 'Lobby',
       usersInRoom: this.props.sampleData.usersInRoom
-    }, () => {console.log(this.state);});
+    }, () => { console.log(this.state); });
+
+    socket.on('new message', (message) => {
+      this.setState({ messages: this.state.messages.concat([message]) });
+    });
+
+    socket.on('old messages', (message) => {
+      this.setState({ messages: message });
+    });
 
     socket.on('sign in', (data) => {
       // this.setState({
@@ -63,11 +71,25 @@ class App extends Component {
     });
   }
 
+
+  // Sockets Helper Functions
+  signInUser(user) {
+    socket.emit('user login', {
+      username: user,
+      avatar: 'hello',
+      rooms: [1],
+    });
+  }
+
+  sendMessage(message) {
+    socket.emit('add message', message);
+  }
+
+  // Front End Helper Functions
   changeCurrentRoom(selectedRoom) {
     this.setState({
-      currentRoom: selectedRoom
-    })
-
+      currentRoom: selectedRoom,
+    });
   }
 
   /**
@@ -78,18 +100,20 @@ class App extends Component {
    * @param {String} message - User entered message
    */
   sendMessage(message) {
-    let newMsg = {
+    const newMsg = {
       username: this.state.username,
       message: message,
       createdAt: new Date(),
-      roomname: this.state.currentRoom
+      roomname: this.state.currentRoom,
     }
-    //temporarily add to state until socket is working
-    let currentRoomMsgs = this.state.roomMsgs;
+    socket.emit('add message', newMsg);
+    //  temporarily add to state until socket is working
+    const currentRoomMsgs = this.state.roomMsgs;
     currentRoomMsgs[this.state.currentRoom].push(newMsg);
     this.setState({
-      roomMsgs: currentRoomMsgs
+      roomMsgs: currentRoomMsgs,
     })
+
     /**
      * PLACEHOLDER FOR SOCKET FUNCTION
      */
@@ -105,31 +129,8 @@ class App extends Component {
    * @param {String} username - Username typed in by the user
    */
   sendUserNameToServer(username) {
-    // this.setState({
-    //   name: username
-    //   //messages: array of message objects from socket
-    //   //currentUsers: array of all connected users from socket
-    // })
-    // this.changeView('chat');
-
-    console.log(username);
-    //this.changeView('chat');
-
-    // this.ajaxRequest('post', '/sendUserNameToServer', {username: username})
-    // .then(result => {
-
-    //   this.setState({
-    //     username: result.data.username,
-    //     userImgUrl: result.data.userImgUrl,
-    //     myRooms: result.data.myRooms,
-    //     currentRoom: 'Lobby',
-    //     roomMsgs: result.data.roomMsgs,
-    //     usersInRoom: usersInRoom
-    //   }, () => {
-    //     this.changeView('chat');
-    //   });
-
-    // });
+    this.signInUser(username);
+    this.changeView('chat');
   }
 
   /**
