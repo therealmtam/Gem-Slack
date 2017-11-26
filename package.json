@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Gem-Guys/Gem-Slack#readme",
   "dependencies": {
     "axios": "^0.17.1",
+    "bluebird": "^3.5.1",
     "chai": "^4.1.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",

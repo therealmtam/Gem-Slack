@@ -18,8 +18,6 @@ class SignIn extends Component {
 
   submit(e) {
     if (e.charCode === 13 || e.charCode === undefined) {
-      console.log('enter was pressed or onClick was pressed');
-      Sockets.signInUser(this.state.username);
       this.props.sendUserNameToServer(this.state.username);
       this.setState({
         username: ''

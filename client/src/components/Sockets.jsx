@@ -1,21 +1,22 @@
-import openSocket from 'socket.io-client';
+// import openSocket from 'socket.io-client';
 
-const socket = openSocket('http://localhost:4000');
+// const socket = openSocket('http://localhost:4000');
 
-const signInUser = (user) => {
-  console.log('signInuser', user);
-  socket.emit('user login', {
-    username: user,
-    avatar: 'hello',
-  });
-};
+// const signInUser = (user) => {
+//   console.log('signInuser', user);
+//   socket.emit('user login', {
+//     username: user,
+//     avatar: 'hello',
+//     rooms: [1],
+//   });
+// };
 
-const sendMessage = (message) => {
-  socket.emit('add message', message);
-};
+// const sendMessage = (message) => {
+//   socket.emit('add message', message);
+// };
 
 
-module.exports = {
-  signInUser: signInUser,
-  sendMessage: sendMessage,
-};
+// module.exports = {
+//   signInUser: signInUser,
+//   sendMessage: sendMessage,
+// };
