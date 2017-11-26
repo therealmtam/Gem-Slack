@@ -27,14 +27,7 @@ const io = socketIO(server);
 const currentMsgs = {};
 
 io.on('connection', (socket) => {
-  //  console.log('im the socketid', socket);
-  //  Messages.getMessages()
-  //   .then((data) => {
-  //     socket.emit('old messages', data);
-  //   });
-  //  Room.getRoomById(1).then(data=> {
-  //   console.log('im the roomby id data', data);
-  // })
+
   //  Uncomment to start the Room Table
   //  Room.addRoom({roomname: 'lobby'});
   //  Room.addRoom({roomname: 'therealmtam, theJeff'});
@@ -42,9 +35,8 @@ io.on('connection', (socket) => {
 
   // User Connects
   socket.on('user login', (data) => {
-    console.log('im the connection', data);
     //  Add each connection to the server
-    connections.push(socket.id);
+    connections.push({socket: socket.id, username: data.username});
     console.log('Connected: %s sockets connected', connections.length);
 
     // Search if User already exists in server
@@ -53,10 +45,13 @@ io.on('connection', (socket) => {
 
     const bigObj = {};
     const roomMessages = [];
+    const onlineUsers = connections.map((obj) => {
+      return obj.username;
+    });
 
     User.getUserById(data.username).then((result) => {
       bigObj.username = data.username;
-      bigObj.usersInRoom = connections;
+      bigObj.usersInRoom = onlineUsers;
       if (!result) {
         User.addUser(data);
         bigObj.userImgUrl = data.userImgUrl;
@@ -65,7 +60,7 @@ io.on('connection', (socket) => {
         bigObj.userImgUrl = result.dataValues.userImgUrl;
         bigObj.myRooms = result.dataValues.rooms;
       }
-
+      console.log('current bigobj', bigObj);
       //  Iterate through each room to get the messages of user
       bigObj.myRooms.forEach((room) => {
         roomMessages.push(Messages.getRoomMessages(room).then((data) => {
@@ -76,7 +71,6 @@ io.on('connection', (socket) => {
       });
       Promise.all(roomMessages)
         .then(function () {
-          // console.log('DONE', roomMessages);
           const sentMessages = {};
           roomMessages.map(obj => {
             // console.log('im the obj', obj._rejectionHandler0);
@@ -87,21 +81,17 @@ io.on('connection', (socket) => {
           socket.emit('sign in', bigObj);
       });
     });
-
-    //  assign userId to user
-    // if (!socket.userId) {
-    //   socket.userId = 2;
-    // }
-
-    console.log('im in therserver sign in,', bigObj);
   });
 
 
   //  Disconnect
   socket.on('disconnect', (data) => {
-    console.log('im the disconnect data', socket.id);
-    connections.splice(connections.indexOf(socket), 1);
+    connections.splice(connections.findIndex(x => x.socket === socket.id), 1);
+    const onlineUsers = connections.map((obj) => {
+      return obj.username;
+    });
     console.log('Disconnected: %s sockets connected', connections.length);
+    socket.emit('disconnects', onlineUsers);
   });
 
   socket.on('add message', (message) => {
