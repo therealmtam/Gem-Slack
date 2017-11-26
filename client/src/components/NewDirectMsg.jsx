@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SelectableUsersFeed from './SelectableUsersFeed.jsx';
+import SelectedUsersFeed from './SelectedUsersFeed.jsx';
 
 /**
  * Description:
@@ -14,7 +15,7 @@ import SelectableUsersFeed from './SelectableUsersFeed.jsx';
  * Direct Message with.
  *
  * @param {Function} createNewRoom - Function passed in by App component.
- * @param {Array} allSelectableUsers - Array passed in by App component.
+ * @param {Object} allUsersInLobby - Object passed in by App component.
  */
 class NewDirectMsg extends Component {
   constructor(props) {
@@ -28,8 +29,6 @@ class NewDirectMsg extends Component {
     }
   }
 
-
-
   /**
    * componentWillMount:
    * This React function fires BEFEORE render() is called
@@ -38,29 +37,31 @@ class NewDirectMsg extends Component {
    * @param - None
    */
   componentWillMount() {
+
+    let formattedAllSelectableUsers = [];
+    for (var user in this.props.allUsersInLobby) {
+      formattedAllSelectableUsers.push(user);
+    }
+
     this.setState({
-      allSelectableUsers: this.props.allSelectableUsers,
-      remainingSelectableUsers: this.props.allSelectableUsers,
-      selectedUsers: ['max', 'jeff']
+      allSelectableUsers: formattedAllSelectableUsers,
+      remainingSelectableUsers: formattedAllSelectableUsers,
+      selectedUsers: [],
     });
   }
 
   /**
    * createNewDirectMsg:
-   * Function creates a new 'room', locally (not sent to server),
-   * by adding new 'room' data to the State property that contains all
-   * existing rooms data. It then takes the User back to the 'chat' view.
+   * Function creates a new 'room' by adding new room name to the State
+   * property in the App component that contains all
+   * existing room data.
    *
-   * @param {Array} allSelectableUsers - Array passed in by App component
+   * @param {Function} this.props.createNewRoom - Function passed in by App component
    */
   createNewDirectMsg() {
-
-    let newRoomData = {
-      roomname: this.state.selectedUsers.join(','),
-      usersInRoom: this.state.selectedUsers,
-    };
-
-    // this.props.createNewRoom(newRoomData);
+    let newRoomname = this.state.selectedUsers.join(', ');
+    console.log('newRoomname ', newRoomname);
+    this.props.createNewRoom(newRoomname);
   }
 
   /**
@@ -71,16 +72,11 @@ class NewDirectMsg extends Component {
    * @param {Object} event - Event object
    */
   recordSearchedUser(event) {
-
     let newUserInput = event.target.value;
-
     this.narrowSearchList(newUserInput);
-
     this.setState({
       userInput: newUserInput
     });
-
-
   }
 
   /**
@@ -91,10 +87,8 @@ class NewDirectMsg extends Component {
    * @param {String} userInput - User's typed input into search field
    */
   narrowSearchList(userInput) {
-
     if (userInput.length !== 0) {
       let formattedInput = userInput.toLowerCase().split(' ').join('');
-
       let narrowedSearchList = this.state.remainingSelectableUsers.filter((user) => {
         let lettersToMatch = user.slice(0, formattedInput.length).toLowerCase().split(' ').join('');
         return lettersToMatch.includes(formattedInput);
@@ -123,25 +117,44 @@ class NewDirectMsg extends Component {
    * @param {Object} event - Event object
    */
   selectUser(event) {
+    let selectedUser = event.target.getAttribute('value');
+    let selectedUsers = this.state.selectedUsers;
+    selectedUsers.push(selectedUser);
 
-    let selectedUser = event.target.value;
+    let remainingSelectableUsers = this.state.remainingSelectableUsers.filter((user) => {
+      return (user !== selectedUser);
+    });
 
-    let isAlreadySelected = this.state.selectedUsers.includes(selectedUser);
+    this.setState({
+      selectedUsers: selectedUsers,
+      remainingSelectableUsers: remainingSelectableUsers,
+    }, () => {
+      this.narrowSearchList(this.state.userInput);
+    });
+  }
 
-    if (!isAlreadySelected) {
-      let selectedUsers = this.state.selectedUsers;
-      selectedUsers.push(selectedUser);
+  /**
+   * removeUser:
+   * Function removes selected Users if the User decides to remove
+   * a selected user.
+   *
+   * @param {Object} event - Event object
+   */
+  removeUser(event) {
+    let removedUser = event.target.getAttribute('value');
+    let selectedUsers = this.state.selectedUsers.filter((user) => {
+      return (user !== removedUser)
+    });
 
-      let remainingSelectableUsers = this.state.remainingSelectableUsers.filter((user) => {
-        return (user !== selectedUser);
-      });
+    let remainingSelectableUsers = this.state.remainingSelectableUsers;
+    remainingSelectableUsers.push(removedUser);
 
-      this.setState({
-        selectedUsers: selectedUsers,
-        remainingSelectableUsers: remainingSelectableUsers,
-      }, ()=>{console.log(this.state.selectedUsers); console.log(this.state.remainingSelectableUsers);});
-    }
-
+    this.setState({
+      selectedUsers: selectedUsers,
+      remainingSelectableUsers: remainingSelectableUsers,
+    }, () => {
+      this.narrowSearchList(this.state.userInput);
+    });
   }
 
   /**
@@ -157,34 +170,76 @@ class NewDirectMsg extends Component {
     if (this.state.narrowedSearchList.length > 0) {
       if (this.state.narrowedSearchList.join('').includes('No one found matching')) {
         return (
-          <SelectableUsersFeed listToDisplay={this.state.narrowedSearchList} selectUser={()=>{}} />
-        )
+          <SelectableUsersFeed
+            listToDisplay={this.state.narrowedSearchList}
+            selectUser={() => { }}
+            allUsersInLobby={this.props.allUsersInLobby}
+          />)
       }
       return (
-        <SelectableUsersFeed listToDisplay={this.state.narrowedSearchList} selectUser={this.selectUser.bind(this)} />
-      )
+        <SelectableUsersFeed
+          listToDisplay={this.state.narrowedSearchList}
+          selectUser={this.selectUser.bind(this)}
+          allUsersInLobby={this.props.allUsersInLobby}
+        />)
      } else {
       return (
-        <SelectableUsersFeed listToDisplay={this.state.remainingSelectableUsers} selectUser={this.selectUser.bind(this)} />
-      )
+        <SelectableUsersFeed
+          listToDisplay={this.state.remainingSelectableUsers}
+          selectUser={this.selectUser.bind(this)}
+          allUsersInLobby={this.props.allUsersInLobby}
+        />)
     }
   }
-
-
 
   render() {
     return (
       <div>
-        <h1>Direct Messages</h1>
-        <div>
-          <input
-            type='text'
-            onChange={this.recordSearchedUser.bind(this)}
-            placeholder="Find or start a conversation"
-          />
-          <button type="submit" onClick={this.createNewDirectMsg.bind(this)}>Go</button>
+        <div className="container" style={{ "textAlign": "center", "marginBottom": "20px"}}>
+          <h1 >Direct Messages</h1>
         </div>
-        {this.renderSelectableUsersFeed()}
+        <div className="container">
+          <div className="row">
+              <div className="col"></div>
+              <div className="col">
+                <div className="input-group" >
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Find or start a conversation"
+                    aria-label="Find or start a conversation"
+                    onChange={this.recordSearchedUser.bind(this)}
+                  />
+                  <span className="input-group-btn">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      style={{"backgroundColor": "#D6D6D5", "fontWeight": "bold", "color": "white" }}
+                      onClick={this.createNewDirectMsg.bind(this)}>
+                      Go
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div className="col"></div>
+          </div>
+        </div>
+
+        <div style={{"height":"20px"}}></div>
+
+        <div className="container" >
+          <div className="row">
+
+            <div className="col-sm-6">
+              {this.renderSelectableUsersFeed()}
+            </div>
+            <div className="col-sm-6">
+              <SelectedUsersFeed listToDisplay={this.state.selectedUsers} removeUser={this.removeUser.bind(this)} />
+            </div>
+
+          </div>
+        </div>
+
       </div>
     );
   }

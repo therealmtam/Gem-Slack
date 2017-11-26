@@ -29,52 +29,59 @@ class App extends Component {
       myRooms: [],
       roomMsgs: this.props.sampleData.roomMsgs,
       currentRoom: 'Lobby',
-      usersInRoom: {}
+      onlineUsers: {},
+      allUsersInLobby: {}
     }
   }
 
+
+  /**
+   * UNCOMMENT OUT VIEW CHANGE
+   */
   componentWillMount() {
 
     socket.on('sign in', (data) => {
-
       this.setState({
         username: data.username,
         userImgUrl: data.userImgUrl,
         myRooms: data.myRooms,
         roomMsgs: data.roomMsgs,
-        usersInRoom: data.usersInRoom,
+        currentRoom: 'Lobby',
+        onlineUsers: data.onlineUsers,
+        allUsersInLobby: data.allUsersInLobby,
       });
     });
 
+  /**
+   * DISCONNECT SOCKET DOESN'T FIRE
+   */
     socket.on('disconnects', (data) => {
       //data is the updated Online Users
       console.log('updated after disconnect', data);
+      this.setState({
+        test: data
+      }, () => {
+        console.log('Users In Room ',this.state.test);
+      })
     })
 
     socket.on('new message', (message) => {
       let roomname = message.roomname;
       if (this.state.myRooms.includes(roomname)) {
         this.state.roomMsgs[roomname] = this.state.roomMsgs[roomname].concat([message]);
-        this.setState({ roomMsgs: this.state.roomMsgs });
+        this.setState({ roomMsgs: this.state.roomMsgs }, () => { console.log('New Message ',this.state); });
       } else if (!this.state.myRooms.includes(roomname) && roomname.includes(this.state.username)) {
         this.state.myRooms.push(roomname);
         this.state.roomMsgs[roomname] = message;
         socket.emit('new room for user', roomname);
-        this.setState({ myRooms: this.state.myRooms, roomMsgs: this.state.roomMsgs });
+        this.setState({ myRooms: this.state.myRooms, roomMsgs: this.state.roomMsgs }, ()=>{console.log('New Message ',this.state);});
       }
     });
   }
 
-  // Sockets Helper Functions
-  signInUser(user) {
-    socket.emit('user login', {
-      username: user,
-      userImgUrl: 'hello',
-      rooms: ['Lobby'],
-    });
-  }
-
-
+  /**
+   * NEED TO ADD DESCRIPTION
+   */
   // Front End Helper Functions
   changeCurrentRoom(selectedRoom) {
     this.setState({
@@ -84,8 +91,7 @@ class App extends Component {
 
   /**
    * sendMessage:
-   * Function sends a message via Socket.
-   * All clients in the same room, will receive the message.
+   * Function sends a message to the Server via Socket.
    *
    * @param {String} message - User entered message
    */
@@ -102,15 +108,19 @@ class App extends Component {
 
   /**
    * sendUserNameToServer:
-   * Function sends a username to the Server.
-   * The Server will return all the data necessary
-   * to render the Lobby (the room where all users are sent to first
-   * after typing in their username) Chat view.
+   * Function sends a username to the Server for the sign-in process.
    *
    * @param {String} username - Username typed in by the user
    */
   sendUserNameToServer(username) {
-    this.signInUser(username);
+    socket.emit('user login', {
+      username: username,
+      userImgUrl: 'http://www.thumbshots.com/portals/0/Images/StayLonger.png',
+      rooms: ['Lobby'],
+    });
+
+    //WE WANT TO BE ABLE TO RENDER CHAT VIEW WITHOUT BREAKING IF THE SERVER DOES NOT RESPOND WITH DATA
+    //TO SET STATE TO DEFAULT VALUES. RIGHT NOW CHAT VIEW REQUIRES THERE TO BE DATA OR ELSE IT BREAKS.
     this.changeView('chat');
   }
 
@@ -120,25 +130,22 @@ class App extends Component {
    * Function also changes the 'view' State to 'chat'.
    * Function is used by the NewDirectMsg component.
    *
-   * @param {Object} newRoomData - Data used to create a new room view under the chat view
+   * @param {Object} newRoomname - Data used to create a new room view under the chat view
    */
-  createNewRoom(newRoomData) {
+  createNewRoom(newRoomname) {
 
     let myRooms = this.state.myRooms;
-    myRooms.push(newRoomData.roomname);
+    myRooms.push(newRoomname);
 
     let roomMsgs = this.state.roomMsgs;
-    roomMsgs[newRoomData.roomname] = [];
-
-    let usersInRoom = this.state.usersInRoom;
-    usersInRoom[newRoomData.roomname] = newRoomData.usersInRoom;
+    roomMsgs[newRoomname] = [];
 
     this.setState({
-      // view: 'chat',
+      view: 'chat',
       myRooms: myRooms,
       roomMsgs: roomMsgs,
-      usersInRoom: usersInRoom
-    });
+      currentRoom: newRoomname,
+    }, ()=>{console.log(this.state);});
   }
 
   /**
@@ -164,20 +171,26 @@ class App extends Component {
   renderView(view) {
     if (view === 'signin') {
       return (
-        <SignIn sendUserNameToServer={this.sendUserNameToServer.bind(this)}/>
-      )
-
+        <SignIn
+          sendUserNameToServer={this.sendUserNameToServer.bind(this)}
+        />)
     } else if (view === 'chat') {
       return (
-        <Chat data={this.state} sendMessage={this.sendMessage.bind(this)} changeCurrentRoom={this.changeCurrentRoom.bind(this)} changeView={this.changeView.bind(this)}/>
-      )
+        <Chat
+          data={this.state}
+          sendMessage={this.sendMessage.bind(this)}
+          changeCurrentRoom={this.changeCurrentRoom.bind(this)}
+          changeView={this.changeView.bind(this)}
+        />)
     } else if (view === 'newDirectMessage') {
       return (
+
+    //WE WANT TO BE ABLE TO RENDER NEWDM VIEW WITHOUT BREAKING IF THE SERVER DOES NOT RESPOND WITH DATA
+    //TO SET STATE TO DEFAULT VALUES. RIGHT NOW IT REQUIRES THERE TO BE DATA OR ELSE IT BREAKS.
         <NewDirectMsg
           createNewRoom={this.createNewRoom.bind(this)}
-          allSelectableUsers={this.state.usersInRoom.Lobby}
-        />
-      )
+          allUsersInLobby={this.state.allUsersInLobby}
+        />)
     }
   }
 
