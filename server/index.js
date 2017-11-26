@@ -26,9 +26,18 @@ app.use(express.static(path.join(__dirname, '../client/dist/')));
 const io = socketIO(server);
 const currentMsgs = {};
 
+<<<<<<< HEAD
 User.initUser();
 Room.initRoom();
 Messages.initMessage();
+=======
+io.on('connection', (socket) => {
+
+  //  Uncomment to start the Room Table
+   Room.addRoom({roomname: 'lobby'});
+  //  Room.addRoom({roomname: 'therealmtam, theJeff'});
+  //  Room.addRoom({roomname: 'therealmtam, theericlau, theJohn, theJeff'});
+>>>>>>> Added allUsersInLobby dataset, Updated dbtables to not crash if not exist,handled userImgUrls on newDMview
 
 io.on('connection', (socket) => {
   // User Connects
@@ -38,26 +47,44 @@ io.on('connection', (socket) => {
     console.log('Connected: %s sockets connected', connections.length);
 
     // Search if User already exists in server
+<<<<<<< HEAD
+=======
+    //  Uncomment to start the User Table
+    User.addUser(data);
+
+>>>>>>> Added allUsersInLobby dataset, Updated dbtables to not crash if not exist,handled userImgUrls on newDMview
     const bigObj = {};
     const roomMessages = [];
     const onlineUsers = connections.map((obj) => {
       return obj.username;
     });
 
+<<<<<<< HEAD
     User.getUsers().then((result) => {
+=======
+    User.getUsers().then(result => {
+>>>>>>> Added allUsersInLobby dataset, Updated dbtables to not crash if not exist,handled userImgUrls on newDMview
       bigObj.allUsersInLobby = result.reduce((acc, userEntry) => {
         acc[userEntry.username] = userEntry.userImgUrl;
         return acc;
       }, {});
 
+<<<<<<< HEAD
       User.getUserById(data.username).then((exists) => {
         bigObj.username = data.username;
         bigObj.onlineUsers = onlineUsers;
         if (!exists) {
+=======
+      User.getUserById(data.username).then((result) => {
+        bigObj.username = data.username;
+        bigObj.onlineUsers = onlineUsers;
+        if (!result) {
+>>>>>>> Added allUsersInLobby dataset, Updated dbtables to not crash if not exist,handled userImgUrls on newDMview
           User.addUser(data);
           bigObj.userImgUrl = data.userImgUrl;
           bigObj.myRooms = data.rooms;
         } else {
+<<<<<<< HEAD
           bigObj.userImgUrl = exists.dataValues.userImgUrl;
           bigObj.myRooms = exists.dataValues.rooms;
         }
@@ -67,21 +94,43 @@ io.on('connection', (socket) => {
           roomMessages.push(Messages.getRoomMessages(room).then((message) => {
             const currentMessage = {};
             currentMessage[room] = message;
+=======
+          bigObj.userImgUrl = result.dataValues.userImgUrl;
+          bigObj.myRooms = result.dataValues.rooms;
+        }
+        console.log('current bigobj', bigObj);
+        //  Iterate through each room to get the messages of user
+        bigObj.myRooms.forEach((room) => {
+          roomMessages.push(Messages.getRoomMessages(room).then((data) => {
+            const currentMessage = {};
+            currentMessage[room] = data;
+>>>>>>> Added allUsersInLobby dataset, Updated dbtables to not crash if not exist,handled userImgUrls on newDMview
             return currentMessage;
           }));
         });
         Promise.all(roomMessages)
+<<<<<<< HEAD
           .then(() => {
             const sentMessages = {};
             roomMessages.map((obj) => {
+=======
+          .then(function () {
+            const sentMessages = {};
+            roomMessages.map(obj => {
+>>>>>>> Added allUsersInLobby dataset, Updated dbtables to not crash if not exist,handled userImgUrls on newDMview
               // console.log('im the obj', obj._rejectionHandler0);
               const key = Object.keys(obj._rejectionHandler0)[0];
               sentMessages[key] = obj._rejectionHandler0[key];
             });
             bigObj.roomMsgs = sentMessages;
             socket.emit('sign in', bigObj);
+<<<<<<< HEAD
           });
+=======
+        });
+>>>>>>> Added allUsersInLobby dataset, Updated dbtables to not crash if not exist,handled userImgUrls on newDMview
       });
+
     });
   });
 

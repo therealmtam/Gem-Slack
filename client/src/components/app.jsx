@@ -72,8 +72,13 @@ class App extends Component {
         this.setState({ roomMsgs: this.state.roomMsgs }, () => { console.log('New Message ',this.state); });
       } else if (!this.state.myRooms.includes(roomname) && roomname.includes(this.state.username)) {
         this.state.myRooms.push(roomname);
+<<<<<<< HEAD
         this.state.roomMsgs[roomname] = [message];
         socket.emit('new room for user', {username: this.state.username, room: this.state.myRooms});
+=======
+        this.state.roomMsgs[roomname] = message;
+        socket.emit('new room for user', roomname);
+>>>>>>> Added allUsersInLobby dataset, Updated dbtables to not crash if not exist,handled userImgUrls on newDMview
         this.setState({ myRooms: this.state.myRooms, roomMsgs: this.state.roomMsgs }, ()=>{console.log('New Message ',this.state);});
       }
     });
