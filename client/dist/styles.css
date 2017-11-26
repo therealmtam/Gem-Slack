@@ -1,0 +1,86 @@
+.avatar {
+  width: 60px;
+  float: left;
+  margin-right: 15px;
+  border-radius: 5px;
+}
+.chat {
+  font-family: 'Lato', 'sans-serif';
+  font-size: 12px
+}
+.msg-container {
+  float: right;
+}
+.gem-slack {
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+}
+.direct-message-title {
+  margin-top: 20px;
+}
+.direct-message-list {
+  position: fixed;
+  width: 235px;
+  height: 900px;
+  display: inline-block;
+  padding-right: 0;
+  margin-right: 0;
+  color: rgba(255, 255, 255, 0.6);
+  background-color: #4d394b;
+  font-size: 15px;
+  font-weight: 100
+}
+.direct-message {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5%;
+}
+
+.dm-div {
+  margin-left: 25px
+}
+
+.center-column {
+  position: absolute;
+  margin-left: 245px;
+  margin-right: 10px;
+  padding-right: 7%;
+  width: 80%;
+}
+.message-list {
+  overflow: scroll;
+  padding-left: 0
+}
+.input-bar {
+  position: fixed;
+  width: 95%;
+  margin-bottom: 0;
+  bottom: 2%;
+}
+
+.input-message {
+  width: 80%;
+  font-size: 18pt;
+  border-radius: 5px;
+  border: 2px solid rgba(160,160,162,.7)
+}
+
+.message {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  display: block;
+  font-size: 14px;
+}
+
+.username {
+  font-weight: bold;
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.time {
+  opacity: 1;
+  color: rgba(113, 114, 116, 0.73)
+}

@@ -26,7 +26,7 @@ const sampleData = {
       message: "Hello world3!",
       createdAt: "2017-11-21T19:39:48.279Z",
       roomname: "Lobby",
-      userImgUrl: "http://localhost:3000/uploads/userimgs/img3"
+      userImgUrl: "https://www.planwallpaper.com/static/images/desktop-year-of-the-tiger-images-wallpaper.jpg"
     }]
   },
     usersInRoom: {
