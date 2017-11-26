@@ -158,6 +158,33 @@ class NewDirectMsg extends Component {
   }
 
   /**
+   * removeUser:
+   * Function removes selected Users if the User decides to remove
+   * a selected user.
+   *
+   * @param {Object} event - Event object
+   */
+  removeUser(event) {
+
+    let removedUser = event.target.getAttribute('value');
+
+    let selectedUsers = this.state.selectedUsers.filter((user) => {
+      return (user !== removedUser)
+    });
+
+    let remainingSelectableUsers = this.state.remainingSelectableUsers;
+    remainingSelectableUsers.push(removedUser);
+
+    this.setState({
+      selectedUsers: selectedUsers,
+      remainingSelectableUsers: remainingSelectableUsers,
+    }, () => {
+      this.narrowSearchList(this.state.userInput);
+    });
+
+  }
+
+  /**
    * renderSelectableUsersFeed:
    * Function shows the User either the narrowed search list based on their input
    * or the list of all remaining selectable users if the User has not provided
@@ -224,7 +251,6 @@ class NewDirectMsg extends Component {
               <div className="col"></div>
           </div>
         </div>
-
         <div style={{"height":"20px"}}></div>
 
         <div className="container" >
