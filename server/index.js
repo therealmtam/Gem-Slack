@@ -117,6 +117,10 @@ io.on('connection', (socket) => {
     io.sockets.emit('new message', message);
   });
 
+  socket.on('new room for user', (room) => {
+    console.log('need to add room to user');
+  });
+
   socket.on('typing', (data) => {
     socket.broadcast.emit('typing', data);
   });
