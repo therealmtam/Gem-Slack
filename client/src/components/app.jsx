@@ -73,7 +73,6 @@ class App extends Component {
     });
   }
 
-
   // Sockets Helper Functions
   signInUser(user) {
     socket.emit('user login', {
