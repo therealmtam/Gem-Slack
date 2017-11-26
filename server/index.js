@@ -106,7 +106,6 @@ io.on('connection', (socket) => {
     console.log('im the message', message);
     let room = message.roomname;
     Messages.addMessage(message);
-    console.log(message);
     // io.sockets.emit('new message', message);
     // if (!currentMsgs[room]) {
     //   currentMsgs[room] = [];
@@ -116,11 +115,12 @@ io.on('connection', (socket) => {
     io.sockets.emit('new message', message);
   });
 
-  socket.on('new room for user', (room) => {
-    User.updateUser(room).then((data) => {
-      console.log('im the updated room', data);
-    });
-    console.log('need to add room to user');
+  socket.on('new room for user', (data) => {
+    User.updateUser(data.username, data.room);
+  });
+
+  socket.on('create new room', (room) => {
+    Room.addRoom({ roomname: room });
   });
 
   socket.on('typing', (data) => {

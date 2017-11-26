@@ -29,8 +29,8 @@ const addUser = (newUser) => {
   User.sync({ force: false }).then(() => User.create(formatted));
 };
 
-const updateUser = (room) => {
-  return User.update({ rooms: room });
+const updateUser = (name, room) => {
+  return User.update({ rooms: room }, { where: { username: name } });
 };
 
 /**
