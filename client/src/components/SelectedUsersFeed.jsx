@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 
 
-const SelectedUsersFeed = ({ listToDisplay, removeUser }) => (
+const SelectedUsersFeed = ({ listToDisplay, removeUser, allUsersInLobby }) => (
     <table className="table table-hover table-bordered">
       <thead>
         <tr>
@@ -16,9 +16,9 @@ const SelectedUsersFeed = ({ listToDisplay, removeUser }) => (
             return (
               <tr key={index}>
                 <td onClick={removeUser} value={user}>
-                  <img src="http://www.thumbshots.com/portals/0/Images/StayLonger.png"
+                  <img src={allUsersInLobby[user]}
                     className="img-rounded"
-                    style={{"width":"70px"}}
+                    style={{ "width": "70px" }}
                     value={user}
                   />
                   <span value={user}>{user}</span>

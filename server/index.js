@@ -29,7 +29,7 @@ const currentMsgs = {};
 io.on('connection', (socket) => {
 
   //  Uncomment to start the Room Table
-  //  Room.addRoom({roomname: 'lobby'});
+   Room.addRoom({roomname: 'lobby'});
   //  Room.addRoom({roomname: 'therealmtam, theJeff'});
   //  Room.addRoom({roomname: 'therealmtam, theericlau, theJohn, theJeff'});
 
@@ -41,7 +41,7 @@ io.on('connection', (socket) => {
 
     // Search if User already exists in server
     //  Uncomment to start the User Table
-    // User.addUser(data);
+    User.addUser(data);
 
     const bigObj = {};
     const roomMessages = [];
@@ -49,41 +49,51 @@ io.on('connection', (socket) => {
       return obj.username;
     });
 
-    User.getUserById(data.username).then((result) => {
-      bigObj.username = data.username;
-      bigObj.usersInRoom = onlineUsers;
-      if (!result) {
-        User.addUser(data);
-        bigObj.userImgUrl = data.userImgUrl;
-        bigObj.myRooms = data.rooms;
-      } else {
-        bigObj.userImgUrl = result.dataValues.userImgUrl;
-        bigObj.myRooms = result.dataValues.rooms;
-      }
-      console.log('current bigobj', bigObj);
-      //  Iterate through each room to get the messages of user
-      bigObj.myRooms.forEach((room) => {
-        roomMessages.push(Messages.getRoomMessages(room).then((data) => {
-          const currentMessage = {};
-          currentMessage[room] = data;
-          return currentMessage;
-        }));
+    User.getUsers().then(result => {
+      bigObj.allUsersInLobby = result.reduce((acc, userEntry) => {
+        acc[userEntry.username] = userEntry.userImgUrl;
+        return acc;
+      }, {});
+
+      User.getUserById(data.username).then((result) => {
+        bigObj.username = data.username;
+        bigObj.onlineUsers = onlineUsers;
+        if (!result) {
+          User.addUser(data);
+          bigObj.userImgUrl = data.userImgUrl;
+          bigObj.myRooms = data.rooms;
+        } else {
+          bigObj.userImgUrl = result.dataValues.userImgUrl;
+          bigObj.myRooms = result.dataValues.rooms;
+        }
+        console.log('current bigobj', bigObj);
+        //  Iterate through each room to get the messages of user
+        bigObj.myRooms.forEach((room) => {
+          roomMessages.push(Messages.getRoomMessages(room).then((data) => {
+            const currentMessage = {};
+            currentMessage[room] = data;
+            return currentMessage;
+          }));
+        });
+        Promise.all(roomMessages)
+          .then(function () {
+            const sentMessages = {};
+            roomMessages.map(obj => {
+              // console.log('im the obj', obj._rejectionHandler0);
+              const key = Object.keys(obj._rejectionHandler0)[0];
+              sentMessages[key] = obj._rejectionHandler0[key];
+            });
+            bigObj.roomMsgs = sentMessages;
+            socket.emit('sign in', bigObj);
+        });
       });
-      Promise.all(roomMessages)
-        .then(function () {
-          const sentMessages = {};
-          roomMessages.map(obj => {
-            // console.log('im the obj', obj._rejectionHandler0);
-            const key = Object.keys(obj._rejectionHandler0)[0];
-            sentMessages[key] = obj._rejectionHandler0[key];
-          });
-          bigObj.roomMsgs = sentMessages;
-          socket.emit('sign in', bigObj);
-      });
+
     });
   });
 
-
+  /**
+   * DISCONNECT IS NOT FIRING:
+   */
   //  Disconnect
   socket.on('disconnect', (data) => {
     connections.splice(connections.findIndex(x => x.socket === socket.id), 1);
@@ -94,6 +104,9 @@ io.on('connection', (socket) => {
     socket.emit('disconnects', onlineUsers);
   });
 
+  /**
+   * NEED TO CREATE NEW ROOM IF INCOMING MESSAGE IS FROM ROOM THAT DOESN'T EXIST:
+   */
   socket.on('add message', (message) => {
     console.log('im the message', message);
     let room = message.roomname;
