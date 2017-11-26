@@ -4,6 +4,7 @@ const db = require('../index');
 const User = db.define('user', {
   username: {
     type: Sequelize.STRING,
+    unique: true,
   },
   userImgUrl: {
     type: Sequelize.STRING,
@@ -13,6 +14,7 @@ const User = db.define('user', {
   },
 });
 
+// User.sync();
 /**
  * Adds a user to the database
  * @param  {} newUser - User data saved to db.

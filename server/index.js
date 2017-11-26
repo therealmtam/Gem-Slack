@@ -29,7 +29,7 @@ const currentMsgs = {};
 io.on('connection', (socket) => {
 
   //  Uncomment to start the Room Table
-  //  Room.addRoom({roomname: 'lobby'});
+  //  Room.addRoom({roomname: 'Lobby'});
   //  Room.addRoom({roomname: 'therealmtam, theJeff'});
   //  Room.addRoom({roomname: 'therealmtam, theericlau, theJohn, theJeff'});
 
@@ -41,14 +41,14 @@ io.on('connection', (socket) => {
 
     // Search if User already exists in server
     //  Uncomment to start the User Table
-    // User.addUser(data);
+    User.addUser(data);
 
     const bigObj = {};
     const roomMessages = [];
     const onlineUsers = connections.map((obj) => {
       return obj.username;
     });
-
+    console.log(bigObj);
     User.getUserById(data.username).then((result) => {
       bigObj.username = data.username;
       bigObj.usersInRoom = onlineUsers;
@@ -90,6 +90,7 @@ io.on('connection', (socket) => {
     const onlineUsers = connections.map((obj) => {
       return obj.username;
     });
+    console.log('disconnected online users', onlineUsers);
     console.log('Disconnected: %s sockets connected', connections.length);
     socket.emit('disconnects', onlineUsers);
   });
@@ -98,6 +99,7 @@ io.on('connection', (socket) => {
     console.log('im the message', message);
     let room = message.roomname;
     Messages.addMessage(message);
+    console.log(message);
     // io.sockets.emit('new message', message);
     // if (!currentMsgs[room]) {
     //   currentMsgs[room] = [];
