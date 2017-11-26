@@ -8,12 +8,12 @@ const Message = db.define('Message', {
   username: {
     type: Sequelize.STRING,
   },
-  roomId: {
-    type: Sequelize.INTEGER,
+  roomname: {
+    type: Sequelize.STRING,
   },
-  // createdAt: {
-  //   type: Sequelize.DATE,
-  // },
+  createdAt: {
+    type: Sequelize.DATE,
+  },
 });
 
 /**
@@ -23,9 +23,9 @@ const Message = db.define('Message', {
 const addMessage = (newMessage) => {
   const formatted = {
     message: newMessage.message,
-    userId: newMessage.userId,
-    roomId: newMessage.roomId,
-    // createdAt: newMessage.createdAt,
+    username: newMessage.username,
+    roomname: newMessage.roomname,
+    createdAt: newMessage.createdAt,
   };
   Message.sync({ force: false }).then(() => Message.create(formatted));
 };
@@ -39,7 +39,7 @@ const getMessages = () => Message.findAll({
   order: [['createdAt', 'DESC']],
 });
 
-const getRoomMessages = room => Message.findAll({ roomId: room });
+const getRoomMessages = room => Message.findAll({ where: {roomname: room} });
 
 
 module.exports.getMessages = getMessages;

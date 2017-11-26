@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import SignIn from './Signin.jsx';
 import Chat from './Chat.jsx';
 import axios from 'axios';
-import openSocket from 'socket.io-client';
+import io from 'socket.io-client';
 
 // import Sockets from './Sockets.jsx';
 
-const socket = openSocket('http://localhost:4000');
+const socket = io('http://localhost:4000');
 
 /**
  * Description:
@@ -26,8 +26,8 @@ class App extends Component {
       username: '',
       userImgUrl: '',
       myRooms: [],
-      roomMsgs: {},
-      currentRoom: '',
+      roomMsgs: this.props.sampleData.roomMsgs,
+      currentRoom: 'Lobby',
       usersInRoom: {}
     }
   }
@@ -35,51 +35,49 @@ class App extends Component {
   componentWillMount() {
 
     //  Sets state with SAMPLE DATA
-    this.setState({
-      view: 'signin',
-      username: this.props.sampleData.username,
-      userImgUrl: this.props.sampleData.userImgUrl,
-      myRooms: this.props.sampleData.myRooms,
-      roomMsgs: this.props.sampleData.roomMsgs,
-      currentRoom: 'Lobby',
-      usersInRoom: this.props.sampleData.usersInRoom
-    }, () => { console.log(this.state); });
-
-    socket.on('new message', (message) => {
-      this.setState({ messages: this.state.messages.concat([message]) });
-    });
-
-    socket.on('old messages', (message) => {
-      this.setState({ messages: message });
-    });
+    // this.setState({
+    //   // view: 'signin',
+    //   // username: this.props.sampleData.username,
+    //   // userImgUrl: this.props.sampleData.userImgUrl,
+    //   // myRooms: this.props.sampleData.myRooms,
+    //   roomMsgs: this.props.sampleData.roomMsgs,
+    //   currentRoom: 'Lobby',
+    //   // usersInRoom: this.props.sampleData.usersInRoom
+    // });
 
     socket.on('sign in', (data) => {
-      // this.setState({
-      //   username: result.data.username,
-      //   userImgUrl: result.data.userImgUrl,
-      //   myRooms: result.data.myRooms,
-      //   currentRoom: 'Lobby',
-      //   roomMsgs: result.data.roomMsgs,
-      //   usersInRoom: result.data.usersInRoom
-      // }, () => {
-      //   this.changeView('chat');
-      // });
-      console.log('im in the sign in data', data);
+
+      this.setState({
+        username: data.username,
+        userImgUrl: data.userImgUrl,
+        myRooms: data.myRooms,
+        roomMsgs: data.roomMsgs,
+        usersInRoom: data.usersInRoom,
+      });
     });
+
+    socket.on('new message', (message) => {
+      console.log('i get here', message);
+      // const currentRoomMsgs = this.state.roomMsgs;
+      // currentRoomMsgs[this.state.currentRoom].push(message);
+      // console.log('this is the currentroommsgs', currentRoomMsgs);
+      // console.log('this is updated roommsgs', this.state.roomMsgs);
+      // this.setState({
+      //   roomMsgs: currentRoomMsgs,
+      // });
+    });
+
   }
 
   // Sockets Helper Functions
   signInUser(user) {
     socket.emit('user login', {
       username: user,
-      avatar: 'hello',
-      rooms: [1],
+      userImgUrl: 'hello',
+      rooms: ["Lobby", "therealmtam, theJeff", "therealmtam, theericlau, theJohn, theJeff"],
     });
   }
 
-  sendMessage(message) {
-    socket.emit('add message', message);
-  }
 
   // Front End Helper Functions
   changeCurrentRoom(selectedRoom) {
@@ -101,18 +99,8 @@ class App extends Component {
       message: message,
       createdAt: new Date(),
       roomname: this.state.currentRoom,
-    }
+    };
     socket.emit('add message', newMsg);
-    //  temporarily add to state until socket is working
-    const currentRoomMsgs = this.state.roomMsgs;
-    currentRoomMsgs[this.state.currentRoom].push(newMsg);
-    this.setState({
-      roomMsgs: currentRoomMsgs,
-    })
-
-    /**
-     * PLACEHOLDER FOR SOCKET FUNCTION
-     */
   }
 
   /**
