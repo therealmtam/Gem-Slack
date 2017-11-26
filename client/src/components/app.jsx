@@ -104,6 +104,7 @@ class App extends Component {
       createdAt: new Date(),
       roomname: this.state.currentRoom,
     };
+    newMsg.createdAt = newMsg.createdAt.toString();    
     socket.emit('add message', newMsg);
   }
 
