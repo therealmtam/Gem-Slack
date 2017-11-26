@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
 
     // Search if User already exists in server
     //  Uncomment to start the User Table
-    User.addUser(data);
+    // User.addUser(data);
 
     const bigObj = {};
     const roomMessages = [];
