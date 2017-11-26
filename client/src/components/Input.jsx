@@ -1,5 +1,4 @@
 import React from 'react';
-import Sockets from './Sockets.jsx';
 
 class Input extends React.Component {
     constructor(props) {
@@ -25,8 +24,8 @@ class Input extends React.Component {
       return(
         <div className="input-bar">
           <input className="input-message container-fluid"  placeholder="Message" value={this.state.message} onChange={this.handleChange.bind(this)} onKeyPress={this.submitMessage.bind(this)}/>
-        </div>  
-        ) 
+        </div>
+        )
 
     }
 }

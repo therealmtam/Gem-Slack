@@ -8,8 +8,6 @@ import NewDirectMsg from './NewDirectMsg.jsx';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-// import Sockets from './Sockets.jsx';
-
 const socket = io('http://localhost:4000');
 
 /**
@@ -98,7 +96,7 @@ class App extends Component {
       createdAt: new Date(),
       roomname: this.state.currentRoom,
     };
-    newMsg.createdAt = newMsg.createdAt.toString();    
+    newMsg.createdAt = newMsg.createdAt.toString();
     socket.emit('add message', newMsg);
   }
 
