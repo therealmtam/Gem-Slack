@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
 
   // User Connects
   socket.on('user login', (data) => {
-    console.log('im the connection', socket.id);
+    console.log('im the connection', data);
     //  Add each connection to the server
     connections.push(socket.id);
     console.log('Connected: %s sockets connected', connections.length);
@@ -55,16 +55,20 @@ io.on('connection', (socket) => {
     const roomMessages = [];
 
     User.getUserById(data.username).then((result) => {
+      bigObj.username = data.username;
+      bigObj.usersInRoom = connections;
       if (!result) {
         User.addUser(data);
+        bigObj.userImgUrl = data.userImgUrl;
+        bigObj.myRooms = data.rooms;
+      } else {
+        bigObj.userImgUrl = result.dataValues.userImgUrl;
+        bigObj.myRooms = result.dataValues.rooms;
       }
-      bigObj.username = result.dataValues.username;
-      bigObj.userImgUrl = result.dataValues.userImgUrl;
-      bigObj.myRooms = result.dataValues.rooms;
+
+      //  Iterate through each room to get the messages of user
       bigObj.myRooms.forEach((room) => {
-        // console.log('im the different', room);
         roomMessages.push(Messages.getRoomMessages(room).then((data) => {
-          // console.log('i get in here', data);
           const currentMessage = {};
           currentMessage[room] = data;
           return currentMessage;
@@ -75,17 +79,13 @@ io.on('connection', (socket) => {
           // console.log('DONE', roomMessages);
           const sentMessages = {};
           roomMessages.map(obj => {
-            console.log('im the obj', obj._rejectionHandler0);
+            // console.log('im the obj', obj._rejectionHandler0);
             const key = Object.keys(obj._rejectionHandler0)[0];
             sentMessages[key] = obj._rejectionHandler0[key];
           });
           bigObj.roomMsgs = sentMessages;
           socket.emit('sign in', bigObj);
       });
-
-      // bigObj.roomMsgs= roomMessages;
-      bigObj.usersInRoom = connections;
-      console.log('im the end big obj', bigObj);
     });
 
     //  assign userId to user
@@ -93,7 +93,7 @@ io.on('connection', (socket) => {
     //   socket.userId = 2;
     // }
 
-    console.log('im in therserver sign in,', data);
+    console.log('im in therserver sign in,', bigObj);
   });
 
 
