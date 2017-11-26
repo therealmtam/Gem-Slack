@@ -12,8 +12,8 @@ class DirectMessageList extends React.Component {
        <div onClick={() => this.props.changeView('newDirectMessage')}>Direct Messages</div>
        <ul>
          {
-           this.props.data.myRooms.map(room => {
-             return <DirectMessage room={room} changeCurrentRoom={this.props.changeCurrentRoom}/>
+           this.props.data.myRooms.map((room, index) => {
+             return <DirectMessage room={room} key={index} changeCurrentRoom={this.props.changeCurrentRoom}/>
            })
          }
        </ul>

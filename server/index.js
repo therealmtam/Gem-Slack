@@ -4,13 +4,14 @@ const path = require('path');
 const socketIO = require('socket.io');
 const Files = require('../database/Models/Files.js');
 const Messages = require('../database/Models/Messages.js');
-const Rooms = require('../database/Models/Rooms.js');
+const Room = require('../database/Models/Rooms.js');
 const passport = require('passport');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20');
 const FacebookStrategy = require('passport-facebook');
 const authConfig = require('../config/oauth.js');
 const User = require('../database/Models/User.js');
+const Promise = require('bluebird');
 
 const app = express();
 
@@ -23,46 +24,101 @@ const server = app.listen(process.env.PORT || 4000, () => {
 app.use(express.static(path.join(__dirname, '../client/dist/')));
 
 const io = socketIO(server);
+const currentMsgs = {};
 
 io.on('connection', (socket) => {
-  console.log('im the socketid', socket.id);
-  // Messages.getMessages()
+  //  console.log('im the socketid', socket);
+  //  Messages.getMessages()
   //   .then((data) => {
   //     socket.emit('old messages', data);
   //   });
+  //  Room.getRoomById(1).then(data=> {
+  //   console.log('im the roomby id data', data);
+  // })
+  //  Uncomment to start the Room Table
+  //  Room.addRoom({roomname: 'lobby'});
+  //  Room.addRoom({roomname: 'therealmtam, theJeff'});
+  //  Room.addRoom({roomname: 'therealmtam, theericlau, theJohn, theJeff'});
 
   // User Connects
   socket.on('user login', (data) => {
-    console.log('im getting into userlogin');
-    connections.push(socket);
+    console.log('im the connection', data);
+    //  Add each connection to the server
+    connections.push(socket.id);
     console.log('Connected: %s sockets connected', connections.length);
 
-    User.addUser(data);
-    //  assign userId to user
-    if (!socket.userId) {
-      socket.userId = 2;
-    }
+    // Search if User already exists in server
+    //  Uncomment to start the User Table
+    // User.addUser(data);
 
-    socket.emit('sign in', {hello: 8});
-    io.sockets.emit('userInput', data);
+    const bigObj = {};
+    const roomMessages = [];
+
+    User.getUserById(data.username).then((result) => {
+      bigObj.username = data.username;
+      bigObj.usersInRoom = connections;
+      if (!result) {
+        User.addUser(data);
+        bigObj.userImgUrl = data.userImgUrl;
+        bigObj.myRooms = data.rooms;
+      } else {
+        bigObj.userImgUrl = result.dataValues.userImgUrl;
+        bigObj.myRooms = result.dataValues.rooms;
+      }
+
+      //  Iterate through each room to get the messages of user
+      bigObj.myRooms.forEach((room) => {
+        roomMessages.push(Messages.getRoomMessages(room).then((data) => {
+          const currentMessage = {};
+          currentMessage[room] = data;
+          return currentMessage;
+        }));
+      });
+      Promise.all(roomMessages)
+        .then(function () {
+          // console.log('DONE', roomMessages);
+          const sentMessages = {};
+          roomMessages.map(obj => {
+            // console.log('im the obj', obj._rejectionHandler0);
+            const key = Object.keys(obj._rejectionHandler0)[0];
+            sentMessages[key] = obj._rejectionHandler0[key];
+          });
+          bigObj.roomMsgs = sentMessages;
+          socket.emit('sign in', bigObj);
+      });
+    });
+
+    //  assign userId to user
+    // if (!socket.userId) {
+    //   socket.userId = 2;
+    // }
+
+    console.log('im in therserver sign in,', bigObj);
   });
 
 
   //  Disconnect
   socket.on('disconnect', (data) => {
+    console.log('im the disconnect data', socket.id);
     connections.splice(connections.indexOf(socket), 1);
     console.log('Disconnected: %s sockets connected', connections.length);
   });
 
   socket.on('add message', (message) => {
-    const newMessage = {
-      message,
-      userId: 1,
-      roomId: 1,
-      // createdAt: socket.handshake.time,
-    };
-    Messages.addMessage(newMessage);
-    io.sockets.emit('new message', { message });
+    console.log('im the message', message);
+    let room = message.roomname;
+    Messages.addMessage(message);
+    // io.sockets.emit('new message', message);
+    // if (!currentMsgs[room]) {
+    //   currentMsgs[room] = [];
+    // }
+    // currentMsgs[room] = currentMsgs[room].concat([message]);
+    // console.log('do i get to the room name', typeof room);
+    io.sockets.emit('new message', message);
+  });
+
+  socket.on('new room for user', (room) => {
+    console.log('need to add room to user');
   });
 
   socket.on('typing', (data) => {
