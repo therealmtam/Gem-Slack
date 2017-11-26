@@ -30,6 +30,9 @@ const getRoomById = (id) => {
   return Room.findOne({ where: { id: id } });
 };
 
+const initRoom = () => { addRoom({ roomname: 'Lobby' }); };
+
 module.exports.getRooms = getRooms;
 module.exports.addRoom = addRoom;
 module.exports.getRoomById = getRoomById;
+module.exports.initRoom = initRoom;

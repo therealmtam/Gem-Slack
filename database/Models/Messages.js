@@ -16,6 +16,8 @@ const Message = db.define('Message', {
   },
 });
 
+const initMessage = () => { Message.sync(); };
+
 /**
  * Adds a message to the database
  * @param  {} newMessage - Message saved to db.
@@ -45,3 +47,4 @@ const getRoomMessages = room => Message.findAll({ where: {roomname: room} });
 module.exports.getMessages = getMessages;
 module.exports.addMessage = addMessage;
 module.exports.getRoomMessages = getRoomMessages;
+module.exports.initMessage = initMessage;
