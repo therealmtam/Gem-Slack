@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SelectableUsersFeed from './SelectableUsersFeed.jsx';
+import SelectedUsersFeed from './SelectedUsersFeed.jsx';
 
 /**
  * Description:
@@ -124,7 +125,7 @@ class NewDirectMsg extends Component {
    */
   selectUser(event) {
 
-    let selectedUser = event.target.value;
+    let selectedUser = event.target.getAttribute('value');
 
     let isAlreadySelected = this.state.selectedUsers.includes(selectedUser);
 
@@ -139,8 +140,37 @@ class NewDirectMsg extends Component {
       this.setState({
         selectedUsers: selectedUsers,
         remainingSelectableUsers: remainingSelectableUsers,
-      }, ()=>{console.log(this.state.selectedUsers); console.log(this.state.remainingSelectableUsers);});
+      }, () => {
+        this.narrowSearchList(this.state.userInput);
+      });
     }
+
+  }
+
+  /**
+   * removeUser:
+   * Function removes selected Users if the User decides to remove
+   * a selected user.
+   *
+   * @param {Object} event - Event object
+   */
+  removeUser(event) {
+
+    let removedUser = event.target.getAttribute('value');
+
+    let selectedUsers = this.state.selectedUsers.filter((user) => {
+      return (user !== removedUser)
+    });
+
+    let remainingSelectableUsers = this.state.remainingSelectableUsers;
+    remainingSelectableUsers.push(removedUser);
+
+    this.setState({
+      selectedUsers: selectedUsers,
+      remainingSelectableUsers: remainingSelectableUsers,
+    }, () => {
+      this.narrowSearchList(this.state.userInput);
+    });
 
   }
 
@@ -170,21 +200,53 @@ class NewDirectMsg extends Component {
     }
   }
 
-
-
   render() {
     return (
       <div>
-        <h1>Direct Messages</h1>
-        <div>
-          <input
-            type='text'
-            onChange={this.recordSearchedUser.bind(this)}
-            placeholder="Find or start a conversation"
-          />
-          <button type="submit" onClick={this.createNewDirectMsg.bind(this)}>Go</button>
+        <div className="container" style={{ "textAlign": "center", "marginBottom": "20px"}}>
+          <h1 >Direct Messages</h1>
         </div>
-        {this.renderSelectableUsersFeed()}
+        <div className="container">
+          <div className="row">
+              <div className="col"></div>
+              <div className="col">
+                <div className="input-group" >
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Find or start a conversation"
+                    aria-label="Find or start a conversation"
+                    onChange={this.recordSearchedUser.bind(this)}
+                  />
+                  <span className="input-group-btn">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      style={{"backgroundColor": "#D6D6D5", "fontWeight": "bold", "color": "white" }}
+                      onClick={this.createNewDirectMsg.bind(this)}>
+                      Go
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div className="col"></div>
+          </div>
+        </div>
+        <div style={{"height":"20px"}}></div>
+
+        <div className="container" >
+          <div className="row">
+
+            <div className="col-sm-6">
+              {this.renderSelectableUsersFeed()}
+            </div>
+            <div className="col-sm-6">
+              <SelectedUsersFeed listToDisplay={this.state.selectedUsers} removeUser={this.removeUser.bind(this)} />
+            </div>
+
+          </div>
+        </div>
+
       </div>
     );
   }
