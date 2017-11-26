@@ -29,13 +29,6 @@ class NewDirectMsg extends Component {
     }
   }
 
-  /**
-   * componentWillMount:
-   * This React function fires BEFEORE render() is called
-   * for the very first time the page is loaded.
-   *
-   * @param - None
-   */
   componentWillMount() {
 
     let formattedAllSelectableUsers = [];
@@ -287,7 +280,10 @@ class NewDirectMsg extends Component {
               {this.renderSelectableUsersFeed()}
             </div>
             <div className="col-sm-6">
-              <SelectedUsersFeed listToDisplay={this.state.selectedUsers} removeUser={this.removeUser.bind(this)} />
+              <SelectedUsersFeed
+                listToDisplay={this.state.selectedUsers}
+                removeUser={this.removeUser.bind(this)}
+              />
             </div>
 
           </div>
