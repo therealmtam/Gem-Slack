@@ -4,6 +4,7 @@ const db = require('../index');
 const Room = db.define('Room', {
   roomname: {
     type: Sequelize.STRING,
+    unique: true,
   },
 });
 

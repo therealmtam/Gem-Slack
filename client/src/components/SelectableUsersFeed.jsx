@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 
 
-const SelectableUsersFeed = ({listToDisplay, selectUser}) => (
+const SelectableUsersFeed = ({listToDisplay, selectUser, allUsersInLobby}) => (
   <table className="table table-hover table-bordered">
     <thead>
       <tr>
@@ -16,7 +16,7 @@ const SelectableUsersFeed = ({listToDisplay, selectUser}) => (
           return (
             <tr key={index}>
               <td onClick={selectUser} value={user}>
-                <img src="http://www.thumbshots.com/portals/0/Images/StayLonger.png"
+                <img src={allUsersInLobby[user]}
                   className="img-rounded"
                   style={{ "width": "70px" }}
                   value={user}
@@ -34,14 +34,3 @@ const SelectableUsersFeed = ({listToDisplay, selectUser}) => (
 
 export default SelectableUsersFeed;
 
-{/* <div>
-  {
-    listToDisplay.map((user, index) => {
-      return (
-        <div key={index}>
-          <input type="button" onClick={selectUser} value={user} />
-        </div>
-      )
-    })
-  }
-</div> */}
