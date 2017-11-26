@@ -57,16 +57,17 @@ class App extends Component {
     });
 
     socket.on('new message', (message) => {
-      console.log('i get here', message);
-      // const currentRoomMsgs = this.state.roomMsgs;
-      // currentRoomMsgs[this.state.currentRoom].push(message);
-      // console.log('this is the currentroommsgs', currentRoomMsgs);
-      // console.log('this is updated roommsgs', this.state.roomMsgs);
-      // this.setState({
-      //   roomMsgs: currentRoomMsgs,
-      // });
+      let roomname = message.roomname;
+      if (this.state.myRooms.includes(roomname)) {
+        this.state.roomMsgs[roomname] = this.state.roomMsgs[roomname].concat([message]);
+        this.setState({ roomMsgs: this.state.roomMsgs });
+      } else if (!this.state.myRooms.includes(roomname) && roomname.includes(this.state.username)) {
+        this.state.myRooms.push(roomname);
+        this.state.roomMsgs[roomname] = message;
+        socket.emit('new room for user', roomname);
+        this.setState({ myRooms: this.state.myRooms, roomMsgs: this.state.roomMsgs });
+      }
     });
-
   }
 
   // Sockets Helper Functions
@@ -74,7 +75,7 @@ class App extends Component {
     socket.emit('user login', {
       username: user,
       userImgUrl: 'hello',
-      rooms: ["Lobby", "therealmtam, theJeff", "therealmtam, theericlau, theJohn, theJeff"],
+      rooms: ['Lobby'],
     });
   }
 
