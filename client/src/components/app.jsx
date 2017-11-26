@@ -8,8 +8,6 @@ import NewDirectMsg from './NewDirectMsg.jsx';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-// import Sockets from './Sockets.jsx';
-
 const socket = io('http://localhost:4000');
 
 /**
@@ -37,17 +35,6 @@ class App extends Component {
 
   componentWillMount() {
 
-    //  Sets state with SAMPLE DATA
-    // this.setState({
-    //   // view: 'signin',
-    //   // username: this.props.sampleData.username,
-    //   // userImgUrl: this.props.sampleData.userImgUrl,
-    //   // myRooms: this.props.sampleData.myRooms,
-    //   roomMsgs: this.props.sampleData.roomMsgs,
-    //   currentRoom: 'Lobby',
-    //   // usersInRoom: this.props.sampleData.usersInRoom
-    // });
-
     socket.on('sign in', (data) => {
 
       this.setState({
@@ -58,6 +45,11 @@ class App extends Component {
         usersInRoom: data.usersInRoom,
       });
     });
+
+    socket.on('disconnects', (data) => {
+      //data is the updated Online Users
+      console.log('updated after disconnect', data);
+    })
 
     socket.on('new message', (message) => {
       let roomname = message.roomname;
@@ -104,7 +96,7 @@ class App extends Component {
       createdAt: new Date(),
       roomname: this.state.currentRoom,
     };
-    newMsg.createdAt = newMsg.createdAt.toString();    
+    newMsg.createdAt = newMsg.createdAt.toString();
     socket.emit('add message', newMsg);
   }
 
@@ -120,27 +112,6 @@ class App extends Component {
   sendUserNameToServer(username) {
     this.signInUser(username);
     this.changeView('chat');
-  }
-
-  /**
-   * ajaxRequest:
-   * Function is a helper function that sends a GET or POST
-   * request to a specified server route along with specified data
-   * if applicable. It returns a Promise with the response
-   * from the server route.
-   *
-   * @param {String} reqType - Request type ('post', 'get')
-   * @param {String} route - endpoing to send the request to (ex. '/test')
-   * @param {Object} data - Data to send to the server specified as object ex. {name: max}
-   * @returns {Promise} Using the .then((results) => {}) method, the results from
-   * the Request can be retrieved by any function utilizing this helper function.
-   */
-  ajaxRequest(reqType, route, data) {
-    if (reqType === 'post') {
-      return axios.post(route, data)
-    } else if (reqType === 'get') {
-      return axios.get(route)
-    }
   }
 
   /**
