@@ -7,6 +7,7 @@ const Room = db.define('Room', {
     unique: true,
   },
 });
+// Room.sync();
 
 
 /**

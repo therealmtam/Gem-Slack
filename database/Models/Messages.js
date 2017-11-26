@@ -15,6 +15,7 @@ const Message = db.define('Message', {
     type: Sequelize.DATE,
   },
 });
+// Message.sync();
 
 const initMessage = () => { Message.sync(); };
 

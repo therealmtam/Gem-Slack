@@ -102,6 +102,7 @@ io.on('connection', (socket) => {
     const onlineUsers = connections.map((obj) => {
       return obj.username;
     });
+    console.log('disconnected online users', onlineUsers);
     console.log('Disconnected: %s sockets connected', connections.length);
     io.sockets.emit('disconnects', onlineUsers);
   });
