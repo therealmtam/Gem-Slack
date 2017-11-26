@@ -47,6 +47,8 @@ io.on('connection', (socket) => {
     io.sockets.emit('connects', onlineUsers);
 
     User.getUsers().then(result => {
+
+    User.getUsers().then((result) => {
       bigObj.allUsersInLobby = result.reduce((acc, userEntry) => {
         acc[userEntry.username] = userEntry.userImgUrl;
         return acc;
