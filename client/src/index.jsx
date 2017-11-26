@@ -37,4 +37,4 @@ const sampleData = {
 };
 
 
-ReactDOM.render(<App sampleData={sampleData}/>, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'));

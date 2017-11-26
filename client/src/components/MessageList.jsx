@@ -8,7 +8,7 @@ class MessageList extends React.Component {
     }
     scrollToBottom ()  {
       const node = ReactDOM.findDOMNode(this.messagesEnd);
-      if (this.props.data.roomMsgs) {
+      if (Object.keys(this.props.data.roomMsgs).length)  {
         node.scrollIntoView({ behavior: "smooth" });
       }
     }
@@ -21,7 +21,8 @@ class MessageList extends React.Component {
       this.scrollToBottom();
     }
     render() {
-      if (this.props.data.roomMsgs) {
+      console.log(this.props.data.roomMsgs)
+      if (Object.keys(this.props.data.roomMsgs).length) {
         return (
           <ul className="message-list"> 
             { 
