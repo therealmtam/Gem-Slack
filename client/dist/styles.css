@@ -1,8 +1,13 @@
 .avatar {
-  width: 60px;
+  width: 50px;
+  height: 30px;
   float: left;
   margin-right: 15px;
   border-radius: 5px;
+}
+.signin-box {
+  width: 30%;
+  margin: 15% auto 15% auto
 }
 .chat {
   font-family: 'Lato', 'sans-serif';
@@ -14,8 +19,14 @@
 .gem-slack {
   color: white;
   font-size: 18px;
-  font-weight: 500;
+  margin-top: 25px;
+  font-weight: 700
 }
+.all-threads {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
 .direct-message-title {
   margin-top: 20px;
 }
@@ -29,16 +40,22 @@
   color: rgba(255, 255, 255, 0.6);
   background-color: #4d394b;
   font-size: 15px;
-  font-weight: 100
+  font-weight: 300
 }
 .direct-message {
+  margin-top: 10px
+}
+.direct-message .all-threads .channels {
   margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 5%;
 }
-
+.channels {
+  margin-top: 40px;
+  margin-bottom: 40px
+}
 .dm-div {
-  margin-left: 25px
+  margin-left: 35px
 }
 
 .center-column {
@@ -50,7 +67,11 @@
 }
 .message-list {
   overflow: scroll;
-  padding-left: 0
+  padding-left: 0;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  position: absolute;
+
 }
 .input-bar {
   position: fixed;
@@ -72,6 +93,7 @@
   width: 100%;
   display: block;
   font-size: 14px;
+  position: relative;
 }
 
 .username {
@@ -79,8 +101,34 @@
   font-size: 16px;
   margin-right: 5px;
 }
+.current-username {
+  font-size: 14px;
+  opacity: 0.6
+}
 
 .time {
   opacity: 1;
   color: rgba(113, 114, 116, 0.73)
+}
+
+.plus-icon {
+  float: right;
+  margin-right: 15px;
+  margin-top: 2%
+}
+
+.bell-icon {
+  float: right;
+  margin-right: 15px;
+  margin-top: 2%
+}
+
+.circle{
+  background: #2faa92;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  float: left;
+  margin-top: 6px;
+  margin-right: 5px;
 }

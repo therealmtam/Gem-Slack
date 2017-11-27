@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -14,7 +15,8 @@ class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: ''
+      username: '',
+      userImgUrl: ''
     }
   }
 
@@ -28,6 +30,11 @@ class SignIn extends Component {
       username: event.target.value
     });
   }
+  recordImageUrl(event) {
+    this.setState({
+      userImgUrl: event.target.value
+    })
+  }
 
   /**
    * submitUserName:
@@ -38,20 +45,46 @@ class SignIn extends Component {
    */
   submitUserName(event) {
     if (event.charCode === 13 || event.charCode === undefined) {
-      this.props.sendUserNameToServer(this.state.username);
+      if (this.state.userImgUrl.length > 0) {
+        this.props.sendUserNameToServer(this.state.username, this.state.userImgUrl);
+      } else {
+         this.props.sendUserNameToServer(this.state.username);
+      }
     }
   }
 
   render() {
     return (
-      <div>
-        <input
-          type='text'
-          onChange={this.recordUserName.bind(this)}
-          placeholder="Username"
-          onKeyPress={this.submitUserName.bind(this)}
-        />
-        <button type="submit" onClick={this.submitUserName.bind(this)}>Submit</button>
+      <div  className="signin-box">
+        <h1>Gem Slack</h1>
+        <form>
+          <div className="form-group">
+            <label >Username</label>
+            <input type="text" className="form-control" 
+              aria-describedby="emailHelp" 
+              placeholder="Enter Username" 
+              type='text'
+              onChange={this.recordUserName.bind(this)}
+              placeholder="Username"
+              onKeyPress={this.submitUserName.bind(this)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Image Url</label>
+            <input 
+              type="text" 
+              className="form-control" 
+              placeholder="Image Url"
+              onChange={this.recordImageUrl.bind(this)}
+              onKeyPress={this.submitUserName.bind(this)}
+            />
+          </div>
+          <button type="button" 
+            className="btn btn-primary" 
+            onClick={this.submitUserName.bind(this)}>
+            Submit
+          </button>
+        </form>
       </div>
     );
   }
