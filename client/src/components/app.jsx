@@ -5,8 +5,8 @@ import Chat from './chat.jsx';
 import NewDirectMsg from './NewDirectMsg.jsx';
 import io from 'socket.io-client/dist/socket.io';
 
-// const socket = io('process.env.PORT');
-const socket = io('http://localhost:4000');
+const socket = io('process.env.PORT');
+// const socket = io('http://localhost:4000');
 
 /**
  * Description:
