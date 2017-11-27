@@ -4,7 +4,6 @@ import Message from './Message.jsx';
 import PropTypes from 'prop-types';
 
 
-
 class MessageList extends React.Component {
   constructor(props) {
       super(props);
@@ -29,11 +28,15 @@ class MessageList extends React.Component {
     if (Object.keys(this.props.data.roomMsgs).length) {
       return (
 <<<<<<< HEAD
+<<<<<<< HEAD
         <ul className="message-list"> { this.props.data.roomMsgs[this.props.data.currentRoom].map((msg, index) => {
 =======
         <ul className="message-list"> 
           { this.props.data.roomMsgs[this.props.data.currentRoom].map((msg, index) => {
 >>>>>>> Rebase
+=======
+        <ul className="message-list"> { this.props.data.roomMsgs[this.props.data.currentRoom].map((msg, index) => {
+>>>>>>> Refactor code
               return <Message msg={msg} key={index} />;
             })
           }
