@@ -5,7 +5,7 @@ import SignIn from './Signin.jsx';
 import Chat from './Chat.jsx';
 import NewDirectMsg from './NewDirectMsg.jsx';
 import axios from 'axios';
-import io from 'socket.io-client';
+import io from 'socket.io-client/dist/socket.io';
 
 const socket = io('http://localhost:4000');
 
