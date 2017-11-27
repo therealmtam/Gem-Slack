@@ -2,6 +2,7 @@
 import React from 'react';
 /**
  * This component will render all the room names that are available dynamically.
+ * When the roomname is clicked, it will change the currentRoom in app state.
  */
 class DirectMessage extends React.Component {
   constructor(props) {
