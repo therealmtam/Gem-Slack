@@ -18,7 +18,7 @@ const app = express();
 const connections = [];
 
 const server = app.listen(process.env.PORT || 4000, () => {
-  console.log('Listening to port 4000');
+  console.log('Listening to port', process.env.PORT);
 });
 
 app.use(express.static(path.join(__dirname, '../client/dist/')));
