@@ -17,7 +17,7 @@ const Sequelize = require('sequelize');
 //   },
 // });
 
-const sequelize = new Sequelize(`gem`, `jeffrey`, ``, {
+const sequelize = new Sequelize(`gem`, `ericlau`, ``, {
   host: `localhost`,
   dialect: 'postgres',
   pool: {
