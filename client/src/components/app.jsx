@@ -99,7 +99,7 @@ class App extends Component {
       message: message,
       createdAt: new Date(),
       roomname: this.state.currentRoom,
-      userImgUrl: this.state.userImgUrl
+      userImgUrl: this.state.userImgUrl,
     };
     newMsg.createdAt = newMsg.createdAt.toString();
     socket.emit('add message', newMsg);
