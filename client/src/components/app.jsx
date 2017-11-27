@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SignIn from './Signin.jsx';
+import SignIn from './signin.jsx';
 import Chat from './Chat.jsx';
 import NewDirectMsg from './NewDirectMsg.jsx';
 import io from 'socket.io-client/dist/socket.io';
