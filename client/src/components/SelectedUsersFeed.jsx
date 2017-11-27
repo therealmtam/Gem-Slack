@@ -1,7 +1,4 @@
-/*eslint-disable */
-
 import React, { Component } from 'react';
-
 
 const SelectedUsersFeed = ({ listToDisplay, removeUser, allUsersInLobby }) => (
     <table className="table table-hover table-bordered">
