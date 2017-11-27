@@ -1,7 +1,9 @@
 const path = require('path');
+const webpack = require('webpack');
 
 const SRC_DIR = path.join(__dirname, '/client/src');
 const DIST_DIR = path.join(__dirname, '/client/dist');
+
 
 module.exports = {
   entry: `${SRC_DIR}/index.jsx`,
@@ -20,5 +22,10 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'SOCKET_PORT': process.env.PORT,
+    })
+  ],
 };
