@@ -1,5 +1,6 @@
 .avatar {
   margin-top: 2px;
+  margin-right: 10px;
   width: 45px;
   height: 40px;
   float: left;
@@ -89,7 +90,7 @@
 }
 
 .message {
-  margin-top: 5px;
+  margin-top: 9px;
   margin-bottom: 5px;
   width: 800px;
   display: block;
