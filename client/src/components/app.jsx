@@ -6,7 +6,8 @@ import NewDirectMsg from './NewDirectMsg.jsx';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-const socket = io('process.env.PORT');
+// const socket = io('process.env.PORT');
+const socket = io('http://localhost:4000');
 
 /**
  * Description:
