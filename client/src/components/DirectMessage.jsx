@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React from 'react';
 
 class DirectMessage extends React.Component {
@@ -24,7 +25,9 @@ class DirectMessage extends React.Component {
   }
   render() {
     return (
-      <li className="direct-message" onClick={this.changeRoom.bind(this)}>{this.formatRoomName()}</li>
+      <li className="direct-message" onClick={this.changeRoom.bind(this)}>
+        {this.formatRoomName()}
+      </li>
     )
   }
 }
