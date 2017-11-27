@@ -26,7 +26,8 @@ class DirectMessage extends React.Component {
   render() {
     return (
       <li className="direct-message" onClick={this.changeRoom.bind(this)}>
-        {this.formatRoomName()}
+        <div className="circle"></div>
+        <div className="room">{this.formatRoomName()}</div>
       </li>
     )
   }
