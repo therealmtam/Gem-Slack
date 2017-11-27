@@ -276,5 +276,3 @@ Retrieves the user by Name
 
 
 
-
-*Documentation generated with [doxdox](https://github.com/neogeek/doxdox).*
