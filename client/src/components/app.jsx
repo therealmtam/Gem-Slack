@@ -5,8 +5,8 @@ import Chat from './chat.jsx';
 import NewDirectMsg from './NewDirectMsg.jsx';
 import io from 'socket.io-client/dist/socket.io';
 
-const socket = io(SOCKET_PORT);
-console.log('im the port for heroku', SOCKET_PORT);
+const socket = io(`${window.location.hostname}:${SOCKET_PORT}`);
+console.log('im the port for heroku', `${window.location.hostname}:${SOCKET_PORT}`);
 // const socket = io('http://localhost:4000');
 
 /**
