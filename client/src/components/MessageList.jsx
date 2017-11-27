@@ -27,16 +27,7 @@ class MessageList extends React.Component {
   render() {
     if (Object.keys(this.props.data.roomMsgs).length) {
       return (
-<<<<<<< HEAD
-<<<<<<< HEAD
         <ul className="message-list"> { this.props.data.roomMsgs[this.props.data.currentRoom].map((msg, index) => {
-=======
-        <ul className="message-list"> 
-          { this.props.data.roomMsgs[this.props.data.currentRoom].map((msg, index) => {
->>>>>>> Rebase
-=======
-        <ul className="message-list"> { this.props.data.roomMsgs[this.props.data.currentRoom].map((msg, index) => {
->>>>>>> Refactor code
               return <Message msg={msg} key={index} />;
             })
           }
