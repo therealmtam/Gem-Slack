@@ -1,35 +1,32 @@
-/*eslint-disable */
+
 import React from 'react';
 import MessageList from './MessageList.jsx';
 import DirectMessageList from './DirectMessageList.jsx';
 import Input from './Input.jsx';
-import Button from 'react-bootstrap/lib/Button.js'
-import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar.js'
-
-
-class Chat extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <div className="chat">
-        <div className="row">
-          <div className="direct-message-list">
-            <DirectMessageList 
-            data={this.props.data} 
-            changeCurrentRoom={this.props.changeCurrentRoom} 
-            changeView={this.props.changeView}
-            />
-          </div>
-          <div className="center-column" >
-            <MessageList data={this.props.data}/>
-            <Input sendMessage={this.props.sendMessage}/>
-          </div>
-        </div>
+/**
+ * This view renders all the messages and input field to send messages.
+ * It also renders the DirectMessageList component.
+ */
+const Chat = ({
+  data, changeCurrentRoom, changeView, sendMessage,
+}) => (
+  <div className="chat">
+    <div className="row">
+      <div className="direct-message-list">
+        <DirectMessageList
+          data={data}
+          changeCurrentRoom={changeCurrentRoom}
+          changeView={changeView}
+        />
       </div>
-    )
-  }
-}
+      <div className="center-column">
+        <MessageList data={data} />
+        <Input sendMessage={sendMessage} />
+        <div className="line-break" />
+      </div>
+    </div>
+  </div>
+);
+
 
 export default Chat;
