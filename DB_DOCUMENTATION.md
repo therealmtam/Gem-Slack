@@ -272,7 +272,7 @@ Retrieves the user by Name
 ##### Returns
 
 
--  A promiese that will return the user
+-  A promise that will return the user
 
 
 
