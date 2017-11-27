@@ -1,5 +1,3 @@
-/*eslint-disable */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SelectableUsersFeed from './SelectableUsersFeed.jsx';
@@ -15,6 +13,7 @@ import SelectedUsersFeed from './SelectedUsersFeed.jsx';
  * Direct Message with.
  *
  * @param {Function} createNewRoom - Function passed in by App component.
+ * @param {Function} changeView - Function passed in by App component.
  * @param {Object} allUsersInLobby - Object passed in by App component.
  */
 class NewDirectMsg extends Component {
@@ -29,13 +28,6 @@ class NewDirectMsg extends Component {
     }
   }
 
-  /**
-   * componentWillMount:
-   * This React function fires BEFEORE render() is called
-   * for the very first time the page is loaded.
-   *
-   * @param - None
-   */
   componentWillMount() {
     let formattedAllSelectableUsers = [];
     for (var user in this.props.allUsersInLobby) {
@@ -59,7 +51,20 @@ class NewDirectMsg extends Component {
    */
   createNewDirectMsg() {
     let newRoomname = this.state.selectedUsers.join(', ');
-    this.props.createNewRoom(newRoomname);
+
+    if (newRoomname.length !== 0) {
+      this.props.createNewRoom(newRoomname);
+    }
+  }
+
+  /**
+   * goBackToCurrentRoom:
+   * Function creates escapes the page and goes back to the current chat view.
+   *
+   * @param - none
+   */
+  goBackToCurrentRoom() {
+    this.props.changeView('chat');
   }
 
   /**
@@ -193,7 +198,16 @@ class NewDirectMsg extends Component {
   render() {
     return (
       <div>
-        <div className="container" style={{ "textAlign": "center", "marginBottom": "20px"}}>
+        <div style={{ "position": "absolute", "top": "10px", "right": "10px" }}>
+          <button
+            type="button"
+            className="btn btn-outline-dark"
+            style={{ "backgroundColor": "#D6D6D5", "fontWeight": "bold", "color": "white" }}
+            onClick={this.goBackToCurrentRoom.bind(this)}>
+            esc
+          </button>
+        </div>
+        <div className="container" style={{ "textAlign": "center", "marginBottom": "20px" }}>
           <h1 >Direct Messages</h1>
         </div>
         <div className="container">

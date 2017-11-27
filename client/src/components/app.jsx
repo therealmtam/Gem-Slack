@@ -1,4 +1,3 @@
-/*eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SignIn from './Signin.jsx';
@@ -70,12 +69,12 @@ class App extends Component {
       let roomname = message.roomname;
       if (this.state.myRooms.includes(roomname)) {
         this.state.roomMsgs[roomname] = this.state.roomMsgs[roomname].concat([message]);
-        this.setState({ roomMsgs: this.state.roomMsgs }, () => { console.log('New Message ',this.state); });
+        this.setState({ roomMsgs: this.state.roomMsgs });
       } else if (!this.state.myRooms.includes(roomname) && roomname.includes(this.state.username)) {
         this.state.myRooms.push(roomname);
         this.state.roomMsgs[roomname] = [message];
         socket.emit('new room for user', {username: this.state.username, room: this.state.myRooms});
-        this.setState({ myRooms: this.state.myRooms, roomMsgs: this.state.roomMsgs }, ()=>{console.log('New Message ',this.state);});
+        this.setState({ myRooms: this.state.myRooms, roomMsgs: this.state.roomMsgs });
       }
     });
   }
@@ -145,7 +144,7 @@ class App extends Component {
       myRooms: myRooms,
       roomMsgs: roomMsgs,
       currentRoom: newRoomname,
-    }, ()=>{console.log(this.state);});
+    });
   }
 
   /**
@@ -187,6 +186,7 @@ class App extends Component {
         <NewDirectMsg
           createNewRoom={this.createNewRoom.bind(this)}
           allUsersInLobby={this.state.allUsersInLobby}
+          changeView={this.changeView.bind(this)}
         />)
     }
   }
