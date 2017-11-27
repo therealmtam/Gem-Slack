@@ -5,6 +5,8 @@ import DirectMessage from './DirectMessage.jsx';
 /**
  * This component will render the title, icons, username on the left column.
  * It will also render all the rooms that are available dynamically.
+ * Will change the view to NewDirectMsg when 'Direct Messages' is clicked. 
+ * Will filter all the messages to corresponding roomnames when roomname is clicked. 
  */
 const DirectMessageList = (props) => {
   if (props.data.myRooms) {
