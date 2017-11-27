@@ -17,7 +17,7 @@ const app = express();
 
 const connections = [];
 
-const server = app.listen(process.env.PORT || 4000, () => {
+const server = app.listen(8080, () => {
   console.log('Listening to port', process.env.PORT);
 });
 
