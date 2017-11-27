@@ -29,11 +29,8 @@ const sampleData = {
       userImgUrl: "https://www.planwallpaper.com/static/images/desktop-year-of-the-tiger-images-wallpaper.jpg"
     }]
   },
-    usersInRoom: {
-    "therealmtam, theericlau, theJohn, theJeff": ["therealmtam", "theericlau", "theJohn", "theJeff"],
-    "therealmtam, theJeff": ["therealmtam", "theJeff"],
-    "Lobby": ["therealmtam", "theericlau", "theJohn", "theJeff"]
-  }
+  onlineUsers: ["therealmtam", "theericlau", "theJohn", "theJeff"],
+  allUsersInLobby: { 'therealmtam': "https://www.planwallpaper.com/static/images/desktop-year-of-the-tiger-images-wallpaper.jpg", 'theJeff': "https://www.planwallpaper.com/static/images/desktop-year-of-the-tiger-images-wallpaper.jpg", 'theericlau': "https://www.planwallpaper.com/static/images/desktop-year-of-the-tiger-images-wallpaper.jpg", 'theJohn': "https://www.planwallpaper.com/static/images/desktop-year-of-the-tiger-images-wallpaper.jpg" }
 };
 
 

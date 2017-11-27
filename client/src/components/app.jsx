@@ -28,7 +28,7 @@ class App extends Component {
       myRooms: [],
       roomMsgs: {},
       currentRoom: 'Lobby',
-      onlineUsers: {},
+      onlineUsers: [],
       allUsersInLobby: {}
     }
   }
@@ -40,6 +40,9 @@ class App extends Component {
   componentWillMount() {
 
     socket.on('sign in', (data) => {
+      let allUsersInLobby = data.allUsersInLobby;
+      allUsersInLobby[data.username] = data.userImgUrl;
+
       this.setState({
         username: data.username,
         userImgUrl: data.userImgUrl,
@@ -47,20 +50,19 @@ class App extends Component {
         roomMsgs: data.roomMsgs,
         currentRoom: 'Lobby',
         onlineUsers: data.onlineUsers,
-        allUsersInLobby: data.allUsersInLobby,
+        allUsersInLobby: allUsersInLobby,
       });
     });
 
-  /**
-   * DISCONNECT SOCKET DOESN'T FIRE
-   */
-    socket.on('disconnects', (data) => {
-      //data is the updated Online Users
-      console.log('updated after disconnect', data);
+    socket.on('disconnects', (onlineUsers) => {
       this.setState({
-        test: data
-      }, () => {
-        console.log('Users In Room ',this.state.test);
+        onlineUsers: onlineUsers
+      })
+    })
+
+    socket.on('connects', (onlineUsers) => {
+      this.setState({
+        onlineUsers: onlineUsers
       })
     })
 
@@ -78,9 +80,6 @@ class App extends Component {
     });
   }
 
-  /**
-   * NEED TO ADD DESCRIPTION
-   */
   // Front End Helper Functions
   changeCurrentRoom(selectedRoom) {
     this.setState({
@@ -113,15 +112,15 @@ class App extends Component {
    * @param {String} username - Username typed in by the user
    */
   sendUserNameToServer(username, imageUrl) {
-    const image = imageUrl ? imageUrl : 
+    let image = imageUrl ? imageUrl :
     'https://typeset-beta.imgix.net/rehost%2F2016%2F9%2F13%2F3538f891-a083-4310-a419-84e8c709a635.jpg'
+
     socket.emit('user login', {
       username: username,
       userImgUrl: image,
       rooms: ['Lobby'],
     });
-    //WE WANT TO BE ABLE TO RENDER CHAT VIEW WITHOUT BREAKING IF THE SERVER DOES NOT RESPOND WITH DATA
-    //TO SET STATE TO DEFAULT VALUES. RIGHT NOW CHAT VIEW REQUIRES THERE TO BE DATA OR ELSE IT BREAKS.
+
     this.changeView('chat');
   }
 
@@ -185,9 +184,6 @@ class App extends Component {
         />)
     } else if (view === 'newDirectMessage') {
       return (
-
-    //WE WANT TO BE ABLE TO RENDER NEWDM VIEW WITHOUT BREAKING IF THE SERVER DOES NOT RESPOND WITH DATA
-    //TO SET STATE TO DEFAULT VALUES. RIGHT NOW IT REQUIRES THERE TO BE DATA OR ELSE IT BREAKS.
         <NewDirectMsg
           createNewRoom={this.createNewRoom.bind(this)}
           allUsersInLobby={this.state.allUsersInLobby}
