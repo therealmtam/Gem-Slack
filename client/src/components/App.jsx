@@ -139,12 +139,7 @@ class App extends Component {
    * @param {String} imageUrl - User specified URL
    */
   sendUserNameToServer(username, imageUrl) {
-<<<<<<< HEAD:client/src/components/App.jsx
     const image = imageUrl || 'http://bit.ly/2iTgJoT';
-=======
-    const image = imageUrl ? imageUrl :
-      'https://typeset-beta.imgix.net/rehost%2F2016%2F9%2F13%2F3538f891-a083-4310-a419-84e8c709a635.jpg';
->>>>>>> aca4a2710e90b827d9e0b3a0af44d6d49aed0d87:client/src/components/App.jsx
 
     socket.emit('user login', {
       username,

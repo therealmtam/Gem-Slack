@@ -62,18 +62,17 @@
 
 .center-column {
   position: absolute;
-  margin-left: 245px;
+  margin-left: 255px;
   margin-right: 10px;
   padding-right: 7%;
   width: 80%;
 }
 .message-list {
-  overflow: scroll;
   padding-left: 0;
   margin-bottom: 40px;
+  margin-top: 40px;
   padding-bottom: 40px;
   position: absolute;
-
 }
 .input-bar {
   position: fixed;
@@ -86,7 +85,7 @@
   width: 80%;
   font-size: 18pt;
   border-radius: 5px;
-  border: 2px solid rgba(160,160,162,.7)
+  border: 2px solid rgba(160,160,162,.7);
 }
 
 .message {
@@ -108,6 +107,7 @@
   opacity: 0.6
 }
 
+
 .time {
   opacity: 1;
   color: rgba(113, 114, 116, 0.73)
@@ -125,12 +125,56 @@
   margin-top: 2%
 }
 
-.circle{
-  background: #2faa92;
+.circle {
+  background: #43BDA2;
   width: 9px;
   height: 9px;
   border-radius: 50%;
   float: left;
   margin-top: 6px;
   margin-right: 5px;
+  opacity: 0.8
+}
+.line-break {
+  display: inline-block;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  height: 15px;
+}
+
+*::-webkit-input-placeholder {
+  opacity: 0.8;
+}
+*:-moz-placeholder {
+  /* FF 4-18 */
+  opacity: 0.8;
+}
+*::-moz-placeholder {
+  /* FF 19+ */
+  opacity: 0.8;
+}
+*:-ms-input-placeholder {
+  /* IE 10+ */
+ opacity: 0.8;
+}
+.input-message::-webkit-input-placeholder {
+  opacity: 0.6;
+  font-size: 15px;
+}
+*:-moz-placeholder {
+  /* FF 4-18 */
+  opacity: 0.6;
+  font-size: 15px;
+}
+*::-moz-placeholder {
+  /* FF 19+ */
+  opacity: 0.6;
+  font-size: 15px;
+}
+*:-ms-input-placeholder {
+  /* IE 10+ */
+ opacity: 0.6;
+ font-size: 15px;
 }
