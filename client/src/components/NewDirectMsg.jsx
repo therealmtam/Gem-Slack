@@ -30,7 +30,6 @@ class NewDirectMsg extends Component {
   }
 
   componentWillMount() {
-
     let formattedAllSelectableUsers = [];
     for (var user in this.props.allUsersInLobby) {
       formattedAllSelectableUsers.push(user);
@@ -53,7 +52,6 @@ class NewDirectMsg extends Component {
    */
   createNewDirectMsg() {
     let newRoomname = this.state.selectedUsers.join(', ');
-    console.log('newRoomname ', newRoomname);
     this.props.createNewRoom(newRoomname);
   }
 
@@ -362,6 +360,7 @@ class NewDirectMsg extends Component {
               <SelectedUsersFeed
                 listToDisplay={this.state.selectedUsers}
                 removeUser={this.removeUser.bind(this)}
+                allUsersInLobby={this.props.allUsersInLobby}
               />
             </div>
 
