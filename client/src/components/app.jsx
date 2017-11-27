@@ -4,7 +4,8 @@ import SignIn from './signin.jsx';
 import Chat from './chat.jsx';
 import NewDirectMsg from './NewDirectMsg.jsx';
 import axios from 'axios';
-import io from 'socket.io-client';
+import io from 'socket.io-client/dist/socket.io';
+//  Todo: Update socket-io client after fix of webpack issue
 
 const socket = io('process.env.PORT');
 // const socket = io('http://localhost:4000');
