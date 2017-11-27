@@ -22,7 +22,7 @@ class Chat extends React.Component {
             changeView={this.props.changeView}
             />
           </div>
-          <div className="center-column container-fluid" >
+          <div className="center-column" >
             <MessageList data={this.props.data}/>
             <Input sendMessage={this.props.sendMessage}/>
           </div>

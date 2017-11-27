@@ -1,13 +1,11 @@
 .avatar {
-  width: 50px;
-  height: 30px;
+  width: 40px;
   float: left;
-  margin-right: 15px;
   border-radius: 5px;
 }
 .signin-box {
   width: 30%;
-  margin: 15% auto 15% auto
+  margin: 15% auto 15% auto;
 }
 .chat {
   font-family: 'Lato', 'sans-serif';
@@ -15,6 +13,7 @@
 }
 .msg-container {
   float: right;
+  margin-left: 15px;
 }
 .gem-slack {
   color: white;
@@ -90,7 +89,7 @@
 .message {
   margin-top: 5px;
   margin-bottom: 5px;
-  width: 100%;
+  width: 800px;
   display: block;
   font-size: 14px;
   position: relative;
