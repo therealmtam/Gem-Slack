@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React from 'react';
 
 class Message extends React.Component {
@@ -6,18 +7,17 @@ class Message extends React.Component {
   }
 
   getTime() {
-    let date = this.props.msg.createdAt
-    let colonIndex = date.indexOf(':');
-    let timeArray = date.slice(colonIndex - 2, colonIndex + 3).split(':')
-    let amOrPm= 'AM'
+    const date = this.props.msg.createdAt;
+    const colonIndex = date.indexOf(':');
+    let timeArray = date.slice(colonIndex - 2, colonIndex + 3).split(':');
+    let amOrPm= 'AM';
     let hour = Number(timeArray[0]);
     if (hour > 12) {
       hour = hour - 12;
       amOrPm = 'PM';
       timeArray[0] = hour.toString();
     }
-    let time = timeArray.join(':') + ' ' + amOrPm;
-    return time;
+    return timeArray.join(':') + ' ' + amOrPm;
   }
 
   render() {
