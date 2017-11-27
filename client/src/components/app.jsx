@@ -100,7 +100,7 @@ class App extends Component {
       message: message,
       createdAt: new Date(),
       roomname: this.state.currentRoom,
-      userImgUrl: this.state.userImgUrl
+      userImgUrl: this.state.userImgUrl,
     };
     newMsg.createdAt = newMsg.createdAt.toString();
     socket.emit('add message', newMsg);
@@ -113,7 +113,7 @@ class App extends Component {
    * @param {String} username - Username typed in by the user
    */
   sendUserNameToServer(username, imageUrl) {
-    const image = imageUrl ? imageUrl : 
+    const image = imageUrl ? imageUrl :
     'https://typeset-beta.imgix.net/rehost%2F2016%2F9%2F13%2F3538f891-a083-4310-a419-84e8c709a635.jpg'
     socket.emit('user login', {
       username: username,
