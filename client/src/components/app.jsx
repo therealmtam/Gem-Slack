@@ -7,8 +7,8 @@ import axios from 'axios';
 import io from 'socket.io-client/dist/socket.io';
 //  Todo: Update socket-io client after fix of webpack issue
 
-const socket = io(process.env.PORT);
-console.log('im the port for heroku', process.env.PORT);
+const socket = io(SOCKET_PORT);
+console.log('im the port for heroku', SOCKET_PORT);
 // const socket = io('http://localhost:4000');
 
 /**
