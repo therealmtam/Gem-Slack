@@ -23,13 +23,13 @@ class Message extends React.Component {
   render() {
     return (
         <li className="message">
-          <img className="avatar" src={this.props.msg.userImgUrl}/>
           <div className="message-container">
+          <img className="avatar" src={this.props.msg.userImgUrl}/>
             <div>
               <span className="username">{this.props.msg.username}</span> 
               <span className="time">{this.getTime()}</span>
             </div>
-            <div>{this.props.msg.message}</div>
+            <div className="message-body">{this.props.msg.message}</div>
           </div>
         </li>
     )
