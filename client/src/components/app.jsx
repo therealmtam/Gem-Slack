@@ -28,8 +28,8 @@ class App extends Component {
       roomMsgs: {},
       currentRoom: 'Lobby',
       onlineUsers: [],
-      allUsersInLobby: {}
-    }
+      allUsersInLobby: {},
+    };
   }
 
 
