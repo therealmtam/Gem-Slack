@@ -128,77 +128,77 @@ io.on('connection', (socket) => {
   });
 });
 
-//  Passport Authorization
-app.use(session({
-  secret: 'gemguys',
-  resave: false,
-  saveUninitialized: false,
-}));
+// //  Passport Authorization
+// app.use(session({
+//   secret: 'gemguys',
+//   resave: false,
+//   saveUninitialized: false,
+// }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-/**
- * Simple route middleware to ensure user is authenticated
- * @param  {} req - request
- * @param  {} res - response
- * @param  {} next
- */
-const ensureAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    next();
-  }
-  res.status(404).send('User not found: incorrect username or password');
-};
+// /**
+//  * Simple route middleware to ensure user is authenticated
+//  * @param  {} req - request
+//  * @param  {} res - response
+//  * @param  {} next
+//  */
+// const ensureAuthenticated = (req, res, next) => {
+//   if (req.isAuthenticated()) {
+//     next();
+//   }
+//   res.status(404).send('User not found: incorrect username or password');
+// };
 
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
+// passport.serializeUser((user, done) => {
+//   done(null, user);
+// });
 
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
-});
+// passport.deserializeUser((obj, done) => {
+//   done(null, obj);
+// });
 
-passport.use(new GoogleStrategy(
-  authConfig.google,
-  (accessToken, refreshToken, profile, done) => done(null, profile),
-));
+// passport.use(new GoogleStrategy(
+//   authConfig.google,
+//   (accessToken, refreshToken, profile, done) => done(null, profile),
+// ));
 
-app.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['openid email profile'] }),
-);
+// app.get(
+//   '/auth/google',
+//   passport.authenticate('google', { scope: ['openid email profile'] }),
+// );
 
-app.get(
-  '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    // go to correct page
-  },
-);
+// app.get(
+//   '/auth/google/callback',
+//   passport.authenticate('google', { failureRedirect: '/login' }),
+//   (req, res) => {
+//     // go to correct page
+//   },
+// );
 
-passport.use(new FacebookStrategy(
-  authConfig.facebook,
-  (accessToken, refreshToken, profile, cb) => {
-    User.findOrCreate({ facebookId: profile.id }, (err, user) => cb(err, user));
-  },
-));
+// passport.use(new FacebookStrategy(
+//   authConfig.facebook,
+//   (accessToken, refreshToken, profile, cb) => {
+//     User.findOrCreate({ facebookId: profile.id }, (err, user) => cb(err, user));
+//   },
+// ));
 
-app.get(
-  '/auth/facebook',
-  passport.authenticate('facebook'),
-);
+// app.get(
+//   '/auth/facebook',
+//   passport.authenticate('facebook'),
+// );
 
-app.get(
-  '/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  },
-);
+// app.get(
+//   '/auth/facebook/callback',
+//   passport.authenticate('facebook', { failureRedirect: '/login' }),
+//   (req, res) => {
+//     // Successful authentication, redirect home.
+//     res.redirect('/');
+//   },
+// );
 
-app.get('/logout', (req, res) => {
-  req.logout();
-  // go back to main page
-});
+// app.get('/logout', (req, res) => {
+//   req.logout();
+//   // go back to main page
+// });
