@@ -1,5 +1,3 @@
-/*eslint-disable */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SelectableUsersFeed from './SelectableUsersFeed.jsx';
@@ -9,34 +7,30 @@ import SelectedUsersFeed from './SelectedUsersFeed.jsx';
  * Description:
  * NewDirectMsg component renders all components of the
  * new Direct Message view which is shown when the User
- * wants to create a new Direct Message (Room).
+ * wants to create a new Room (aka. a new 'Direct Message' in Slack terms).
  * This component allows the User to select from all
- * selectable Users in the 'Lobby' of a Channel to start a new
- * Direct Message with.
+ * selectable Users in the 'Lobby' (aka. a 'channel' in Slack terms)
+ * to start a new Direct Message with.
  *
- * @param {Function} createNewRoom - Function passed in by App component.
- * @param {Object} allUsersInLobby - Object passed in by App component.
+ * @prop {Function} createNewRoom - Function passed in by App component.
+ * @prop {Function} changeView - Function passed in by App component.
+ * @prop {Object} allUsersInLobby - Object passed in by App component.
  */
 class NewDirectMsg extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allSelectableUsers: [],
       remainingSelectableUsers: [],
       narrowedSearchList: [],
       selectedUsers: [],
       userInput: '',
-    }
+    };
   }
 
   componentWillMount() {
-    let formattedAllSelectableUsers = [];
-    for (var user in this.props.allUsersInLobby) {
-      formattedAllSelectableUsers.push(user);
-    }
+    const formattedAllSelectableUsers = Object.keys(this.props.allUsersInLobby).map(user => user);
 
     this.setState({
-      allSelectableUsers: formattedAllSelectableUsers,
       remainingSelectableUsers: formattedAllSelectableUsers,
       selectedUsers: [],
     });
@@ -44,15 +38,29 @@ class NewDirectMsg extends Component {
 
   /**
    * createNewDirectMsg:
-   * Function creates a new 'room' by adding new room name to the State
+   * Function creates a new Room by adding new room name to the State
    * property in the App component that contains all
    * existing room data.
    *
-   * @param {Function} this.props.createNewRoom - Function passed in by App component
+   * @param - none
    */
   createNewDirectMsg() {
-    let newRoomname = this.state.selectedUsers.join(', ');
-    this.props.createNewRoom(newRoomname);
+    const newRoomname = this.state.selectedUsers.join(', ');
+
+    if (newRoomname.length !== 0) {
+      this.props.createNewRoom(newRoomname);
+    }
+  }
+
+  /**
+   * goBackToCurrentRoom:
+   * Function is called when User wants to escape the page
+   * without creating a new Room.
+   *
+   * @param - none
+   */
+  goBackToCurrentRoom() {
+    this.props.changeView('chat');
   }
 
   /**
@@ -63,10 +71,10 @@ class NewDirectMsg extends Component {
    * @param {Object} event - Event object
    */
   recordSearchedUser(event) {
-    let newUserInput = event.target.value;
+    const newUserInput = event.target.value;
     this.narrowSearchList(newUserInput);
     this.setState({
-      userInput: newUserInput
+      userInput: newUserInput,
     });
   }
 
@@ -79,22 +87,22 @@ class NewDirectMsg extends Component {
    */
   narrowSearchList(userInput) {
     if (userInput.length !== 0) {
-      let formattedInput = userInput.toLowerCase().split(' ').join('');
+      const formattedInput = userInput.toLowerCase().split(' ').join('');
       let narrowedSearchList = this.state.remainingSelectableUsers.filter((user) => {
-        let lettersToMatch = user.slice(0, formattedInput.length).toLowerCase().split(' ').join('');
+        const lettersToMatch = user.slice(0, formattedInput.length).toLowerCase().split(' ').join('');
         return lettersToMatch.includes(formattedInput);
       });
 
       if (narrowedSearchList.length === 0) {
-        narrowedSearchList = [`No one found matching ${userInput}`]
+        narrowedSearchList = [`No one found matching ${userInput}`];
       }
 
       this.setState({
-        narrowedSearchList: narrowedSearchList
+        narrowedSearchList,
       });
     } else {
       this.setState({
-        narrowedSearchList: []
+        narrowedSearchList: [],
       });
     }
   }
@@ -108,13 +116,12 @@ class NewDirectMsg extends Component {
    * @param {Object} event - Event object
    */
   selectUser(event) {
-    let selectedUser = event.target.getAttribute('value');
-    let selectedUsers = this.state.selectedUsers;
+    const selectedUser = event.target.getAttribute('value');
+    const { selectedUsers } = this.state;
     selectedUsers.push(selectedUser);
 
-    let remainingSelectableUsers = this.state.remainingSelectableUsers.filter((user) => {
-      return (user !== selectedUser);
-    });
+    const remainingSelectableUsers = this.state.remainingSelectableUsers.filter(user =>
+      (user !== selectedUser));
 
   /**
    * removeUser:
@@ -196,8 +203,8 @@ class NewDirectMsg extends Component {
     });
 
     this.setState({
-      selectedUsers: selectedUsers,
-      remainingSelectableUsers: remainingSelectableUsers,
+      selectedUsers,
+      remainingSelectableUsers,
     }, () => {
       this.narrowSearchList(this.state.userInput);
     });
@@ -205,23 +212,20 @@ class NewDirectMsg extends Component {
 
   /**
    * removeUser:
-   * Function removes selected Users if the User decides to remove
-   * a selected user.
+   * Function removes selected Users from the selected users list stored in State.
    *
    * @param {Object} event - Event object
    */
   removeUser(event) {
-    let removedUser = event.target.getAttribute('value');
-    let selectedUsers = this.state.selectedUsers.filter((user) => {
-      return (user !== removedUser)
-    });
+    const removedUser = event.target.getAttribute('value');
+    const selectedUsers = this.state.selectedUsers.filter(user => (user !== removedUser));
 
-    let remainingSelectableUsers = this.state.remainingSelectableUsers;
+    const { remainingSelectableUsers } = this.state;
     remainingSelectableUsers.push(removedUser);
 
     this.setState({
-      selectedUsers: selectedUsers,
-      remainingSelectableUsers: remainingSelectableUsers,
+      selectedUsers,
+      remainingSelectableUsers,
     }, () => {
       this.narrowSearchList(this.state.userInput);
     });
@@ -283,14 +287,13 @@ class NewDirectMsg extends Component {
 
   /**
    * renderSelectableUsersFeed:
-   * Function shows the User either the narrowed search list based on their input
+   * Function shows the User either the narrowed search list based on their input,
    * or the list of all remaining selectable users if the User has not provided
    * any input.
    *
    * @param - None
    */
   renderSelectableUsersFeed() {
-
     if (this.state.narrowedSearchList.length > 0) {
       if (this.state.narrowedSearchList.join('').includes('No one found matching')) {
         return (
@@ -298,57 +301,66 @@ class NewDirectMsg extends Component {
             listToDisplay={this.state.narrowedSearchList}
             selectUser={() => { }}
             allUsersInLobby={this.props.allUsersInLobby}
-          />)
+          />);
       }
       return (
         <SelectableUsersFeed
           listToDisplay={this.state.narrowedSearchList}
           selectUser={this.selectUser.bind(this)}
           allUsersInLobby={this.props.allUsersInLobby}
-        />)
-     } else {
-      return (
-        <SelectableUsersFeed
-          listToDisplay={this.state.remainingSelectableUsers}
-          selectUser={this.selectUser.bind(this)}
-          allUsersInLobby={this.props.allUsersInLobby}
-        />)
+        />);
     }
+
+    return (
+      <SelectableUsersFeed
+        listToDisplay={this.state.remainingSelectableUsers}
+        selectUser={this.selectUser.bind(this)}
+        allUsersInLobby={this.props.allUsersInLobby}
+      />);
   }
 
   render() {
     return (
       <div>
-        <div className="container" style={{ "textAlign": "center", "marginBottom": "20px"}}>
+        <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+          <button
+            type="button"
+            className="btn btn-outline-dark"
+            style={{ backgroundColor: '#D6D6D5', fontWeight: 'bold', color: 'white' }}
+            onClick={this.goBackToCurrentRoom.bind(this)}>
+            esc
+          </button>
+        </div>
+        <div className="container" style={{ textAlign: 'center', marginBottom: '20px' }}>
           <h1 >Direct Messages</h1>
         </div>
         <div className="container">
           <div className="row">
-              <div className="col"></div>
-              <div className="col">
-                <div className="input-group" >
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Find or start a conversation"
-                    aria-label="Find or start a conversation"
-                    onChange={this.recordSearchedUser.bind(this)}
-                  />
-                  <span className="input-group-btn">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      style={{"backgroundColor": "#D6D6D5", "fontWeight": "bold", "color": "white" }}
-                      onClick={this.createNewDirectMsg.bind(this)}>
-                      Go
-                    </button>
-                  </span>
-                </div>
+            <div className="col" />
+            <div className="col">
+              <div className="input-group" >
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Find or start a conversation"
+                  aria-label="Find or start a conversation"
+                  onChange={this.recordSearchedUser.bind(this)}
+                />
+                <span className="input-group-btn">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    style={{ backgroundColor: '#D6D6D5', fontWeight: 'bold', color: 'white' }}
+                    onClick={this.createNewDirectMsg.bind(this)}>
+                    Go
+                  </button>
+                </span>
               </div>
-              <div className="col"></div>
+            </div>
+            <div className="col" />
           </div>
         </div>
-        <div style={{"height":"20px"}}></div>
+        <div style={{ height: '20px' }} />
 
         <div className="container" >
           <div className="row">
@@ -373,7 +385,9 @@ class NewDirectMsg extends Component {
 }
 
 NewDirectMsg.propTypes = {
-
+  createNewRoom: PropTypes.func.isRequired,
+  changeView: PropTypes.func.isRequired,
+  allUsersInLobby: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default NewDirectMsg;
