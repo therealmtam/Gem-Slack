@@ -55,8 +55,7 @@ const getRoomMessages = room => Message.findAll({ where: {roomname: room} });
  * Deletes all Messages from the Messages table in the database
  * @returns A promise.
  */
-const deleteAllMessages = callback => Message.destroy({ where: {} })
-};
+const deleteAllMessages = callback => Message.destroy({ where: {} });
 
 module.exports.getMessages = getMessages;
 module.exports.addMessage = addMessage;
