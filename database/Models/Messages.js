@@ -33,6 +33,7 @@ const addMessage = (newMessage) => {
     createdAt: newMessage.createdAt,
     userImgUrl: newMessage.userImgUrl,
   };
+
   Message.sync({ force: false }).then(() => Message.create(formatted));
 };
 

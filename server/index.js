@@ -29,10 +29,32 @@ User.initUser();
 Room.initRoom();
 Messages.initMessage();
 
+// Initially create the Max User:
+User.addUser({
+  username: 'Max',
+  userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
+  rooms: ['Lobby'],
+});
+
+// Initially create the first Message:
+Messages.addMessage({
+  message: 'Welcome to Gem Slack!',
+  username: 'Max',
+  roomname: 'Lobby',
+  createdAt: new Date(),
+  userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
+});
+
 // Clear out all messages in the DB at a set interval
 setInterval(() => {
   Messages.deleteAllMessages().then(() => {
-    Messages.addMessage('Welcome to Gem Slack!');
+    Messages.addMessage({
+      message: 'Welcome to Gem Slack!',
+      username: 'Max',
+      roomname: 'Lobby',
+      createdAt: new Date(),
+      userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
+    });
   });
 }, 20000);
 
