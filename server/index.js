@@ -19,6 +19,8 @@ const server = app.listen(process.env.PORT || 4000, () => {
   console.log('Listening to port', process.env.PORT);
 });
 
+setInterval(() => { Messages.deleteAllMessages() }, 60000);
+
 const io = socketIO(server);
 
 app.use(express.static(path.join(__dirname, '../client/dist/')));
@@ -202,3 +204,5 @@ app.get('/logout', (req, res) => {
   req.logout();
   // go back to main page
 });
+
+

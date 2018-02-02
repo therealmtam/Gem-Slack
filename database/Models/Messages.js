@@ -47,8 +47,13 @@ const getMessages = () => Message.findAll({
 
 const getRoomMessages = room => Message.findAll({ where: {roomname: room} });
 
+const deleteAllMessages = () => {
+  Message.destroy({ where: {} });
+};
+
 
 module.exports.getMessages = getMessages;
 module.exports.addMessage = addMessage;
 module.exports.getRoomMessages = getRoomMessages;
 module.exports.initMessage = initMessage;
+module.exports.deleteAllMessages = deleteAllMessages;
