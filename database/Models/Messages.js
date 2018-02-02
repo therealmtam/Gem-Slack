@@ -38,19 +38,25 @@ const addMessage = (newMessage) => {
 
 /**
  * Retrieves all Messages from the database sorted by date created
- * @returns A promise that will get all Messages.
+ * @returns A promise with all messages passed in as a parameter.
  */
 const getMessages = () => Message.findAll({
   attributes: ['message'],
   order: [['createdAt', 'DESC']],
 });
 
+/**
+ * Retrieves a specific room's Messages from the database
+ * @returns A promise with the room's messages passed in as a parameter.
+ */
 const getRoomMessages = room => Message.findAll({ where: {roomname: room} });
 
-const deleteAllMessages = () => {
-  Message.destroy({ where: {} });
+/**
+ * Deletes all Messages from the Messages table in the database
+ * @returns A promise.
+ */
+const deleteAllMessages = callback => Message.destroy({ where: {} })
 };
-
 
 module.exports.getMessages = getMessages;
 module.exports.addMessage = addMessage;

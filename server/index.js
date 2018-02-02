@@ -19,7 +19,6 @@ const server = app.listen(process.env.PORT || 4000, () => {
   console.log('Listening to port', process.env.PORT);
 });
 
-setInterval(() => { Messages.deleteAllMessages() }, 60000);
 
 const io = socketIO(server);
 
@@ -29,6 +28,13 @@ app.use(express.static(path.join(__dirname, '../client/dist/')));
 User.initUser();
 Room.initRoom();
 Messages.initMessage();
+
+// Clear out all messages in the DB at a set interval
+setInterval(() => {
+  Messages.deleteAllMessages().then(() => {
+    Messages.addMessage('Welcome to Gem Slack!');
+  });
+}, 20000);
 
 //  Live Feed of Current Users in Database
 const connections = [];
