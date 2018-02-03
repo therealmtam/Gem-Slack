@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize');
 
-// const sequelize = new Sequelize(`${process.env.DATABASE_URL}`);
+const sequelize = new Sequelize(`${process.env.DATABASE_URL}`);
 
-// const sequelize = new Sequelize(``, ``, ``, {
+// const sequelize = new Sequelize(`gemslack`, ``, ``, {
 //   host: `localhost`,
-//   dialect: 'postgres',
+//   dialect: `postgres`,
 //   pool: {
 //     max: 1000000,
 //     min: 0,
@@ -12,17 +12,6 @@ const Sequelize = require('sequelize');
 //     idle: 10000,
 //   },
 // });
-
-const sequelize = new Sequelize(`gemslack`, `MaxTam`, ``, {
-  host: `localhost`,
-  dialect: `postgres`,
-  pool: {
-    max: 1000000,
-    min: 0,
-    acquire: 30000,
-    idle: 10000,
-  },
-});
 
 sequelize
   .authenticate()
