@@ -65,7 +65,7 @@ setInterval(() => {
         userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
       });
     });
-}, 20000);
+}, 600000);
 
 //  Live Feed of Current Users in Database
 const connections = [];
