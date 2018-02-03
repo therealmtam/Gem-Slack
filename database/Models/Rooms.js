@@ -16,7 +16,11 @@ const addRoom = (newRoom) => {
   const formatted = {
     roomname: newRoom.roomname,
   };
-  Room.sync({ force: false }).then(() => Room.create(formatted));
+  Room.sync({ force: true })
+    .then(() => Room.create(formatted))
+    .catch((err) => {
+      console.log('ADD ROOM ERROR ', err);
+    });
 };
 
 /**
@@ -30,7 +34,9 @@ const getRoomById = (id) => {
   return Room.findOne({ where: { id: id } });
 };
 
-const initRoom = () => { addRoom({ roomname: 'Lobby' }); };
+const initRoom = () => {
+  addRoom({ roomname: 'Lobby' });
+};
 
 module.exports.getRooms = getRooms;
 module.exports.addRoom = addRoom;

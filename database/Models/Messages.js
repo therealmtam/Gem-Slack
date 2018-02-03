@@ -19,7 +19,7 @@ const Message = db.define('Message', {
   },
 });
 
-const initMessage = () => { Message.sync(); };
+const initMessage = () => Message.sync({ force: false });
 
 /**
  * Adds a message to the database
@@ -34,7 +34,11 @@ const addMessage = (newMessage) => {
     userImgUrl: newMessage.userImgUrl,
   };
 
-  Message.sync({ force: false }).then(() => Message.create(formatted));
+  Message.sync({ force: false })
+    .then(() => Message.create(formatted))
+    .catch((err) => {
+      console.log('ADD MESSAGE ERROR ', err);
+    });
 };
 
 /**
@@ -50,13 +54,18 @@ const getMessages = () => Message.findAll({
  * Retrieves a specific room's Messages from the database
  * @returns A promise with the room's messages passed in as a parameter.
  */
-const getRoomMessages = room => Message.findAll({ where: {roomname: room} });
+const getRoomMessages = room => Message.findAll({ where: { roomname: room } }).catch((err) => {
+  console.log('GET ROOM MSGS ERROR ', err);
+});
 
 /**
  * Deletes all Messages from the Messages table in the database
  * @returns A promise.
  */
-const deleteAllMessages = callback => Message.destroy({ where: {} });
+const deleteAllMessages = () => Message.destroy({ where: {} })
+  .catch((err) => {
+    console.log('DELETE ALL MESSAGES ERROR ', err);
+  });
 
 module.exports.getMessages = getMessages;
 module.exports.addMessage = addMessage;

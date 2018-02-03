@@ -14,7 +14,7 @@ const User = db.define('user', {
   },
 });
 
-const initUser = () => { User.sync(); };
+const initUser = () => User.sync();
 
 /**
  * Adds a user to the database
@@ -26,12 +26,14 @@ const addUser = (newUser) => {
     userImgUrl: newUser.userImgUrl,
     rooms: newUser.rooms,
   };
-  User.sync({ force: false }).then(() => User.create(formatted));
+  User.sync({ force: true })
+    .then(() => User.create(formatted))
+    .catch((err) => {
+      console.log('ADD USER ERROR ', err);
+    });
 };
 
-const updateUser = (name, room) => {
-  return User.update({ rooms: room }, { where: { username: name } });
-};
+const updateUser = (name, room) => User.update({ rooms: room }, { where: { username: name } });
 
 /**
  * Retrieves all Users from the database
@@ -44,9 +46,7 @@ const getUsers = () => User.findAll();
  * @param {} name - name of user
  * @returns A userId
  */
-const getUserById = (name) => {
-  return User.findOne({ where: { username: name } })
-};
+const getUserById = name => User.findOne({ where: { username: name } });
 
 module.exports.getUsers = getUsers;
 module.exports.addUser = addUser;

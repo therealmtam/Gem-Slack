@@ -5,12 +5,12 @@ const socketIO = require('socket.io');
 const Files = require('../database/Models/Files.js');
 const Messages = require('../database/Models/Messages.js');
 const Room = require('../database/Models/Rooms.js');
+const User = require('../database/Models/User.js');
 const passport = require('passport');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20');
 const FacebookStrategy = require('passport-facebook');
 const authConfig = require('../config/oauth.js');
-const User = require('../database/Models/User.js');
 const Promise = require('bluebird');
 
 const app = express();
@@ -24,38 +24,44 @@ const io = socketIO(server);
 
 app.use(express.static(path.join(__dirname, '../client/dist/')));
 
-//  Initialize User,Room,Messages Tables in the Database
-User.initUser();
-Room.initRoom();
-Messages.initMessage();
+setTimeout(() => {
+  //  Initialize User,Room,Messages Tables in the Database
+  User.initUser();
+  Room.initRoom();
+  Messages.initMessage();
+}, 2000);
 
-// Initially create the Max User:
-User.addUser({
-  username: 'Max',
-  userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
-  rooms: ['Lobby'],
-});
+setTimeout(() => {
+  // Initially create the Max User:
+  User.addUser({
+    username: 'Max',
+    userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
+    rooms: ['Lobby'],
+  });
 
-// Initially create the first Message:
-Messages.addMessage({
-  message: 'Welcome to Gem Slack!',
-  username: 'Max',
-  roomname: 'Lobby',
-  createdAt: new Date(),
-  userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
-});
+  // Initially create the first Message:
+  Messages.addMessage({
+    message: 'Welcome to Gem Slack!',
+    username: 'Max',
+    roomname: 'Lobby',
+    createdAt: new Date(),
+    userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
+  });
+
+}, 4000);
 
 // Clear out all messages in the DB at a set interval
 setInterval(() => {
-  Messages.deleteAllMessages().then(() => {
-    Messages.addMessage({
-      message: 'Welcome to Gem Slack!',
-      username: 'Max',
-      roomname: 'Lobby',
-      createdAt: new Date(),
-      userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
+  Messages.deleteAllMessages()
+    .then(() => {
+      Messages.addMessage({
+        message: 'Welcome to Gem Slack!',
+        username: 'Max',
+        roomname: 'Lobby',
+        createdAt: new Date(),
+        userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
+      });
     });
-  });
 }, 20000);
 
 //  Live Feed of Current Users in Database
@@ -158,79 +164,79 @@ io.on('connection', (socket) => {
   });
 });
 
-//  Passport Authorization
-app.use(session({
-  secret: 'gemguys',
-  resave: false,
-  saveUninitialized: false,
-}));
+// //  Passport Authorization
+// app.use(session({
+//   secret: 'gemguys',
+//   resave: false,
+//   saveUninitialized: false,
+// }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-/**
- * Simple route middleware to ensure user is authenticated
- * @param  {} req - request
- * @param  {} res - response
- * @param  {} next
- */
-const ensureAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    next();
-  }
-  res.status(404).send('User not found: incorrect username or password');
-};
+// /**
+//  * Simple route middleware to ensure user is authenticated
+//  * @param  {} req - request
+//  * @param  {} res - response
+//  * @param  {} next
+//  */
+// const ensureAuthenticated = (req, res, next) => {
+//   if (req.isAuthenticated()) {
+//     next();
+//   }
+//   res.status(404).send('User not found: incorrect username or password');
+// };
 
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
+// passport.serializeUser((user, done) => {
+//   done(null, user);
+// });
 
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
-});
+// passport.deserializeUser((obj, done) => {
+//   done(null, obj);
+// });
 
-passport.use(new GoogleStrategy(
-  authConfig.google,
-  (accessToken, refreshToken, profile, done) => done(null, profile),
-));
+// passport.use(new GoogleStrategy(
+//   authConfig.google,
+//   (accessToken, refreshToken, profile, done) => done(null, profile),
+// ));
 
-app.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['openid email profile'] }),
-);
+// app.get(
+//   '/auth/google',
+//   passport.authenticate('google', { scope: ['openid email profile'] }),
+// );
 
-app.get(
-  '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    // go to correct page
-  },
-);
+// app.get(
+//   '/auth/google/callback',
+//   passport.authenticate('google', { failureRedirect: '/login' }),
+//   (req, res) => {
+//     // go to correct page
+//   },
+// );
 
-passport.use(new FacebookStrategy(
-  authConfig.facebook,
-  (accessToken, refreshToken, profile, cb) => {
-    User.findOrCreate({ facebookId: profile.id }, (err, user) => cb(err, user));
-  },
-));
+// passport.use(new FacebookStrategy(
+//   authConfig.facebook,
+//   (accessToken, refreshToken, profile, cb) => {
+//     User.findOrCreate({ facebookId: profile.id }, (err, user) => cb(err, user));
+//   },
+// ));
 
-app.get(
-  '/auth/facebook',
-  passport.authenticate('facebook'),
-);
+// app.get(
+//   '/auth/facebook',
+//   passport.authenticate('facebook'),
+// );
 
-app.get(
-  '/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  },
-);
+// app.get(
+//   '/auth/facebook/callback',
+//   passport.authenticate('facebook', { failureRedirect: '/login' }),
+//   (req, res) => {
+//     // Successful authentication, redirect home.
+//     res.redirect('/');
+//   },
+// );
 
-app.get('/logout', (req, res) => {
-  req.logout();
-  // go back to main page
-});
+// app.get('/logout', (req, res) => {
+//   req.logout();
+//   // go back to main page
+// });
 
 
