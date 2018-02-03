@@ -26,7 +26,7 @@ const addUser = (newUser) => {
     userImgUrl: newUser.userImgUrl,
     rooms: newUser.rooms,
   };
-  User.sync({ force: true })
+  User.sync({ force: false })
     .then(() => User.create(formatted))
     .catch((err) => {
       console.log('ADD USER ERROR ', err);

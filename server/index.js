@@ -33,10 +33,14 @@ setTimeout(() => {
 
 setTimeout(() => {
   // Initially create the Max User:
-  User.addUser({
-    username: 'Max',
-    userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
-    rooms: ['Lobby'],
+  User.getUserById('Max').then((exists) => {
+    if (!exists) {
+      User.addUser({
+        username: 'Max',
+        userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
+        rooms: ['Lobby'],
+      });
+    }
   });
 
   // Initially create the first Message:
@@ -47,7 +51,6 @@ setTimeout(() => {
     createdAt: new Date(),
     userImgUrl: 'https://avatars0.githubusercontent.com/u/8771006?s=460&v=4',
   });
-
 }, 4000);
 
 // Clear out all messages in the DB at a set interval
